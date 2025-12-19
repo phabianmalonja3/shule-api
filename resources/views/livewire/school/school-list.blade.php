@@ -68,7 +68,7 @@
                                         <td>{{ $school->name }}</td>
                                         <td>
                                             @if ($school->school_type && is_array($school->school_type))
-                                                {{ implode(', ', $types) }}
+                                                {{ implode(', ', $school->school_type) }}
                                             @else
                                                 N/A
                                             @endif
