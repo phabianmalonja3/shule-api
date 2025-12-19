@@ -246,11 +246,11 @@ class TeacherCreate extends Component
 
             $smsMessage = "Hongera! Username yako ni {$teacher->username} na password ni {$generatedPassword}. Tafadhali tembelea www.shulemis.ac.tz ili kuanza.";
 
-$response = Http::withToken(config('sms.SMS_API_KEY')) // API Key from .env
+$response = Http::withToken("344|nx7sRauZyFtayPGobAfqb0SFKUZAoJ0Z9QsXYOz722d58636 ") // API Key from .env
     ->acceptJson()
     ->post('https://sms.webline.co.tz/api/v3/sms/send', [
         'recipient' => $teacher->phone,
-        'sender_id' => config('sms.SENDER_ID'), // e.g., TAARIFA
+        'sender_id' => "TAARIFA", // e.g., TAARIFA
         'type'       => 'plain',
         'message'    => $smsMessage,
     ]);
