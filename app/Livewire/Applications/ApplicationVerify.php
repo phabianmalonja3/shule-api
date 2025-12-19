@@ -214,20 +214,18 @@ public function mount($application){
                 }
             }
 			
-            $username = 'phabianmalonja';
-            $apiKey   = 'atsk_008f794596ae78dc0dbdb2e7fac8549283e480ecf30062c3d678157c9042055ee5e77f4f';
-            
-            $AT = new AfricasTalking($username, $apiKey);
-            $sms = $AT->sms();
-            
-            // Format the message
-            $message = "Hongera kwa kujiunga na ShuleMIS. Username yako ni {$user->username} na password ni {$randomPassword}. Tafadhali tembelea www.shulemis.ac.tz ili uanze kufurahia huduma zetu.";
-            
-            
-            $result = $sms->send([
-                'to'      => $phoneNumber, // Use the formatted number
-                'message' => $message
-            ]);
+           $apiKey = config('sms.api_key');
+$senderId = config('sms.sender_id');
+$message = "Hongera kwa kujiunga na ShuleMIS. Username yako ni {$user->username} na password ni {$randomPassword}. Tafadhali tembelea www.shulemis.ac.tz ili uanze kufurahia huduma zetu.";
+
+ Http::withToken($apiKey)
+    ->acceptJson()
+    ->post('https://sms.webline.co.tz/api/v3/sms/send', [
+        'recipient' => $phoneNumber, // e.g. 255766031128
+        'sender_id' => $senderId,     // e.g. TAARIFA
+        'type'       => 'plain',
+        'message'    => $message,
+    ]);
             flash()->option('position', 'bottom-right')->success('School application verified and school created successfully!');
             return redirect()->route('school.list');
         } catch (\Exception $e) {
