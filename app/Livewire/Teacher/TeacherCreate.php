@@ -18,6 +18,7 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
+use PSpell\Config;
 
 class TeacherCreate extends Component
 {
@@ -248,7 +249,7 @@ class TeacherCreate extends Component
 
             $smsMessage = "Hongera! Username yako ni {$teacher->username} na password ni {$generatedPassword}. Tafadhali tembelea www.shulemis.ac.tz ili kuanza.";
 
-$response = Http::withToken("344|nx7sRauZyFtayPGobAfqb0SFKUZAoJ0Z9QsXYOz722d58636 ") // API Key from .env
+$response = Http::withToken(Config::get('sms.SMS_API_KEY')) // API Key from .env
     ->acceptJson()
     ->post('https://sms.webline.co.tz/api/v3/sms/send', [
         'recipient' => $phoneNumber,
