@@ -179,7 +179,7 @@ public function mount($application){
             $randomPassword = 'password';//Str::random(6);
             $phoneNumber = $this->application->phone;
         if (substr($phoneNumber, 0, 1) === '0') {
-         $phoneNumber = '+255' . substr($phoneNumber, 1);
+         $phoneNumber = '255' . substr($phoneNumber, 1);
          }
             $user = User::create([
                 'name' => $this->application->fullname,
