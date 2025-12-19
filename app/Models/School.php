@@ -27,9 +27,19 @@ class School extends Model
         'registration_number'
     ];
 
-	protected $casts = [
-			'school_type' => 'array',
-	];
+
+     /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'school_type' => 'array',
+        ];
+    }
+
 	
     public function teachers()
 	{

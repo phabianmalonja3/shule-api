@@ -67,7 +67,7 @@
 
                                         <td>{{ $school->name }}</td>
                                         <td>
-                                            @if ($school->school_type && is_array($types = json_decode($school->school_type, true)))
+                                            @if ($school->school_type && is_array($school->school_type))
                                                 {{ implode(', ', $types) }}
                                             @else
                                                 N/A
