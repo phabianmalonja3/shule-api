@@ -16,6 +16,8 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 
 class TeacherCreate extends Component
 {
@@ -221,15 +223,15 @@ class TeacherCreate extends Component
 
             DB::beginTransaction();
 
-            $defaultPassword = 'password';
-
+            $generatedPassword = Str::random(8);
+            
             $teacher = User::create([
                 'name' =>$this->first_name .' '.($this->middle_name ?? ''). ' '.$this->sur_name,
                 'email' => $this->email ? $this->email : null ,
                 'gender' => $this->gender,
                 'phone' => $this->phone,
                 'username' => $this->phone,
-                'password' => $defaultPassword, // Use bcrypt to hash the password
+                'password' => $generatedPassword, // Use bcrypt to hash the password
                 'school_id' => auth()->user()->school->id,
                 'is_verified' => true,
                 'created_by' => auth()->user()->id
@@ -241,6 +243,17 @@ class TeacherCreate extends Component
     
                 $teacher->assignRole('teacher');
             }
+
+            $smsMessage = "Hongera! Username yako ni {$teacher->username} na password ni {$generatedPassword}. Tafadhali tembelea www.shulemis.ac.tz ili kuanza.";
+
+$response = Http::withToken(config('sms.SMS_API_KEY')) // API Key from .env
+    ->acceptJson()
+    ->post('https://sms.webline.co.tz/api/v3/sms/send', [
+        'recipient' => $teacher->phone,
+        'sender_id' => config('sms.SENDER_ID'), // e.g., TAARIFA
+        'type'       => 'plain',
+        'message'    => $smsMessage,
+    ]);
     
             DB::commit();
             flash()->option('position','bottom-right')->success('A teacher has been succesfull added.');
