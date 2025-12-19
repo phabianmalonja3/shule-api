@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Support\Facades\Http;
 
 
 class TeacherController extends Controller
@@ -408,7 +409,7 @@ public function updateTeacher(Teacher $teacher)
     private function createTeacher(array $validatedData,$role, $headTeacher)
     {
         $school = $headTeacher->school;
-        $defaultPassword = 'password';
+       $generatedPassword = Str::random(8);
 
         $teacher = User::create([
             'name' => $validatedData['first_name'].' '.($validatedData['middle_name'] ?? '').' '.$validatedData['sur_name'],
@@ -417,7 +418,7 @@ public function updateTeacher(Teacher $teacher)
             'phone' => $validatedData['phone'],
             'username' => $validatedData['phone'],
             'role' => ['required','exists:roles,name'],
-            'password' => $defaultPassword,
+            'password' => $generatedPassword,
             'school_id' => $school->id,
             'is_verified' => true,
             'created_by' => auth()->user()->id
@@ -430,7 +431,19 @@ public function updateTeacher(Teacher $teacher)
             $teacher->assignRole('teacher');
         }
 
-        flash()->option('position','bottom-right')->success('Succesfully added');
+ $smsMessage = "Hongera! Username yako ni {$teacher->username} na password ni {$generatedPassword}. Tafadhali tembelea www.shulemis.ac.tz ili kuanza.";
+
+$response = Http::withToken(config('sms.SMS_API_KEY')) // API Key from .env
+    ->acceptJson()
+    ->post('https://sms.webline.co.tz/api/v3/sms/send', [
+        'recipient' => $teacher->phone,
+        'sender_id' => config('sms.SENDER_ID'), // e.g., TAARIFA
+        'type'       => 'plain',
+        'message'    => $smsMessage,
+    ]);
+
+
+      flash()->option('position','bottom-right')->success('Teacher successfully added and SMS sent!');
 
         return redirect()->route('teachers.index');
     }

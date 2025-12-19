@@ -176,7 +176,7 @@ public function mount($application){
                 $school->subjects()->create(['name' => $subject, 'created_by_system' => true]);
             } */
             // dd( $school->classes,$school->subjects);
-            $randomPassword = 'password';//Str::random(6);
+            $randomPassword = Str::random(6);
             $phoneNumber = $this->application->phone;
         if (substr($phoneNumber, 0, 1) === '0') {
          $phoneNumber = '255' . substr($phoneNumber, 1);
