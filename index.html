@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Academic Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="p-8 bg-gray-100">
+    <div class="max-w-3xl p-6 mx-auto bg-white border shadow-lg">
+        <div class="mb-6 text-center">
+            <h1 class="text-2xl font-bold">THE UNITED REPUBLIC OF TANZANIA</h1>
+            <h2 class="text-lg font-semibold">KINONDONI MUNICIPAL COUNCIL</h2>
+            <h3 class="font-semibold text-md">OYSTERBAY PRE AND PRIMARY SCHOOL</h3>
+            <p class="text-sm text-gray-700">P.O. BOX 23031, DAR ES SALAAM | Phone: 0718788691 | Email: oysterbayemps@gmail.com</p>
+        </div>
+
+        <h2 class="mb-4 text-xl font-bold text-center">ANNUAL EXAMINATION REPORT, DECEMBER 2024</h2>
+        
+        <div class="mb-4">
+            <p><strong>Pupil's Name:</strong> ABEMA DENNIS LUPIANA</p>
+            <p><strong>PREM No:</strong> 2019 1006887</p>
+            <p><strong>Class:</strong> VI</p>
+            <p><strong>Year:</strong> 2024</p>
+        </div>
+
+        <table class="w-full mb-6 text-left border border-collapse border-gray-400">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="p-2 border border-gray-400">SC</th>
+                    <th class="p-2 border border-gray-400">Subject Name</th>
+                    <th class="p-2 border border-gray-400">Mark</th>
+                    <th class="p-2 border border-gray-400">Grade</th>
+                    <th class="p-2 border border-gray-400">PST</th>
+                    <th class="p-2 border border-gray-400">Teacher's Comment</th>
+                    <th class="p-2 border border-gray-400">Subject Teacher</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="p-2 border border-gray-400">1</td>
+                    <td class="p-2 border border-gray-400">Kiswahili</td>
+                    <td class="p-2 border border-gray-400">32</td>
+                    <td class="p-2 border border-gray-400">B</td>
+                    <td class="p-2 border border-gray-400">77</td>
+                    <td class="p-2 border border-gray-400">Better Performance</td>
+                    <td class="p-2 border border-gray-400">Sifa Mwakantundu</td>
+                </tr>
+                <tr>
+                    <td class="p-2 border border-gray-400">2</td>
+                    <td class="p-2 border border-gray-400">English Language</td>
+                    <td class="p-2 border border-gray-400">41</td>
+                    <td class="p-2 border border-gray-400">A</td>
+                    <td class="p-2 border border-gray-400">14</td>
+                    <td class="p-2 border border-gray-400">The Best Performance</td>
+                    <td class="p-2 border border-gray-400">Eutropia Kinemo</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 class="mb-2 text-lg font-bold">Total: 262 | Grade: A | Position: 14 out of 220 Pupils</h3>
+        
+        <div class="pt-4 border-t">
+            <h4 class="font-semibold">School Terms:</h4>
+            <p>School has closed on <strong>6th December 2024</strong> and will reopen on <strong>13th January 2025</strong>.</p>
+        </div>
+
+        <div class="pt-4 border-t">
+            <h4 class="font-semibold">School Fees:</h4>
+            <p>Please pay any outstanding school fees before reporting back in January 2025.</p>
+            <p><strong>NMB ACCOUNT – 20503800041</strong>. Submit the deposit slip to the headteacher by <strong>13th January 2025</strong>.</p>
+        </div>
+
+        <div class="pt-4 border-t">
+            <h4 class="font-semibold">Holiday Duty:</h4>
+            <p>Student will be on holiday duty from <strong>30th Dec 2024 to 6th January 2025</strong>.</p>
+        </div>
+
+        <div class="flex justify-between mt-6 text-sm">
+            <div>
+                <p class="font-bold">Eutropia M. Kinemo</p>
+                <p>The Class Teacher</p>
+            </div>
+            <div>
+                <p class="font-bold">Egidius E. Mjunangoma</p>
+                <p>The Head Teacher</p>
+            </div>
+        </div>
+    </div>
+    <div class="mt-6 text-center">
+        <button onclick="printReport()" class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700">Print Report</button>
+    </div>
+
+    <script>
+        function printReport() {
+            window.print();
+        }
+    </script>
+</body>
+</html>

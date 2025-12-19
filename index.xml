@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2025-02-26T12:00:00.000Z" agent="ChatGPT" version="16.0.3" type="device">
+  <diagram id="architecture" name="System Architecture">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="900">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <!-- Frontend Layer (Web Frontend) -->
+        <mxCell id="frontend" value="Web Frontend&#xa;(User Profiles, Case Management)" style="shape=image;image=https://img.icons8.com/color/96/000000/globe--v1.png;verticalLabelPosition=bottom;verticalAlign=top;labelBackgroundColor=white;fontSize=12;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="50" width="120" height="120" as="geometry"/>
+        </mxCell>
+        <!-- Backend Layer (Server) -->
+        <mxCell id="backend" value="Server Backend&#xa;(Express API, WebSocket)" style="shape=image;image=https://img.icons8.com/color/96/000000/server.png;verticalLabelPosition=bottom;verticalAlign=top;labelBackgroundColor=white;fontSize=12;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="200" width="120" height="120" as="geometry"/>
+        </mxCell>
+        <!-- Database (Generic Database) -->
+        <mxCell id="database" value="Database" style="shape=image;image=https://img.icons8.com/color/96/000000/database.png;verticalLabelPosition=bottom;verticalAlign=top;labelBackgroundColor=white;fontSize=12;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="350" width="120" height="120" as="geometry"/>
+        </mxCell>
+        <!-- Hardware/Edge Layer Group -->
+        <mxCell id="hardwareGroup" value="Hardware/Edge Layer" style="group" vertex="1" parent="1">
+          <mxGeometry x="50" y="50" width="500" height="420" as="geometry">
+            <mxRectangle x="50" y="50" width="500" height="420" as="alternateBounds"/>
+          </mxGeometry>
+        </mxCell>
+        <!-- Fingerprint Sensor -->
+        <mxCell id="sensor" value="Fingerprint Sensor&#xa;(Built-in Enrollment &amp; Matching)" style="shape=image;image=https://img.icons8.com/color/96/000000/fingerprint.png;verticalLabelPosition=bottom;verticalAlign=top;labelBackgroundColor=white;fontSize=12;whiteSpace=wrap;html=1;" vertex="1" parent="hardwareGroup">
+          <mxGeometry x="70" y="70" width="100" height="100" as="geometry"/>
+        </mxCell>
+        <!-- Arduino/ESP32 Controller -->
+        <mxCell id="controller" value="Arduino/ESP32 Controller" style="shape=image;image=https://img.icons8.com/color/96/000000/arduino.png;verticalLabelPosition=bottom;verticalAlign=top;labelBackgroundColor=white;fontSize=12;whiteSpace=wrap;html=1;" vertex="1" parent="hardwareGroup">
+          <mxGeometry x="70" y="190" width="100" height="100" as="geometry"/>
+        </mxCell>
+        <!-- LCD Display -->
+        <mxCell id="lcd" value="LCD Display" style="shape=image;image=https://img.icons8.com/color/96/000000/monitor.png;verticalLabelPosition=bottom;verticalAlign=top;labelBackgroundColor=white;fontSize=12;whiteSpace=wrap;html=1;" vertex="1" parent="hardwareGroup">
+          <mxGeometry x="250" y="70" width="100" height="100" as="geometry"/>
+        </mxCell>
+        <!-- Wi-Fi Communication -->
+        <mxCell id="wifi" value="Wi-Fi (HTTP/WebSocket)" style="shape=image;image=https://img.icons8.com/color/96/000000/wifi.png;verticalLabelPosition=bottom;verticalAlign=top;labelBackgroundColor=white;fontSize=12;whiteSpace=wrap;html=1;" vertex="1" parent="hardwareGroup">
+          <mxGeometry x="250" y="190" width="100" height="100" as="geometry"/>
+        </mxCell>
+        <!-- Edges -->
+        <mxCell id="edge1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;html=1;" edge="1" parent="1" source="sensor" target="controller">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;html=1;" edge="1" parent="1" source="controller" target="wifi">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;html=1;" edge="1" parent="1" source="wifi" target="backend">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;html=1;" edge="1" parent="1" source="backend" target="database">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="edge5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;html=1;" edge="1" parent="1" source="backend" target="frontend">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

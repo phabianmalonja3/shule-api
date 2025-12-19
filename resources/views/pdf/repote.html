@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Example</title>
+    <style>
+        /* Add print-specific styles */
+        @media print {
+            body * {
+                visibility: hidden; /* Hide everything outside the print area */
+            }
+            .print-section, .print-section * {
+                visibility: visible; /* Show only the print section */
+            }
+            .print-section {
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Main Page Content</h1>
+        <p>This content will not appear in the print.</p>
+        <button onclick="printSection()">Print Report</button>
+    </div>
+
+    <div class="print-section" id="printArea">
+        <h2>Printable Section</h2>
+        <p>This content will appear in the print.</p>
+    </div>
+
+    <script>
+        function printSection() {
+            const printContent = document.getElementById('printArea').innerHTML;
+            const originalContent = document.body.innerHTML;
+
+            // Replace the body content with the printable section
+            document.body.innerHTML = printContent;
+
+            // Trigger the print dialog
+            window.print();
+
+            // Restore the original content
+            document.body.innerHTML = originalContent;
+        }
+    </script>
+</body>
+</html>

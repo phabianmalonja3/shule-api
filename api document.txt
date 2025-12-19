@@ -1,0 +1,351 @@
+
+API Version: 1.0
+Base URL: 51.222.207.88:8005/api/v1/
+
+
+#Authentication
+
+Login
+Endpoint: POST /login
+Request Body:{
+    "email": "user@example.com",
+    "password": "your_password"
+}
+
+Response:
+200 OK: Returns access token.
+401 Unauthorized: Invalid credentials.
+
+
+Logout
+Endpoint: POST /logout
+
+Authorization: Bearer {your_access_token}
+
+Response:
+200 OK: Successfully logged out.
+401 Unauthorized: Invalid token.
+
+
+#School Applications
+
+Create Application
+Endpoint: POST /applications
+Request Body:
+json
+{
+    "school_name": "ABC High School",
+    "email": "applicant@example.com",
+    "phone": "1234567890",
+    "address": "123 School Lane",
+    "postal_code": "12345",
+    "city": "Cityville",
+    "fullname": "John Doe",
+    "school_type": ["primary", "secondary"]
+}
+
+Response:
+201 Created: Returns created application.
+400 Bad Request: Validation error.
+
+Get Applications
+Endpoint: GET /applications
+Response:
+200 OK: Returns a list of applications.
+
+Get Single Application
+Endpoint: GET /applications/{id}
+Response:
+200 OK: Returns application details.
+404 Not Found: Application not found.
+
+
+Delete Application
+Endpoint: DELETE /applications/{id}
+Response:
+204 No Content: Successfully deleted.
+404 Not Found: Application not found.
+
+Verify Application
+Endpoint: POST /applications/{id}/verify
+
+Authorization: Bearer {your_access_token}
+Response:
+200 OK: Application verified.
+404 Not Found: Application not found.
+
+
+#Teachers
+Create Teacher
+Endpoint: POST /teachers
+Request Body:
+{
+  "fullname": "John Doe",
+  "email": "johndoe@example.com",
+  "phone": "1234567890",
+  "role": "teacher", angalia kwenye database role zipo kule ukituma tofauta na nilivyoandika haipokei
+  "school_id": 1
+}
+
+Response:
+201 Created: Returns created teacher.
+400 Bad Request: Validation error.
+
+Get Teachers
+Endpoint: GET /teachers
+
+Response:
+200 OK: Returns a list of teachers.
+
+Get Single Teacher
+Endpoint: GET /teachers/{id}
+
+Response:
+200 OK: Returns teacher details.
+404 Not Found: Teacher not found.
+
+Update Teacher
+Endpoint: PUT /teachers/{id}
+Request Body:
+json
+
+{
+  "fullname": "John Smith",
+  "email": "johnsmith@example.com",
+  "phone": "0987654321",
+  "role": "teacher", // Optional, if you want to change the role
+  "school_id": 1 // Optional, if you want to change the school
+}
+Response:
+200 OK: Returns updated teacher.
+404 Not Found: Teacher not found.
+
+Delete Teacher
+Endpoint: DELETE /teachers/{id}
+Response:
+204 No Content: Successfully deleted.
+404 Not Found: Teacher not found.
+
+
+Get Schools #remeber school is created automatically after approve the verification
+Endpoint: GET /schools
+Response:
+200 OK: Returns a list of schools.
+
+Get Single School
+Endpoint: GET /schools/{id}
+Response:
+200 OK: Returns school details.
+404 Not Found: School not found.
+
+Update School
+Endpoint: PUT /schools/{id}
+Request Body:
+{
+    "name": "Updated School Name",
+    "address": "456 Another St, Othertown, USA",
+    "postal_code": "67890",
+    "phone_number": "+1-555-555-5556"
+    // Optionally include 'logo' if you want to update the logo
+}
+
+Response:
+200 OK: Returns updated school.
+404 Not Found: School not found.
+
+Delete School
+Endpoint: DELETE /schools/{id}
+Response:
+204 No Content: Successfully deleted.
+404 Not Found: School not found.
+
+
+#Classes
+List All Classes
+GET /api/v1/classes
+
+2. Create a New Class
+POST /api/v1/classes
+Request Payload
+{
+    "name": "New Class",
+    "school_id": 1 #option it takes from school assigned
+}
+
+Endpoint: PUT /classes/{id}
+
+Request Payload
+{
+    "name": "Updated Class Name",
+    "school_id": 1 // Optional, if you want to change the school
+}
+Endpoint: DELETE /classes/{id}
+
+
+#Streams
+1.List Streams for a Class
+Endpoint: GET /streams?school_class_id={id}
+
+
+2. Create a New Stream
+Endpoint: POST /streams
+
+Request Payload
+{
+    "name": "New Stream",
+    "school_class_id": 1
+}
+
+3. Show a Single Stream
+Endpoint: GET /streams/{id}
+Response Payload
+Success (200 OK)
+{
+    "id": 1,
+    "name": "Math Stream",
+    "school_class_id": 1,
+    "created_at": "2024-10-23T10:00:00Z",
+    "updated_at": "2024-10-23T10:00:00Z"
+}
+
+4. Update a Stream
+Endpoint: PUT /streams/{id}
+Request Payload
+{
+    "name": "Updated Stream Name"
+}
+Response Payload
+Success (200 OK)
+
+{
+    "id": 1,
+    "name": "Updated Stream Name",
+    "school_class_id": 1,
+    "created_at": "2024-10-23T10:00:00Z",
+    "updated_at": "2024-10-23T10:00:00Z"
+}
+
+5. Delete a Stream
+Endpoint: DELETE /streams/{id}
+Success (204 No Content)
+{
+    "success": true,
+    "message": "Stream deleted successfully."
+}
+
+
+
+#Annoucement
+List Announcements
+
+Endpoint: GET /api/announcements
+Description: Retrieve all announcements for the authenticated user's school.
+Response:
+200 OK: Returns a collection of announcements.
+
+[
+    {
+        "id": 1,
+        "title": "New School Year Announcement",
+        "content": "We are excited to announce the start of the new school year on September 1st.",
+        "school_id": 1,
+        "is_active": true,
+        "created_at": "2024-10-01T12:00:00.000000Z",
+        "updated_at": "2024-10-01T12:00:00.000000Z"
+    },
+    ...
+]
+Create Announcement
+
+Endpoint: POST /api/announcements
+Description: Create a new announcement for the authenticated user's school.
+Payload:
+{
+    "title": "New Event Coming Up",
+    "content": "Don't miss our upcoming event on October 15th!",
+    "is_active": true
+}
+Response:
+201 Created: Returns the created announcement.
+
+{
+    "id": 1,
+    "title": "New Event Coming Up",
+    "content": "Don't miss our upcoming event on October 15th!",
+    "school_id": 1,
+    "is_active": true,
+    "created_at": "2024-10-10T12:00:00.000000Z",
+    "updated_at": "2024-10-10T12:00:00.000000Z"
+}
+Show Announcement
+Endpoint: GET /api/announcements/{id}
+Description: Retrieve a specific announcement by ID for the authenticated user's school.
+Response:
+200 OK: Returns the announcement if found.
+404 Not Found: Announcement not found or does not belong to the user's school.
+Example (Success):
+{
+    "id": 1,
+    "title": "New School Year Announcement",
+    "content": "We are excited to announce the start of the new school year on September 1st.",
+    "school_id": 1,
+    "is_active": true,
+    "created_at": "2024-10-01T12:00:00.000000Z",
+    "updated_at": "2024-10-01T12:00:00.000000Z"
+}
+Example (Not Found):
+{
+    "message": "Announcement not found or does not belong to your school."
+}
+Update Announcement
+
+Endpoint: PUT /api/announcements/{id}
+Description: Update an existing announcement.
+Payload:
+{
+    "title": "Updated Event Announcement",
+    "content": "The event has been rescheduled to October 20th.",
+    "is_active": false // Optional
+}
+Response:
+200 OK: Returns the updated announcement.
+404 Not Found: Announcement not found or does not belong to the user's school.
+Example (Success):
+{
+    "id": 1,
+    "title": "Updated Event Announcement",
+    "content": "The event has been rescheduled to October 20th.",
+    "school_id": 1,
+    "is_active": false,
+    "created_at": "2024-10-10T12:00:00.000000Z",
+    "updated_at": "2024-10-15T12:00:00.000000Z"
+}
+
+
+Activate/Deactivate Announcement
+Endpoint: PATCH /api/announcements/{id}/activate
+Description: Activate or deactivate an announcement.
+Payload:
+{
+    "is_active": true // or false to deactivate
+}
+Response:
+200 OK: Returns the updated announcement.
+404 Not Found: Announcement not found or does not belong to the user's school.
+Example (Success):
+
+{
+    "id": 1,
+    "title": "Event Announcement",
+    "content": "The event will proceed as scheduled.",
+    "school_id": 1,
+    "is_active": true,
+    "created_at": "2024-10-10T12:00:00.000000Z",
+    "updated_at": "2024-10-15T12:00:00.000000Z"
+}
+Delete Announcement
+Endpoint: DELETE /api/announcements/{id}
+Description: Delete a specific announcement.
+Response:
+204 No Content: Successfully deleted.
+404 Not Found: Announcement not found or does not belong to the user's school.

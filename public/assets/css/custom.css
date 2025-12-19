@@ -1,0 +1,405 @@
+@keyframes bounceIn {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.animate-bounce {
+    animation: bounceIn 0.8s ease-out;
+}
+
+
+.background-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    z-index: -1; /* Make sure it stays behind all content */
+}
+
+.container {
+    max-width: 1200px;
+    background: transparent;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0);
+}
+
+.subject-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* Default 6 columns */
+    gap: 10px; /* Spacing between cards */
+}
+
+.subject-card {
+    position: relative;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    perspective: 1000px; /* Enable 3D effect */
+    overflow: hidden; /* Hide the parts that go outside during the flip */
+}
+
+.subject-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.subject-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+}
+
+.subject-card:hover .subject-card-inner {
+    transform: rotateY(180deg);
+}
+
+.subject-card-front,
+.subject-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+}
+
+.subject-card-front {
+    background-color: inherit; /* Inherit background from parent */
+}
+
+.subject-card-back {
+    transform: rotateY(180deg);
+    background-color: rgba(0, 0, 0, 0.7); /* Darker background for the back side */
+}
+
+.large-card {
+    grid-column: span 2; /* Span 2 columns */
+    grid-row: span 2; /* Span 2 rows */
+    height: 300px; /* Larger height for the first card */
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .subject-grid {
+        grid-template-columns: repeat(4, 1fr); /* 4 columns for medium screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .subject-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns for small screens */
+    }
+    .large-card {
+        grid-column: span 2; /* Keep it spanning across columns */
+        grid-row: span 1; /* Reduce height span */
+        height: 200px; /* Smaller height for mobile */
+    }
+}
+
+@media (max-width: 576px) {
+    .subject-grid {
+        grid-template-columns: 1fr; /* Single column for very small screens */
+    }
+    .subject-card {
+        height: 200px; /* Adjust height for smaller screens */
+    }
+    .large-card {
+        height: 250px; /* Adjust the height for the larger card */
+    }
+}
+
+/* Custom Toastify styling */
+.custom-toast {
+font-family: 'Arial', sans-serif;  /* Custom font for clarity */
+font-size: 16px;  /* Font size for better readability */
+padding: 10px 20px;  /* Padding to ensure space for the text and icon */
+display: flex;  /* Align icon and text */
+align-items: center;  /* Vertically center the icon with text */
+border-radius: 5px;  /* Rounded corners for the toast */
+}
+
+.custom-toast i {
+margin-right: 8px;  /* Space between the icon and the text */
+}
+
+.custom-toast .toast-body {
+display: flex;
+align-items: center;
+justify-content: flex-start;  /* Make sure the text stays to the left of the icon */
+}
+#teachersTable {
+table-layout: fixed; /* Prevent column width changes */
+width: 100%; /* Ensure full table width */
+}
+
+#teachersTable th,
+#teachersTable td {
+text-align: left; /* Align text for better readability */
+vertical-align: middle; /* Ensure vertical alignment */
+white-space: nowrap; /* Prevent wrapping of text */
+overflow: hidden; /* Hide overflow content */
+text-overflow: ellipsis; /* Add ellipsis for overflowing content */
+}
+
+td[contenteditable="true"] {
+padding: 8px;
+outline: none; /* Remove focus outline */
+cursor: text; /* Indicate editable fields */
+white-space: nowrap; /* Prevent line breaks */
+}
+
+td[contenteditable="true"]:hover,
+td[contenteditable="true"]:focus {
+background-color: #f0f0f0; /* Light gray highlight on focus */
+border: 1px solid #ddd; /* Add a border on focus */
+outline: none;
+}
+
+
+  /* Preloader container */
+  #preloader {
+    position: fixed;
+    inset: 0;
+    color:rgb(28, 76, 91);
+    z-index: 9999;
+    overflow: hidden;
+    background-color: #ffffff;
+    transition: all 0.6s ease-out;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* .lds-ellipsis style for preloader animation */
+  .lds-ellipsis,
+  .lds-ellipsis div {
+    box-sizing: border-box;
+  }
+  
+  .lds-ellipsis {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+
+  .lds-ellipsis div {
+    position: absolute;
+    top: 33.33333px;
+    width: 13.33333px;
+    height: 13.33333px;
+    border-radius: 50%;
+    background: currentColor;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+  }
+
+  .lds-ellipsis div:nth-child(1) {
+    left: 8px;
+    animation: lds-ellipsis1 0.6s infinite;
+  }
+  .lds-ellipsis div:nth-child(2) {
+    left: 8px;
+    animation: lds-ellipsis2 0.6s infinite;
+  }
+  .lds-ellipsis div:nth-child(3) {
+    left: 32px;
+    animation: lds-ellipsis2 0.6s infinite;
+  }
+  .lds-ellipsis div:nth-child(4) {
+    left: 56px;
+    animation: lds-ellipsis3 0.6s infinite;
+  }
+
+  /* Keyframe animations for lds-ellipsis */
+  @keyframes lds-ellipsis1 {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes lds-ellipsis3 {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0);
+    }
+  }
+
+  @keyframes lds-ellipsis2 {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(24px, 0);
+    }
+  }
+
+
+
+
+  .lds,
+  .lds div {
+    color:rgb(28, 76, 91);
+   
+    box-sizing: border-box;
+  }
+  .lds {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+  .lds div {
+    position: absolute;
+    top: 33.33333px;
+    width: 6.33333px;
+    height: 6.33333px;
+    border-radius: 50%;
+    background: currentColor;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+  }
+  .lds div:nth-child(1) {
+    left: 8px;
+    animation: lds1 0.6s infinite;
+  }
+  .lds div:nth-child(2) {
+    left: 8px;
+    animation: lds2 0.6s infinite;
+  }
+  .lds div:nth-child(3) {
+    left: 32px;
+    animation: lds2 0.6s infinite;
+  }
+  .lds div:nth-child(4) {
+    left: 56px;
+    animation: lds3 0.6s infinite;
+  }
+  @keyframes lds1 {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes lds3 {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0);
+    }
+  }
+  @keyframes lds2 {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(24px, 0);
+    }
+  }
+  
+  
+  
+  .rotate {
+    animation: rotation 2s infinite linear; 
+  }
+  
+  @keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+
+
+    .img-hover:hover {
+transform: scale(1.1);
+transition: transform 0.2s ease-in-out;
+}
+
+.status-container {
+display: flex;
+gap: 1rem;
+overflow-x: auto;
+padding: 1rem;
+scrollbar-width: thin; /* For Firefox */
+}
+
+.status-item {
+display: flex;
+flex-direction: column;
+align-items: center;
+text-align: center;
+flex-shrink: 0;
+width: 100px;
+}
+
+.status-circle {
+width: 80px;
+height: 80px;
+background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+margin-bottom: 0.5rem;
+border: 3px solid white;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.status-item h5 {
+font-size: 0.9rem;
+margin: 0.5rem 0 0;
+}
+
+.status-item span {
+font-weight: bold;
+color: #555;
+}
+
+.status-container::-webkit-scrollbar {
+height: 5px;
+}
+
+.status-container::-webkit-scrollbar-thumb {
+background-color: #ccc;
+border-radius: 10px;
+}
+
+.status-container::-webkit-scrollbar-track {
+background: #f0f0f0;
+}
+

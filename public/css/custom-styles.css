@@ -1,0 +1,80 @@
+/* Basic Modal/Popup Styling */
+.modal {
+    display: none; /* Hidden by default */
+    justify-content: center; 
+    align-items: center;    
+    position: fixed; /* Stay in place */
+    z-index: 1050; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto; /* 10% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be adjusted */
+    max-width: 600px;
+    max-height: 90vh;
+    margin: 5% auto;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);    
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Form Layouts */
+.header-controls {
+    display: flex;
+    gap: 15px;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.header-controls > div:first-child { 
+    flex-grow: 1; 
+}
+.select-all-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+}
+
+.student-list-container {
+    max-height: 570px; /* Make the student list scrollable */
+    overflow-y: auto;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.student-item {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.student-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
