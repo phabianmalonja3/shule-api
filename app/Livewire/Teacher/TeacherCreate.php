@@ -224,13 +224,15 @@ class TeacherCreate extends Component
             DB::beginTransaction();
 
             $generatedPassword = Str::random(8);
-            
+             if (substr($this->phone, 0, 1) === '0') {
+         $phoneNumber = '255'.substr($this->phone, 1);
+         }
             $teacher = User::create([
                 'name' =>$this->first_name .' '.($this->middle_name ?? ''). ' '.$this->sur_name,
                 'email' => $this->email ? $this->email : null ,
                 'gender' => $this->gender,
-                'phone' => $this->phone,
-                'username' => $this->phone,
+                'phone' => $phoneNumber,
+                'username' => $phoneNumber,
                 'password' => $generatedPassword, // Use bcrypt to hash the password
                 'school_id' => auth()->user()->school->id,
                 'is_verified' => true,
@@ -249,7 +251,7 @@ class TeacherCreate extends Component
 $response = Http::withToken("344|nx7sRauZyFtayPGobAfqb0SFKUZAoJ0Z9QsXYOz722d58636 ") // API Key from .env
     ->acceptJson()
     ->post('https://sms.webline.co.tz/api/v3/sms/send', [
-        'recipient' => $teacher->phone,
+        'recipient' => $phoneNumber,
         'sender_id' => "TAARIFA", // e.g., TAARIFA
         'type'       => 'plain',
         'message'    => $smsMessage,
