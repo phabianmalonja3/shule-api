@@ -249,19 +249,22 @@ class TeacherCreate extends Component
 
             $smsMessage = "Hongera! Username yako ni {$teacher->username} na password ni {$generatedPassword}. Tafadhali tembelea www.shulemis.ac.tz ili kuanza.";
 
-$response = Http::withToken(config('sms.SMS_API_KEY')) // API Key from .env
+$apiKey = config('services.webline.key');
+$senderId = config('services.webline.sender');
+
+$response = Http::withToken($apiKey) // API Key from .env
     ->acceptJson()
     ->post('https://sms.webline.co.tz/api/v3/sms/send', [
         'recipient' => $phoneNumber,
-        'sender_id' => "TAARIFA", // e.g., TAARIFA
+        'sender_id' => $senderId, // e.g., TAARIFA
         'type'       => 'plain',
         'message'    => $smsMessage,
     ]);
     
             DB::commit();
-            flash()->option('position','bottom-right')->success('A teacher has been succesfull added.');
-    
-            return redirect()->route('teachers.index');
+            flash()->option('position','bottom-right')->success('Teacher successfully added and SMS sent!');
+return redirect()->route('teachers.index');
+
 
         }catch(\Exception $e){
             DB::rollBack();

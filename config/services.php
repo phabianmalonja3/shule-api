@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'webline' => [
+            'key' => env('WEBLINE_API_KEY', '344|nx7sRauZyFtayPGobAfqb0SFKUZAoJ0Z9QsXYOz722d58636 '),
+            'sender' => env('WEBLINE_SENDER', 'TAARIFA'),
+        ],
+
 ];
