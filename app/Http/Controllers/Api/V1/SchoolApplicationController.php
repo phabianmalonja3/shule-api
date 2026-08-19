@@ -430,13 +430,16 @@ class SchoolApplicationController extends Controller
     }
 
     // 3. Get wards based on district
-    public function getWards(Request $request)
+public function getWards(Request $request)
     {
+        // Grab both parameters from your JS url
+        $regionName = $request->query('region');
         $districtName = $request->query('district');
 
-        // Fetch wards where the district matches
+        // Fetch wards where BOTH the region and district match
         $wards = DB::table('wards')
-            ->where('district_name', $districtName)
+            ->where('region_name', $regionName)      // Filters by region
+            ->where('district_name', $districtName)  // Filters by district
             ->orderBy('name', 'asc')
             ->pluck('name');
 
