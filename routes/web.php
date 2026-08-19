@@ -236,6 +236,6 @@ Route::get('/bright-future-schools', [SchoolCustomController::class, 'bfIndex'])
 Route::get('/bright-future-schools/application', [SchoolCustomController::class, 'getApplicationForm']);
 Route::post('/bright-future-schools/application', [SchoolCustomController::class, 'getApplicationForm']);
 
-Route::get('/regions', [SchoolApplicationController::class, 'getRegions'])->name('regions');
-Route::get('/get-districts', [SchoolApplicationController::class, 'getDistricts']);
-Route::get('/get-wards', [SchoolApplicationController::class, 'getWards']);
+// Route::get('/regions', [SchoolApplicationController::class, 'getRegions'])->name('regions');
+// Route::get('/get-districts', [SchoolApplicationController::class, 'getDistricts']);
+// Route::get('/get-wards', [SchoolApplicationController::class, 'getWards']);
