@@ -402,7 +402,7 @@ class SchoolApplicationController extends Controller
 
     // 1. Fetch all regions
     public function getRegions()
-    {
+    {   return "HH";
         // Adjust column name ('name') if your database column differs
         $regions = Region::orderBy('name')->pluck('name'); 
 
