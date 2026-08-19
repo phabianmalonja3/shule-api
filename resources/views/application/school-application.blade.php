@@ -477,7 +477,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     data.regions.forEach(region => {
                         const option = document.createElement('option');
                         option.value = region.name;                 
-                        option.setAttribute('data-id', region.id);   // Hidden ID for our JS to use
+                        option.setAttribute('data-id', region.id);   
                         option.textContent = region.name;
                         regionSelect.appendChild(option);
                     });
@@ -486,78 +486,72 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error fetching regions:', error));
     }
 
-function fetchDistricts(regionSelectId, districtSelectId, wardSelectId) {
-    const regionSelect = document.getElementById(regionSelectId);
-    const districtSelect = document.getElementById(districtSelectId);
-    const wardSelect = document.getElementById(wardSelectId);
-    if (!regionSelect || !districtSelect || !wardSelect) return;
+    function fetchDistricts(regionSelectId, districtSelectId, wardSelectId) {
+        const regionSelect = document.getElementById(regionSelectId);
+        const districtSelect = document.getElementById(districtSelectId);
+        const wardSelect = document.getElementById(wardSelectId);
+        if (!regionSelect || !districtSelect || !wardSelect) return;
 
-    // 1. Find the currently selected option
-    const selectedOption = regionSelect.options[regionSelect.selectedIndex];
-    
-    // 2. Extract the hidden ID
-    const regionId = selectedOption.getAttribute('data-id');
+        const selectedOption = regionSelect.options[regionSelect.selectedIndex];
+        
+        const regionId = selectedOption.getAttribute('data-id');
 
-    if (!regionId) {
-        districtSelect.innerHTML = '<option value="">Select a District</option>';
-        wardSelect.innerHTML = '<option value="">Select a Ward</option>';
-        return;
-    }
-
-    // Send region_id to your Laravel backend
-    const url = `/get-districts?region_id=${regionId}`;
-    fetch(url, { headers: { 'X-CSRF-TOKEN': csrfToken } })
-        .then(response => response.json())
-        .then(data => {
+        if (!regionId) {
             districtSelect.innerHTML = '<option value="">Select a District</option>';
-            if (data.districts && Array.isArray(data.districts)) {
-                data.districts.forEach(district => {
-                    const option = document.createElement('option');
-                    option.value = district.name;                // Form submits Name
-                    option.setAttribute('data-id', district.id); // Hidden ID
-                    option.textContent = district.name;
-                    districtSelect.appendChild(option);
-                });
-            }
             wardSelect.innerHTML = '<option value="">Select a Ward</option>';
-        })
-        .catch(error => console.error('Error fetching districts:', error));
-}
+            return;
+        }
 
-function fetchWards(districtSelectId, wardSelectId) {
-    const districtSelect = document.getElementById(districtSelectId);
-    const wardSelect = document.getElementById(wardSelectId);
-    if (!districtSelect || !wardSelect) return;
-
-    // 1. Find the currently selected district option
-    const selectedOption = districtSelect.options[districtSelect.selectedIndex];
-    
-    // 2. Extract the hidden ID
-    const districtId = selectedOption.getAttribute('data-id');
-
-    if (!districtId) {
-        wardSelect.innerHTML = '<option value="">Select a Ward</option>';
-        return;
+        const url = `/get-districts?region_id=${regionId}`;
+        fetch(url, { headers: { 'X-CSRF-TOKEN': csrfToken } })
+            .then(response => response.json())
+            .then(data => {
+                districtSelect.innerHTML = '<option value="">Select a District</option>';
+                if (data.districts && Array.isArray(data.districts)) {
+                    data.districts.forEach(district => {
+                        const option = document.createElement('option');
+                        option.value = district.name;                
+                        option.setAttribute('data-id', district.id); 
+                        option.textContent = district.name;
+                        districtSelect.appendChild(option);
+                    });
+                }
+                wardSelect.innerHTML = '<option value="">Select a Ward</option>';
+            })
+            .catch(error => console.error('Error fetching districts:', error));
     }
 
-    // Send district_id to your Laravel backend
-    const url = `/get-wards?district_id=${districtId}`;
-    fetch(url, { headers: { 'X-CSRF-TOKEN': csrfToken } })
-        .then(response => response.json())
-        .then(data => {
+    function fetchWards(districtSelectId, wardSelectId) {
+        const districtSelect = document.getElementById(districtSelectId);
+        const wardSelect = document.getElementById(wardSelectId);
+        if (!districtSelect || !wardSelect) return;
+
+        const selectedOption = districtSelect.options[districtSelect.selectedIndex];
+        
+        const districtId = selectedOption.getAttribute('data-id');
+
+        if (!districtId) {
             wardSelect.innerHTML = '<option value="">Select a Ward</option>';
-            if (data.wards && Array.isArray(data.wards)) {
-                data.wards.forEach(ward => {
-                    const option = document.createElement('option');
-                    option.value = ward.name;                 // Form submits Name
-                    option.setAttribute('data-id', ward.id);  // Hidden ID
-                    option.textContent = ward.name;
-                    wardSelect.appendChild(option);
-                });
-            }
-        })
-        .catch(error => console.error('Error fetching wards:', error));
-}
+            return;
+        }
+
+        const url = `/get-wards?district_id=${districtId}`;
+        fetch(url, { headers: { 'X-CSRF-TOKEN': csrfToken } })
+            .then(response => response.json())
+            .then(data => {
+                wardSelect.innerHTML = '<option value="">Select a Ward</option>';
+                if (data.wards && Array.isArray(data.wards)) {
+                    data.wards.forEach(ward => {
+                        const option = document.createElement('option');
+                        option.value = ward.name;                 
+                        option.setAttribute('data-id', ward.id);  
+                        option.textContent = ward.name;
+                        wardSelect.appendChild(option);
+                    });
+                }
+            })
+            .catch(error => console.error('Error fetching wards:', error));
+    }
 });
 </script>
 

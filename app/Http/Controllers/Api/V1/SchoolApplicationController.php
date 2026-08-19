@@ -260,7 +260,7 @@ class SchoolApplicationController extends Controller
                 'is_verified' => true,
                 'status' => 'complete',
             ]);
-
+return $application->phone;
             $school = School::create([
                 'name' => $application->school_name,
                 'ward' => $application->ward,
