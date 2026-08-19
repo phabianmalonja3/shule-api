@@ -398,39 +398,35 @@ class SchoolApplicationController extends Controller
         }
     }
 
+    public function getRegions()
+    {
+        $regions = DB::table('regions')->select('id', 'name')->orderBy('name', 'asc')->get();
+        return response()->json(['regions' => $regions]);
+    }
 
+    public function getDistricts(Request $request)
+    {
+        $regionId = $request->query('region_id');
 
-public function getRegions()
-{
-    $regions = DB::table('regions')->select('id', 'name')->orderBy('name', 'asc')->get();
-    return response()->json(['regions' => $regions]);
-}
+        $districts = DB::table('districts')
+            ->select('id', 'name')
+            ->where('region_id', $regionId)
+            ->orderBy('name', 'asc')
+            ->get();
 
-public function getDistricts(Request $request)
-{
-    // Now we expect the ID from the Javascript
-    $regionId = $request->query('region_id');
+        return response()->json(['districts' => $districts]);
+    }
 
-    $districts = DB::table('districts')
-        ->select('id', 'name')
-        ->where('region_id', $regionId)
-        ->orderBy('name', 'asc')
-        ->get();
+    public function getWards(Request $request)
+    {
+        $districtId = $request->query('district_id');
 
-    return response()->json(['districts' => $districts]);
-}
+        $wards = DB::table('wards')
+            ->select('id', 'name')
+            ->where('district_id', $districtId)
+            ->orderBy('name', 'asc')
+            ->get();
 
-public function getWards(Request $request)
-{
-    // You actually only need the district_id now, since wards belong to a district
-    $districtId = $request->query('district_id');
-
-    $wards = DB::table('wards')
-        ->select('id', 'name')
-        ->where('district_id', $districtId)
-        ->orderBy('name', 'asc')
-        ->get();
-
-    return response()->json(['wards' => $wards]);
-}
+        return response()->json(['wards' => $wards]);
+    }
 }
