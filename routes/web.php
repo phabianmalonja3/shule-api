@@ -235,3 +235,7 @@ Route::get('/paypal/payment-cancel', [PayPalController::class, 'paymentCancel'])
 Route::get('/bright-future-schools', [SchoolCustomController::class, 'bfIndex']);
 Route::get('/bright-future-schools/application', [SchoolCustomController::class, 'getApplicationForm']);
 Route::post('/bright-future-schools/application', [SchoolCustomController::class, 'getApplicationForm']);
+
+Route::get('/regions', [SchoolRegistrationController::class, 'getRegions'])->name('regions');
+Route::get('/get-districts', [SchoolRegistrationController::class, 'getDistricts']);
+Route::get('/get-wards', [SchoolRegistrationController::class, 'getWards']);

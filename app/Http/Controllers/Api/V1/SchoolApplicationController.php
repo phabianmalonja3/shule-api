@@ -186,7 +186,6 @@ class SchoolApplicationController extends Controller
       return view("pending-approval");
     }
 
-
     private function buildFullName($data)
     {
         return $data['first_name'] . ' ' . ($data['middle_name'] ?? '') . ' ' . $data['surname'];
@@ -398,7 +397,6 @@ class SchoolApplicationController extends Controller
             return back();
         }
     }
-
 
 
 
