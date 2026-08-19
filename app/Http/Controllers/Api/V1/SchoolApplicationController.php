@@ -400,52 +400,45 @@ class SchoolApplicationController extends Controller
 
 
 
-    // 1. Fetch all regions
+// 1. Get all regions
     public function getRegions()
-    {   
-        // Adjust column name ('name') if your database column differs
-        $regions = Region::orderBy('name')->pluck('name'); 
+    {
+        // Assuming your table is called 'regions' and the column is 'name'
+        $regions = DB::table('regions')
+            ->orderBy('name', 'asc')
+            ->pluck('name'); // pluck() gets just an array of the names
 
         return response()->json([
             'regions' => $regions
         ]);
     }
 
-    // 2. Fetch districts based on selected region name
+    // 2. Get districts based on region
     public function getDistricts(Request $request)
     {
         $regionName = $request->query('region');
 
-        $region = Region::where('name', $regionName)->first();
-
-        if (!$region) {
-            return response()->json(['districts' => []]);
-        }
-
-        $districts = $region->districts()->orderBy('name')->pluck('name');
+        // Fetch districts where the region matches
+        $districts = DB::table('districts')
+            ->where('region_name', $regionName)
+            ->orderBy('name', 'asc')
+            ->pluck('name');
 
         return response()->json([
             'districts' => $districts
         ]);
     }
 
-    // 3. Fetch wards based on selected region and district name
+    // 3. Get wards based on district
     public function getWards(Request $request)
     {
-        $regionName = $request->query('region');
         $districtName = $request->query('district');
 
-        $district = District::where('name', $districtName)
-            ->whereHas('region', function ($query) use ($regionName) {
-                $query->where('name', $regionName);
-            })
-            ->first();
-
-        if (!$district) {
-            return response()->json(['wards' => []]);
-        }
-
-        $wards = $district->wards()->orderBy('name')->pluck('name');
+        // Fetch wards where the district matches
+        $wards = DB::table('wards')
+            ->where('district_name', $districtName)
+            ->orderBy('name', 'asc')
+            ->pluck('name');
 
         return response()->json([
             'wards' => $wards
