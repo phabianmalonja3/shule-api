@@ -54,6 +54,7 @@ class SchoolApplicationController extends Controller
         flash()->option('position','bottom-right')->error('Unable to schedule this application.');
         return redirect()->back();
     }
+
     public function index(Request $request)
     {
         $applications = SchoolApplication::latest()->where('status', '!=', 'complete')->paginate(10);
@@ -95,15 +96,16 @@ class SchoolApplicationController extends Controller
             'schools.*.email' => ['nullable', 'email'],
         ];
 
-    $validationRules = $schoolsRules;
-    if ($registrationType === 'group') {
-        $validationRules = array_merge($validationRules, ['generic_name' => 'required|string']);
-    }
+        $validationRules = $schoolsRules;
+        if ($registrationType === 'group') {
+            $validationRules = array_merge($validationRules, ['generic_name' => 'required|string']);
+        }
 
-    $validatedData = $request->validate($validationRules, [
-        'schools.*.phone.regex' => 'The phone number must start with 0 and contain exactly 10 digits.',
-        'schools.*.phone.unique' => 'The phone number has already been used. Please make sure you are registering a new school or crosscheck the phone number.',
-    ]);
+        $validatedData = $request->validate($validationRules, [
+            'schools.*.phone.regex' => 'The phone number must start with 0 and contain exactly 10 digits.',
+            'schools.*.phone.unique' => 'The phone number has already been used. Please make sure you are registering a new school or crosscheck the phone number.',
+        ]);
+
         $schoolsData = $validatedData['schools'];
         
         $genericSchoolID = 1;
@@ -397,4 +399,58 @@ class SchoolApplicationController extends Controller
         }
     }
 
+
+
+
+    // 1. Fetch all regions
+    public function getRegions()
+    {
+        // Adjust column name ('name') if your database column differs
+        $regions = Region::orderBy('name')->pluck('name'); 
+
+        return response()->json([
+            'regions' => $regions
+        ]);
+    }
+
+    // 2. Fetch districts based on selected region name
+    public function getDistricts(Request $request)
+    {
+        $regionName = $request->query('region');
+
+        $region = Region::where('name', $regionName)->first();
+
+        if (!$region) {
+            return response()->json(['districts' => []]);
+        }
+
+        $districts = $region->districts()->orderBy('name')->pluck('name');
+
+        return response()->json([
+            'districts' => $districts
+        ]);
+    }
+
+    // 3. Fetch wards based on selected region and district name
+    public function getWards(Request $request)
+    {
+        $regionName = $request->query('region');
+        $districtName = $request->query('district');
+
+        $district = District::where('name', $districtName)
+            ->whereHas('region', function ($query) use ($regionName) {
+                $query->where('name', $regionName);
+            })
+            ->first();
+
+        if (!$district) {
+            return response()->json(['wards' => []]);
+        }
+
+        $wards = $district->wards()->orderBy('name')->pluck('name');
+
+        return response()->json([
+            'wards' => $wards
+        ]);
+    }
 }
