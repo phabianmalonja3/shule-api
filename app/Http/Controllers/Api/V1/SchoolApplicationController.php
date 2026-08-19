@@ -400,7 +400,10 @@ class SchoolApplicationController extends Controller
 
     public function getRegions()
     {
-        $regions = DB::table('regions')->select('id', 'name')->orderBy('name', 'asc')->get();
+        $regions = DB::table('regions')->select('id', 'name')->orderBy('name', 'asc')->get()->map(function ($region) {
+            $region->name = ucwords(strtolower($region->name)); 
+            return $region;
+        });
         return response()->json(['regions' => $regions]);
     }
 
@@ -412,7 +415,10 @@ class SchoolApplicationController extends Controller
             ->select('id', 'name')
             ->where('region_id', $regionId)
             ->orderBy('name', 'asc')
-            ->get();
+            ->get()->map(function ($district) {
+                $district->name = ucwords(strtolower($district->name)); 
+                return $district;
+        });
 
         return response()->json(['districts' => $districts]);
     }
@@ -425,7 +431,10 @@ class SchoolApplicationController extends Controller
             ->select('id', 'name')
             ->where('district_id', $districtId)
             ->orderBy('name', 'asc')
-            ->get();
+            ->get()->map(function ($ward) {
+                $ward->name = ucwords(strtolower($ward->name)); 
+                return $ward;
+        });;
 
         return response()->json(['wards' => $wards]);
     }
