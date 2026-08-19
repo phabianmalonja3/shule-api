@@ -400,51 +400,37 @@ class SchoolApplicationController extends Controller
 
 
 
-// 1. Get all regions
-    public function getRegions()
-    {
-        // Assuming your table is called 'regions' and the column is 'name'
-        $regions = DB::table('regions')
-            ->orderBy('name', 'asc')
-            ->pluck('name'); // pluck() gets just an array of the names
+public function getRegions()
+{
+    $regions = DB::table('regions')->select('id', 'name')->orderBy('name', 'asc')->get();
+    return response()->json(['regions' => $regions]);
+}
 
-        return response()->json([
-            'regions' => $regions
-        ]);
-    }
+public function getDistricts(Request $request)
+{
+    // Now we expect the ID from the Javascript
+    $regionId = $request->query('region_id');
 
-    // 2. Get districts based on region
-    public function getDistricts(Request $request)
-    {
-        $regionName = $request->query('region');
+    $districts = DB::table('districts')
+        ->select('id', 'name')
+        ->where('region_id', $regionId)
+        ->orderBy('name', 'asc')
+        ->get();
 
-        // Fetch districts where the region matches
-        $districts = DB::table('districts')
-            ->where('region_name', $regionName)
-            ->orderBy('name', 'asc')
-            ->pluck('name');
+    return response()->json(['districts' => $districts]);
+}
 
-        return response()->json([
-            'districts' => $districts
-        ]);
-    }
-
-    // 3. Get wards based on district
 public function getWards(Request $request)
-    {
-        // Grab both parameters from your JS url
-        $regionName = $request->query('region');
-        $districtName = $request->query('district');
+{
+    // You actually only need the district_id now, since wards belong to a district
+    $districtId = $request->query('district_id');
 
-        // Fetch wards where BOTH the region and district match
-        $wards = DB::table('wards')
-            ->where('region_name', $regionName)      // Filters by region
-            ->where('district_name', $districtName)  // Filters by district
-            ->orderBy('name', 'asc')
-            ->pluck('name');
+    $wards = DB::table('wards')
+        ->select('id', 'name')
+        ->where('district_id', $districtId)
+        ->orderBy('name', 'asc')
+        ->get();
 
-        return response()->json([
-            'wards' => $wards
-        ]);
-    }
+    return response()->json(['wards' => $wards]);
+}
 }

@@ -471,78 +471,79 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
                 return response.json();
             })
-            .then(data => {
-                regionSelect.innerHTML = '<option value="">Select a Region</option>';
-                if (data.regions && Array.isArray(data.regions)) {
-                    data.regions.forEach(region => {
-                        const option = document.createElement('option');
-                        option.value = region;
-                        option.textContent = region;
-                        regionSelect.appendChild(option);
-                    });
-                }
-            })
+.then(data => {
+    regionSelect.innerHTML = '<option value="">Select a Region</option>';
+    if (data.regions && Array.isArray(data.regions)) {
+        data.regions.forEach(region => {
+            const option = document.createElement('option');
+            option.value = region.id;       // <--- Set value to ID
+            option.textContent = region.name; // <--- Display the name
+            regionSelect.appendChild(option);
+        });
+    }
+})
             .catch(error => console.error('Error fetching regions:', error));
     }
 
-    function fetchDistricts(regionSelectId, districtSelectId, wardSelectId) {
-        const region = document.getElementById(regionSelectId).value;
-        const districtSelect = document.getElementById(districtSelectId);
-        const wardSelect = document.getElementById(wardSelectId);
-        if (!districtSelect || !wardSelect) return;
+function fetchDistricts(regionSelectId, districtSelectId, wardSelectId) {
+    const regionId = document.getElementById(regionSelectId).value; // <--- This is now the ID
+    const districtSelect = document.getElementById(districtSelectId);
+    const wardSelect = document.getElementById(wardSelectId);
+    if (!districtSelect || !wardSelect) return;
 
-        if (!region) {
-            districtSelect.innerHTML = '<option value="">Select a District</option>';
-            wardSelect.innerHTML = '<option value="">Select a Ward</option>';
-            return;
-        }
+    if (!regionId) {
+        districtSelect.innerHTML = '<option value="">Select a District</option>';
+        wardSelect.innerHTML = '<option value="">Select a Ward</option>';
+        return;
+    }
 
-        const url = `/get-districts?region=${encodeURIComponent(region)}`;
-        fetch(url, { headers: { 'X-CSRF-TOKEN': csrfToken } })
-            .then(response => response.json())
-            .then(data => {
-                districtSelect.innerHTML = '<option value="">Select a District</option>';
-                if (data.districts && Array.isArray(data.districts)) {
-                    data.districts.forEach(district => {
-                        const option = document.createElement('option');
-                        option.value = district;
-                        option.textContent = district;
-                        districtSelect.appendChild(option);
-                    });
-                }
-                wardSelect.innerHTML = '<option value="">Select a Ward</option>';
-            })
-            .catch(error => console.error('Error fetching districts:', error));
-    }
+    // Send region_id in the URL
+    const url = `/get-districts?region_id=${regionId}`;
+    fetch(url, { headers: { 'X-CSRF-TOKEN': csrfToken } })
+        .then(response => response.json())
+        .then(data => {
+            districtSelect.innerHTML = '<option value="">Select a District</option>';
+            if (data.districts && Array.isArray(data.districts)) {
+                data.districts.forEach(district => {
+                    const option = document.createElement('option');
+                    option.value = district.id;       // <--- Set value to ID
+                    option.textContent = district.name; // <--- Display the name
+                    districtSelect.appendChild(option);
+                });
+            }
+            wardSelect.innerHTML = '<option value="">Select a Ward</option>';
+        })
+        .catch(error => console.error('Error fetching districts:', error));
+}
 
-    function fetchWards(districtSelectId, wardSelectId) {
-        const index = districtSelectId.split('_')[1];
-        const region = document.getElementById(`region_${index}`).value; 
-        const district = document.getElementById(districtSelectId).value;
-        const wardSelect = document.getElementById(wardSelectId);
-        if (!wardSelect) return;
+function fetchWards(districtSelectId, wardSelectId) {
+    // We don't even need the region anymore, just the district ID!
+    const districtId = document.getElementById(districtSelectId).value;
+    const wardSelect = document.getElementById(wardSelectId);
+    if (!wardSelect) return;
 
-        if (!district) {
-            wardSelect.innerHTML = '<option value="">Select a Ward</option>';
-            return;
-        }
+    if (!districtId) {
+        wardSelect.innerHTML = '<option value="">Select a Ward</option>';
+        return;
+    }
 
-        const url = `/get-wards?region=${encodeURIComponent(region)}&district=${encodeURIComponent(district)}`;
-        fetch(url, { headers: { 'X-CSRF-TOKEN': csrfToken } })
-            .then(response => response.json())
-            .then(data => {
-                wardSelect.innerHTML = '<option value="">Select a Ward</option>';
-                if (data.wards && Array.isArray(data.wards)) {
-                    data.wards.forEach(ward => {
-                        const option = document.createElement('option');
-                        option.value = ward;
-                        option.textContent = ward;
-                        wardSelect.appendChild(option);
-                    });
-                }
-            })
-            .catch(error => console.error('Error fetching wards:', error));
-    }
+    // Send district_id in the URL
+    const url = `/get-wards?district_id=${districtId}`;
+    fetch(url, { headers: { 'X-CSRF-TOKEN': csrfToken } })
+        .then(response => response.json())
+        .then(data => {
+            wardSelect.innerHTML = '<option value="">Select a Ward</option>';
+            if (data.wards && Array.isArray(data.wards)) {
+                data.wards.forEach(ward => {
+                    const option = document.createElement('option');
+                    option.value = ward.id;       // <--- Set value to ID
+                    option.textContent = ward.name; // <--- Display the name
+                    wardSelect.appendChild(option);
+                });
+            }
+        })
+        .catch(error => console.error('Error fetching wards:', error));
+}
 });
 </script>
 
