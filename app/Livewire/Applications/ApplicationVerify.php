@@ -194,9 +194,9 @@ public function mount($application){
             
             $defaultPassword = '$2y$12$LABrQzvhXtKFDpsuxu5yC.ZPpaDEvSIrPMlxurINkMuVD63PGEXbW';
             $user = User::create([
-                'name' => $application->fullname,
-                'phone' => $application->phone,
-                'username' => $application->phone,
+                'name' => $this->application->fullname,
+                'phone' => $this->application->phone,
+                'username' => $this->application->phone,
                 'password' =>$defaultPassword,
                 'school_id' => $school->id,
                 'is_verified' => true,
