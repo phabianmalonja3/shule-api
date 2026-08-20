@@ -227,19 +227,19 @@ public function mount($application){
             //     }
             // }
 			
-            $apiKey = config('sms.api_key');
-            $senderId = config('sms.sender_id');
-            $message = "Hongera kwa kujiunga na ShuleMIS. Username yako ni {$user->username} na password ni {$randomPassword}. 
-                        Tafadhali tembelea www.shulemis.ac.tz ili uanze kufurahia huduma zetu.";
+            // $apiKey = config('sms.api_key');
+            // $senderId = config('sms.sender_id');
+            // $message = "Hongera kwa kujiunga na ShuleMIS. Username yako ni {$user->username} na password ni {$randomPassword}. 
+            //             Tafadhali tembelea www.shulemis.ac.tz ili uanze kufurahia huduma zetu.";
 
-            Http::withToken($apiKey)
-                ->acceptJson()
-                ->post('https://sms.webline.co.tz/api/v3/sms/send', [
-                    'recipient' => $phoneNumber, // e.g. 255766031128
-                    'sender_id' => $senderId,     // e.g. TAARIFA
-                    'type'       => 'plain',
-                    'message'    => $message,
-                ]);
+            // Http::withToken($apiKey)
+            //     ->acceptJson()
+            //     ->post('https://sms.webline.co.tz/api/v3/sms/send', [
+            //         'recipient' => $phoneNumber, // e.g. 255766031128
+            //         'sender_id' => $senderId,     // e.g. TAARIFA
+            //         'type'       => 'plain',
+            //         'message'    => $message,
+            //     ]);
 
             flash()->option('position', 'bottom-right')->success('The application has been successfully verified.');
             return redirect()->route('school.list');
