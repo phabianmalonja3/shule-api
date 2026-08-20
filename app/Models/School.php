@@ -69,21 +69,23 @@ class School extends Model
 		return $this->hasMany(SchoolClass::class);
 	}
 
-	public function subjects()
-	{
-		$schoolId = $this->id;
-		$levels = $this->school_type ?? []; 
+    public function subjects()
+    {
+        $schoolId = $this->id;
+        $levels = $this->school_type ?? [];
 
-		return Subject::where('school_id', $schoolId)
-					  ->orWhere(function ($query) use ($levels) {
-						$query->whereNull('school_id')
-							->where(function ($q) use ($levels) {
-								foreach ($levels as $level) {
-									$q->orWhereJsonContains('school_level', $level);
-								}
-							});
-					});
-	}
+        return Subject::where('school_id', $schoolId)
+            ->when(!empty($levels), function ($query) use ($levels) {
+                $query->orWhere(function ($q) use ($levels) {
+                    $q->whereNull('school_id')
+                    ->where(function ($subQuery) use ($levels) {
+                        foreach ($levels as $level) {
+                            $subQuery->orWhereJsonContains('school_level', $level);
+                        }
+                    });
+                });
+            });
+    }
 
 	public function annoucements()
 	{
