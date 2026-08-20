@@ -62,29 +62,58 @@ public function mount($application){
     public function verifyApplication()
     {
         $this->validate();
-        try {
-    
-            // Start the transaction
-            
-            if ($this->logo) {
-                $data['logo'] = $this->logo->store('logos', 'public');
-            }
-            
-            $existingSchool = School::where('name', $this->application->school_name)
+
+        $existingSchool = School::where('name', $this->application->school_name)
             ->where('region', $this->application->region)
             ->where('district', $this->application->district)
             ->where('ward', $this->application->ward)
             ->first();
+
+        if ($existingSchool) {
+            flash()->option('position', 'bottom-right')->error('A school with the same name already exists in this location.');
+            return back();
+        }
+
+        $schoolTypes = is_string($application->school_type) 
+            ? json_decode($application->school_type, true) 
+            : $application->school_type;
+
+        if (!is_array($schoolTypes)) {
+            return back()->withErrors(['school_type' => 'Invalid school type data provided.']);
+        }
+
+        try {
+    
+            // Start the transaction
             
-            if ($existingSchool) {
-                flash()->option('position', 'bottom-right')->error('A school with the same name already exists in the same region, ward, and district.');
-                return back();
-            }
+
+            
+            // $existingSchool = School::where('name', $this->application->school_name)
+            // ->where('region', $this->application->region)
+            // ->where('district', $this->application->district)
+            // ->where('ward', $this->application->ward)
+            // ->first();
+            
+            // if ($existingSchool) {
+            //     flash()->option('position', 'bottom-right')->error('A school with the same name already exists in the same region, ward, and district.');
+            //     return back();
+            // }
             
             DB::beginTransaction();
-            $this->application->is_verified = true;
-            $this->application->status = 'complete';
-            $this->application->save();
+
+            if ($this->logo) {
+                $data['logo'] = $this->logo->store('logos', 'public');
+            }
+
+            $this->application->update([
+                'is_verified' => true,
+                'status' => 'complete',
+            ]);
+
+            // $this->application->is_verified = true;
+            // $this->application->status = 'complete';
+            // $this->application->save();
+
             $school = School::create([
                 'name' => $this->application->school_name,
                 'ward' => $this->application->ward,
@@ -93,7 +122,7 @@ public function mount($application){
                 'city' => $this->application->city,
                 'phone' => $this->application->phone,
                 'postal_code' => $this->application->postal_code,
-                'school_type' => json_encode(json_decode($this->application->school_type)),
+                'school_type' => json_encode($schoolTypes),
                 'location' => $this->application->location,
                 'address' => $this->application->address,
                 'sponsorship_type' => $this->application->sponsorship_type,
@@ -105,87 +134,70 @@ public function mount($application){
                 'generic_school_id' => $this->application->generic_school_id,
             ]);
     
-            $primaryClasses = ['Class I', 'Class II', 'Class III', 'Class IV', 'Class V', 'Class VI'];
-            $secondaryClasses = ['Form I', 'Form II', 'Form III', 'Form IV'];
-            $alevelClasses = ['Form V', 'Form VI'];
-    
-            $primarySubjects = ['Kiswahili', 'Kiingereza', 'Hisabati', 'Maarifa ya Jamii', 'Sayansi na Teknolojia', 'Uraia na Maadili', 'Stadi za Kazi'];
-            $olevelSubjects = ['Kiswahili', 'English', 'Mathematics', 'Physics', 'Chemistry', 'Biology', 'History', 'Geography', 'Historia ya Tanzania na Maadili','Book Keeping','Business Studies'];
-            $alevelSubjects = ['General Studies', 'Economics', 'Physics', 'Chemistry', 'Biology', 'Mathematics', 'Geography', 'History'];
-    
-            $schoolTypes = json_decode($this->application->school_type, true) ?? [];
-            if (!is_array($schoolTypes)) {
-                return back()->withErrors(['school_type' => 'Invalid school type data provided.']);
-            }
-            
+            $typeMappings = [
+                'Primary' => [
+                    'classes' => ['Class I', 'Class II', 'Class III', 'Class IV', 'Class V', 'Class VI'],
+                    'subjects' => ['Kiswahili', 'Kiingereza', 'Hisabati', 'Maarifa ya Jamii', 'Sayansi na Teknolojia', 'Uraia na Maadili', 'Stadi za Kazi'],
+                ],
+                'O-Level' => [
+                    'classes' => ['Form I', 'Form II', 'Form III', 'Form IV'],
+                    'subjects' => ['Kiswahili', 'English', 'Mathematics', 'Physics', 'Chemistry', 'Biology', 'History', 'Geography', 'Civics'],
+                ],
+                'A-Level' => [
+                    'classes' => ['Form V', 'Form VI'],
+                    'subjects' => ['General Studies', 'Economics', 'Physics', 'Chemistry', 'Biology', 'Mathematics', 'Geography', 'History'],
+                ],
+            ];
+
             $classes = [];
             $subjects = [];
-            $setCombination = false;
 
             foreach ($schoolTypes as $type) {
-                if ($type === 'Primary') {
-                    $classes = array_merge($classes, $primaryClasses);
-                    //$subjects = array_merge($subjects, $primarySubjects);
-                } elseif ($type === 'O-Level') {
-                    $classes = array_merge($classes, $secondaryClasses);
-                    //$subjects = array_merge($subjects, $olevelSubjects);
-
-                    $setCombination = true;
-                    
-                } elseif ($type === 'A-Level') {
-                    $classes = array_merge($classes, $alevelClasses);
-                    //$subjects = array_merge($subjects, $alevelSubjects);
+                if (isset($typeMappings[$type])) {
+                    $classes = array_merge($classes, $typeMappings[$type]['classes']);
+                    $subjects = array_merge($subjects, $typeMappings[$type]['subjects']);
                 }
             }
             
-            if($setCombination){
-                $combinationIds = Combination::whereIn('id', [1,2])->pluck('id')->all();
-                $pivotData = [
-                    'created_by' => Auth::id(),
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ];
+            // if($setCombination){
+            //     $combinationIds = Combination::whereIn('id', [1,2])->pluck('id')->all();
+            //     $pivotData = [
+            //         'created_by' => Auth::id(),
+            //         'created_at' => now(),
+            //         'updated_at' => now()
+            //     ];
 
-                $combinationsToSync = [];
-                foreach ($combinationIds as $id) {
-                    $combinationsToSync[$id] = $pivotData;
-                }
+            //     $combinationsToSync = [];
+            //     foreach ($combinationIds as $id) {
+            //         $combinationsToSync[$id] = $pivotData;
+            //     }
 
-                $school->combinations()->sync($combinationsToSync);
-            }
+            //     $school->combinations()->sync($combinationsToSync);
+            // }
 
             preg_match('/\d{4}$/', $school->contract_number, $matches);
+            $year = $matches[0] ?? date('Y');
 
-            $year = $matches[0];
-
-            $academic_year = AcademicYear::create([
-                'school_id' =>$school->id,
-                'year'      =>$year,
-                'is_active' =>true
+            $academicYear = AcademicYear::create([
+                'school_id' => $school->id,
+                'year' => $year,
+                'is_active' => true,
             ]);
 
-
-            $classes = array_unique($classes);
-            //$subjects = array_unique($subjects);
-            
-            foreach ($classes as $class) {
-                $school->classes()->create(['name' => $class, 'created_by_system' => true,'academic_year_id'=>$academic_year->id]);
+            foreach (array_unique($classes) as $class) {
+                $school->classes()->create([
+                    'name' => $class,
+                    'created_by_system' => true,
+                    'academic_year_id' => $academicYear->id,
+                ]);
             }
             
-/*            foreach ($subjects as $subject) {
-                $school->subjects()->create(['name' => $subject, 'created_by_system' => true]);
-            } */
-            // dd( $school->classes,$school->subjects);
-            $randomPassword = Str::random(6);
-            $phoneNumber = $this->application->phone;
-        if (substr($phoneNumber, 0, 1) === '0') {
-         $phoneNumber = '255' . substr($phoneNumber, 1);
-         }
+            $defaultPassword = '$2y$12$LABrQzvhXtKFDpsuxu5yC.ZPpaDEvSIrPMlxurINkMuVD63PGEXbW';
             $user = User::create([
-                'name' => $this->application->fullname,
-                'phone' => $this->application->phone,
-                'username' => $this->application->phone,
-                'password' =>$randomPassword ,
+                'name' => $application->fullname,
+                'phone' => $application->phone,
+                'username' => $application->phone,
+                'password' =>$defaultPassword,
                 'school_id' => $school->id,
                 'is_verified' => true,
             ]);
@@ -194,40 +206,42 @@ public function mount($application){
     
             DB::commit(); // Commit the transaction
             
-            $subjects  = $school->subjects(); 
-            $schoolCombinations = $school->combinations;
+            // $subjects  = $school->subjects(); 
+            // $schoolCombinations = $school->combinations;
 
-            $generalSubjects    = ['English Language','Business Studies','Historia ya Tanzania na Maadili','Kiswahili','Basic Mathematics','Geography'];
-            $scienceSubjects    = ['Physics', 'Chemistry', 'Biology'];
-            $businessSubjects   = ['Book Keeping'];
+            // $generalSubjects    = ['English Language','Business Studies','Historia ya Tanzania na Maadili','Kiswahili','Basic Mathematics','Geography'];
+            // $scienceSubjects    = ['Physics', 'Chemistry', 'Biology'];
+            // $businessSubjects   = ['Book Keeping'];
 
-            foreach($schoolCombinations as $combination){
-                if($combination->name == 'Science'){
-                    $scienceSubjects = array_merge($scienceSubjects, $generalSubjects);
-                    $combinationSubjectIDs = $subjects->whereIn('name',$scienceSubjects)->pluck('id')->toArray();
+            // foreach($schoolCombinations as $combination){
+            //     if($combination->name == 'Science'){
+            //         $scienceSubjects = array_merge($scienceSubjects, $generalSubjects);
+            //         $combinationSubjectIDs = $subjects->whereIn('name',$scienceSubjects)->pluck('id')->toArray();
 
-                    $combination->subjects()->sync($combinationSubjectIDs);
-                }elseif($combination->name == 'Business'){
-                    $businessSubjects = array_merge($businessSubjects, $generalSubjects);
-                    $combinationSubjectIDs = $subjects->whereIn('name',$businessSubjects)->pluck('id')->toArray();
+            //         $combination->subjects()->sync($combinationSubjectIDs);
+            //     }elseif($combination->name == 'Business'){
+            //         $businessSubjects = array_merge($businessSubjects, $generalSubjects);
+            //         $combinationSubjectIDs = $subjects->whereIn('name',$businessSubjects)->pluck('id')->toArray();
 
-                    $combination->subjects()->sync($combinationSubjectIDs);                    
-                }
-            }
+            //         $combination->subjects()->sync($combinationSubjectIDs);                    
+            //     }
+            // }
 			
-           $apiKey = config('sms.api_key');
-$senderId = config('sms.sender_id');
-$message = "Hongera kwa kujiunga na ShuleMIS. Username yako ni {$user->username} na password ni {$randomPassword}. Tafadhali tembelea www.shulemis.ac.tz ili uanze kufurahia huduma zetu.";
+            $apiKey = config('sms.api_key');
+            $senderId = config('sms.sender_id');
+            $message = "Hongera kwa kujiunga na ShuleMIS. Username yako ni {$user->username} na password ni {$randomPassword}. 
+                        Tafadhali tembelea www.shulemis.ac.tz ili uanze kufurahia huduma zetu.";
 
- Http::withToken($apiKey)
-    ->acceptJson()
-    ->post('https://sms.webline.co.tz/api/v3/sms/send', [
-        'recipient' => $phoneNumber, // e.g. 255766031128
-        'sender_id' => $senderId,     // e.g. TAARIFA
-        'type'       => 'plain',
-        'message'    => $message,
-    ]);
-            flash()->option('position', 'bottom-right')->success('School application verified and school created successfully!');
+            Http::withToken($apiKey)
+                ->acceptJson()
+                ->post('https://sms.webline.co.tz/api/v3/sms/send', [
+                    'recipient' => $phoneNumber, // e.g. 255766031128
+                    'sender_id' => $senderId,     // e.g. TAARIFA
+                    'type'       => 'plain',
+                    'message'    => $message,
+                ]);
+
+            flash()->option('position', 'bottom-right')->success('The application has been successfully verified.');
             return redirect()->route('school.list');
         } catch (\Exception $e) {
             DB::rollBack(); // Rollback the transaction on error
