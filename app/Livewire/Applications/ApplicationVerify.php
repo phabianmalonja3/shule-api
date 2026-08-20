@@ -74,9 +74,9 @@ public function mount($application){
             return back();
         }
 
-        $schoolTypes = is_string($application->school_type) 
-            ? json_decode($application->school_type, true) 
-            : $application->school_type;
+        $schoolTypes = is_string($this->application->school_type) 
+            ? json_decode($this->application->school_type, true) 
+            : $this->application->school_type;
 
         if (!is_array($schoolTypes)) {
             return back()->withErrors(['school_type' => 'Invalid school type data provided.']);
