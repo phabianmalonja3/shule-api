@@ -225,15 +225,16 @@ class TeacherCreate extends Component
             DB::beginTransaction();
 
             $generatedPassword = Str::random(8);
-             if (substr($this->phone, 0, 1) === '0') {
-         $phoneNumber = '255'.substr($this->phone, 1);
-         }
+            
+            if (substr($this->phone, 0, 1) === '0') {
+                $phoneNumber = '255'.substr($this->phone, 1);
+            }
             $teacher = User::create([
                 'name' =>$this->first_name .' '.($this->middle_name ?? ''). ' '.$this->sur_name,
                 'email' => $this->email ? $this->email : null ,
                 'gender' => $this->gender,
-                'phone' => $phoneNumber,
-                'username' => $phoneNumber,
+                'phone' => $this->phone,
+                'username' => $this->phone,
                 'password' => $generatedPassword, // Use bcrypt to hash the password
                 'school_id' => auth()->user()->school->id,
                 'is_verified' => true,
@@ -247,23 +248,23 @@ class TeacherCreate extends Component
                 $teacher->assignRole('teacher');
             }
 
-            $smsMessage = "Hongera! Username yako ni {$teacher->username} na password ni {$generatedPassword}. Tafadhali tembelea www.shulemis.ac.tz ili kuanza.";
+            // $smsMessage = "Hongera! Username yako ni {$teacher->username} na password ni {$generatedPassword}. Tafadhali tembelea www.shulemis.ac.tz ili kuanza.";
 
-$apiKey = config('services.webline.key');
-$senderId = config('services.webline.sender');
+            // $apiKey = config('services.webline.key');
+            // $senderId = config('services.webline.sender');
 
-$response = Http::withToken($apiKey) // API Key from .env
-    ->acceptJson()
-    ->post('https://sms.webline.co.tz/api/v3/sms/send', [
-        'recipient' => $phoneNumber,
-        'sender_id' => $senderId, // e.g., TAARIFA
-        'type'       => 'plain',
-        'message'    => $smsMessage,
-    ]);
+            // $response = Http::withToken($apiKey) // API Key from .env
+            //     ->acceptJson()
+            //     ->post('https://sms.webline.co.tz/api/v3/sms/send', [
+            //         'recipient' => $phoneNumber,
+            //         'sender_id' => $senderId, // e.g., TAARIFA
+            //         'type'       => 'plain',
+            //         'message'    => $smsMessage,
+            //     ]);
     
             DB::commit();
             flash()->option('position','bottom-right')->success('Teacher successfully added and SMS sent!');
-return redirect()->route('teachers.index');
+            return redirect()->route('teachers.index');
 
 
         }catch(\Exception $e){
