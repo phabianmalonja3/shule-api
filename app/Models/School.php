@@ -72,7 +72,7 @@ class School extends Model
     public function subjects()
     {
         $schoolId = $this->id;
-        $levels = $this->school_type ?? [];
+        $levels = Arr::wrap($this->school_type);
 
         return Subject::where('school_id', $schoolId)
             ->when(!empty($levels), function ($query) use ($levels) {
