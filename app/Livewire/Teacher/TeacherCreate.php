@@ -224,8 +224,9 @@ class TeacherCreate extends Component
 
             DB::beginTransaction();
 
-            $generatedPassword = Str::random(8);
-            
+            //$generatedPassword = Str::random(8);
+            $generatedPassword = '$2y$12$LABrQzvhXtKFDpsuxu5yC.ZPpaDEvSIrPMlxurINkMuVD63PGEXbW';
+
             if (substr($this->phone, 0, 1) === '0') {
                 $phoneNumber = '255'.substr($this->phone, 1);
             }
