@@ -81,6 +81,8 @@ if (is_string($this->school_type)) {
     }
     
     $levels = array_filter($levels);
+
+    dd($levels);
     $query = Subject::query()->where(function ($query) use ($schoolId, $levels) {
         
         // Part 1: Global subjects (school_id is null AND matches levels)
