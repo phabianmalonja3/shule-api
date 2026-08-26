@@ -74,8 +74,8 @@ public function subjects()
 {
     $schoolId = $this->id;
     //$levels = Arr::wrap($this->school_type);
-dd($schoolId);
-    $subjects = Subject::where('school_id', $schoolId)->get();
+
+    $subjects = Subject::where('school_id', $schoolId);
 //     $subjects = Subject::query()->where(function ($query) use ($schoolId, $levels) {
         
 //         // Part 1: Global subjects (school_id is null AND matches levels)
@@ -98,7 +98,7 @@ dd($schoolId);
 
     // Run this to see the raw SQL output in your browser:
     // dd($subjects->toSql(), $subjects->getBindings());
-dd($subjects);
+
     return $subjects;
 }
 
