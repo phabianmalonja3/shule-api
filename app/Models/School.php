@@ -85,9 +85,9 @@ if (!empty($levels)) {
                 // Pass the $levels array directly so json_contains evaluates correctly
                 $q->whereJsonContains('school_level', $levels);
             }
-        });
+        })
         // Part 2: OR extra school-specific subjects
-        //->orWhere('school_id', $schoolId);
+        ->orWhere('school_id', $schoolId);
 
     });
 
