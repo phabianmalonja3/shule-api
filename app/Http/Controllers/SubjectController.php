@@ -11,6 +11,7 @@ use App\Http\Resources\SubjectResource;
 use App\Http\Resources\SubjectCollection;
 use App\Models\Combination;
 use App\Models\School;
+use Illuminate\Support\Arr;
 
 class SubjectController extends Controller
 {
