@@ -73,26 +73,27 @@ class School extends Model
 public function subjects()
 {
     $schoolId = $this->id;
-    $levels = Arr::wrap($this->school_type);
+    //$levels = Arr::wrap($this->school_type);
 
-    $subjects = Subject::query()->where(function ($query) use ($schoolId, $levels) {
+    $subjects = Subject::where('school_id', $schoolId);
+//     $subjects = Subject::query()->where(function ($query) use ($schoolId, $levels) {
         
-        // Part 1: Global subjects (school_id is null AND matches levels)
-        $query->where(function ($q) use ($levels) {
+//         // Part 1: Global subjects (school_id is null AND matches levels)
+//         $query->where(function ($q) use ($levels) {
             
 
-if (!empty($levels)) {
-                //$q->where(function ($subQ) use ($levels) {
-                    foreach ($levels as $level) {
-                        $q->orWhereJsonContains('school_level', $level);
-                    }
-                //});
-            }
-        })
-        // Part 2: OR extra school-specific subjects
-        ->orWhere('school_id', $schoolId);
+// if (!empty($levels)) {
+//                 //$q->where(function ($subQ) use ($levels) {
+//                     foreach ($levels as $level) {
+//                         $q->orWhereJsonContains('school_level', $level);
+//                     }
+//                 //});
+//             }
+//         })
+//         // Part 2: OR extra school-specific subjects
+//         ->orWhere('school_id', $schoolId);
 
-    });
+//     });
 
 
     // Run this to see the raw SQL output in your browser:

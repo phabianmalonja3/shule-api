@@ -213,21 +213,62 @@ class SubjectController extends Controller
     /**
      * Display a listing of subjects.
      */
+// public function index(Request $request)
+// {
+//     $schoolId = auth()->user()->school_id;
+//     $school = School::with(['combinations'])->find($schoolId);
+//     $levels = Arr::wrap($school->school_type);
+
+
+//     $subjects = $school->subjects()->get();
+//     if (!empty($levels)) {
+//     $subjects = Subject::whereJsonContains('school_level', $level)->get();
+//             }
+        
+
+
+//     $combinations = Combination::whereDoesntHave('schools', function ($query) use ($schoolId) {
+//         $query->where('school_id', $schoolId);
+//     })->get();
+
+//     return view('subjects.list', compact('subjects', 'school', 'combinations'));
+// }
+    
+
 public function index(Request $request)
 {
     $schoolId = auth()->user()->school_id;
     $school = School::with(['combinations'])->find($schoolId);
     
-    // This now treats 'subjects' as a true relationship query builder
-    $subjects = $school->subjects()->orderBy('name')->paginate(20);
-    
+    // Get the school types as an array
+    $levels = Arr::wrap($school->school_type);
+
+    // 1. Fetch subjects based on the school's level(s)
+    $levelSubjects = Subject::query()
+        ->when(!empty($levels), function ($query) use ($levels) {
+            $query->where(function ($subQuery) use ($levels) {
+                foreach ($levels as $level) {
+                    $subQuery->orWhereJsonContains('school_level', $level);
+                }
+            });
+        })
+        ->get();
+
+    // 2. Get subjects directly related to the school and combine/merge them
+    $subjects = $school->subjects()
+        ->get()
+        ->merge($levelSubjects)
+        ->unique('id')     // Remove duplicates if any overlap
+        ->sortBy('name')   // Sort alphabetically by name
+        ->values();        // Reset collection keys
+
+    // Fetch combinations not yet linked to this school
     $combinations = Combination::whereDoesntHave('schools', function ($query) use ($schoolId) {
         $query->where('school_id', $schoolId);
     })->get();
 
     return view('subjects.list', compact('subjects', 'school', 'combinations'));
 }
-    
     
     /**
      * Display the specified subject.
