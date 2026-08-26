@@ -91,7 +91,7 @@ if (is_string($this->school_type)) {
             if (!empty($levels)) {
                 $q->where(function ($subQuery) use ($levels) {
                     // foreach ($levels as $level) {
-                        $subQuery->orWhereJsonContains('school_level', $level);
+                        $subQuery->orWhereJsonContains('school_level', $levels);
                     //}
                 });
             }
