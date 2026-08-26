@@ -81,12 +81,9 @@ public function subjects()
         $query->where(function ($q) use ($levels) {
             $q->whereNull('school_id');
 
-            if (!empty($levels)) {
-                $q->where(function ($subQuery) use ($levels) {
-                    foreach ($levels as $level) {
-                        $subQuery->orWhereJsonContains('school_level', $level);
-                    }
-                });
+if (!empty($levels)) {
+                // Pass the $levels array directly so json_contains evaluates correctly
+                $q->whereJsonContains('school_level', $levels);
             }
         })
         // Part 2: OR extra school-specific subjects
