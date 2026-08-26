@@ -74,19 +74,19 @@ public function subjects()
 {
     $schoolId = $this->id;
     $levels = Arr::wrap($this->school_type);
-dd($this->school_type, $levels);
-    $query = Subject::query()->where(function ($query) use ($schoolId, $levels) {
+
+    $subjects = Subject::query()->where(function ($query) use ($schoolId, $levels) {
         
         // Part 1: Global subjects (school_id is null AND matches levels)
         $query->where(function ($q) use ($levels) {
-            $q->whereNull('school_id');
+            
 
 if (!empty($levels)) {
-                $q->where(function ($subQ) use ($levels) {
+                //$q->where(function ($subQ) use ($levels) {
                     foreach ($levels as $level) {
-                        $subQ->orWhereJsonContains('school_level', $level);
+                        $q->orWhereJsonContains('school_level', $level);
                     }
-                });
+                //});
             }
         })
         // Part 2: OR extra school-specific subjects
@@ -96,9 +96,9 @@ if (!empty($levels)) {
 
 
     // Run this to see the raw SQL output in your browser:
-     dd($query->toSql(), $query->getBindings());
+     dd($subjects->toSql(), $subjects->getBindings());
 
-    return $query;
+    return $subjects;
 }
 
 	public function annoucements()
