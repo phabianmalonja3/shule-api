@@ -72,13 +72,12 @@ class School extends Model
 
 public function subjects()
 {
-    $schoolId = $this->id;
     $levels = Arr::wrap($this->school_type);
 
-    // Return a standard HasMany relationship instance mapped to the local key/foreign key
     return $this->hasMany(Subject::class, 'school_id', 'id')
         ->orWhere(function ($query) use ($levels) {
             $query->whereNull('school_id');
+            
             if (!empty($levels)) {
                 $query->where(function ($subQuery) use ($levels) {
                     foreach ($levels as $level) {

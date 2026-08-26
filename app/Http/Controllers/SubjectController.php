@@ -213,37 +213,20 @@ class SubjectController extends Controller
     /**
      * Display a listing of subjects.
      */
-    public function index(Request $request)
-    {
-        $schoolId = auth()->user()->school_id;
-
-        //$classes = SchoolClass::where('school_id', $schoolId)->get();
-        //$classId = $request->input('class_id') ?? $classes->first()->id;
-		$school = School::with(['combinations'])->find($schoolId);
-		$generalSubjects    = ['English Language','Business Studies','Historia ya Tanzania na Maadili','Kiswahili','Basic Mathematics','Geography'];
-        //$subjects = $school->subjects()->whereNotIn('name',$generalSubjects)->orderBy('name')->paginate(20);        
-        $subjects = $school->subjects()->orderBy('name')->paginate(20);
-		$combinations = Combination::whereDoesntHave('schools', function ($query) use ($schoolId) {
-				$query->where('school_id', $schoolId);
-			})->get();
-
-// MISPLACED -- Used for entering subjects in bulky		
-/*		$allSubjects = ['Kiswahili']; // All levels
-		$primaryALevelSubjects = ['Mathematics','English']; // Only primary and A-level
-		$primarySubjects = ['Science and Technology','Social Studies','Civic and Moral Education','Religious Education','Vocational Skills']; //Only primary schools
-		$allsecondarySubjects = ['Kiswahili Literature', 'English Language', 'Literature in English','Physics', 'Chemistry', 'Biology', 'History', 'Geography', 'Historia ya Tanzania na Maadili','Business Studies','Bible Knowledge','Islamic Knowledge','Arabic','French','Chinese','Agriculture','Computer Science','Fine Arts','Music','Textile and Garment Construction','Sports','Food and Nutrition']; // Both O-level and A-level
-		$extra = ['Food and Nutrition'];
-		$olevelSubjects = ['Basic Mathematics', 'Additional Mathematics','Book-Keeping','Performing Arts'];
-		$alevelSubjects = ['Academic Communications','Accountancy','Economics','Basic Applied Mathematics','Divinity','Theatre Arts',]; 
-
-		foreach ($extra as $subject) {
-			$school->subjects()->create(['name' => $subject, 'created_by_system' => true, 'school_level' => json_encode(['O-Level','A-Level'])]);
-		} 
-*/		
+public function index(Request $request)
+{
+    $schoolId = auth()->user()->school_id;
+    $school = School::with(['combinations'])->find($schoolId);
+    
+    // This now treats 'subjects' as a true relationship query builder
+    $subjects = $school->subjects()->orderBy('name')->paginate(20);
+    
+    $combinations = Combination::whereDoesntHave('schools', function ($query) use ($schoolId) {
+        $query->where('school_id', $schoolId);
+    })->get();
 dd(count($subjects));
-        //return view('subjects.list', compact('subjects', 'classes', 'classId'));
-        return view('subjects.list', compact('subjects', 'school', 'combinations'));
-    }
+    return view('subjects.list', compact('subjects', 'school', 'combinations'));
+}
     
     
     /**
