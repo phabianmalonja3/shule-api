@@ -73,11 +73,11 @@ class School extends Model
 public function subjects()
 {
     $schoolId = $this->id;
-if (is_string($schoolType)) {
+if (is_string($this->school_type)) {
         // Decode if it's a JSON string, otherwise treat as a single-item array
-        $levels = json_decode($schoolType, true) ?: [$schoolType];
+        $levels = json_decode($this->school_type, true) ?: [$this->school_type];
     } else {
-        $levels = Arr::wrap($schoolType);
+        $levels = Arr::wrap($this->school_type);
     }
     
     $levels = array_filter($levels);
