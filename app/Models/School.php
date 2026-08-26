@@ -84,8 +84,7 @@ public function subjects()
             if (!empty($levels)) {
                 $q->where(function ($subQuery) use ($levels) {
                     foreach ($levels as $level) {
-                        dd($level);
-                        $subQuery->orWhere('school_level', $level);
+                        $subQuery->orWhereJsonContains('school_level', $level);
                     }
                 });
             }
@@ -97,7 +96,7 @@ public function subjects()
 
 
     // Run this to see the raw SQL output in your browser:
-     dd($query->toSql(), $query->getBindings());
+     //dd($query->toSql(), $query->getBindings());
 
     return $query;
 }
