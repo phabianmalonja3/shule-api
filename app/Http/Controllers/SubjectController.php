@@ -254,7 +254,7 @@ public function index(Request $request)
             });
         })
         ->get();
-
+dd($levelSubjects);
     // 2. Get subjects directly related to the school and combine/merge them
     $subjects = $school->subjects()
         ->get()
