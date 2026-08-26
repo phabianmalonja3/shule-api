@@ -75,7 +75,7 @@
 										<i class="fas fa-plus"></i> Add Subject
 									</a>
 
-									@if(count($school->subjects)->get() > 0)
+									@if(($school->subjects)->count() > 0)
 										<button type="button" class="mt-3 mr-3 btn btn-info" data-toggle="modal" data-target="#editSubjectModal">
 											<i class="fas fa-edit"></i> Edit Subject
 										</button>
