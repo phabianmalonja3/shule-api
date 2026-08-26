@@ -254,12 +254,10 @@ public function index(Request $request)
             });
         })
         ->get();
-dd($levelSubjects);
+
     // 2. Get subjects directly related to the school and combine/merge them
     $subjects = $school->subjects()
         ->get()
-        ->merge($levelSubjects)
-        ->unique('id')     // Remove duplicates if any overlap
         ->sortBy('name')   // Sort alphabetically by name
         ->values();        // Reset collection keys
 
