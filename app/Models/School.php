@@ -74,7 +74,7 @@ public function subjects()
 {
     $schoolId = $this->id;
     //$levels = Arr::wrap($this->school_type);
-
+dd($schoolId);
     $subjects = Subject::where('school_id', $schoolId)->get();
 //     $subjects = Subject::query()->where(function ($query) use ($schoolId, $levels) {
         
