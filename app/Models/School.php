@@ -93,7 +93,7 @@ if (!empty($levels)) {
 
 
     // Run this to see the raw SQL output in your browser:
-     //dd($query->toSql(), $query->getBindings());
+     dd($query->toSql(), $query->getBindings());
 
     return $query;
 }
