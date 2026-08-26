@@ -84,6 +84,7 @@ public function subjects()
             if (!empty($levels)) {
                 $q->where(function ($subQuery) use ($levels) {
                     foreach ($levels as $level) {
+                        dd($level);
                         $subQuery->orWhere('school_level', $level);
                     }
                 });
