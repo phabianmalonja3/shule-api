@@ -70,23 +70,28 @@ class School extends Model
 		return $this->hasMany(SchoolClass::class);
 	}
 
-    public function subjects()
-    {
-        $schoolId = $this->id;
-        $levels = Arr::wrap($this->school_type);
+public function subjects()
+{
+    $schoolId = $this->id;
+    $levels = Arr::wrap($this->school_type);
 
-        return Subject::where('school_id', $schoolId)
-            ->when(!empty($levels), function ($query) use ($levels) {
-                $query->orWhere(function ($q) use ($levels) {
-                    $q->whereNull('school_id')
-                    ->where(function ($subQuery) use ($levels) {
-                        foreach ($levels as $level) {
-                            $subQuery->orWhereJsonContains('school_level', $level);
-                        }
-                    });
-                });
+    return Subject::where(function ($query) use ($schoolId, $levels) {
+        // Condition 1: Subjects belonging directly to the school
+        $query->where('school_id', $schoolId);
+
+        // Condition 2: Global/default subjects matching the school levels
+        if (!empty($levels)) {
+            $query->orWhere(function ($q) use ($levels) {
+                $q->whereNull('school_id')
+                  ->where(function ($subQuery) use ($levels) {
+                      foreach ($levels as $level) {
+                          $subQuery->orWhereJsonContains('school_level', $level);
+                      }
+                  });
             });
-    }
+        }
+    });
+}
 
 	public function annoucements()
 	{
