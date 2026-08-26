@@ -221,7 +221,8 @@ class SubjectController extends Controller
         //$classId = $request->input('class_id') ?? $classes->first()->id;
 		$school = School::with(['combinations'])->find($schoolId);
 		$generalSubjects    = ['English Language','Business Studies','Historia ya Tanzania na Maadili','Kiswahili','Basic Mathematics','Geography'];
-        $subjects = $school->subjects()->whereNotIn('name',$generalSubjects)->orderBy('name')->paginate(20);
+        //$subjects = $school->subjects()->whereNotIn('name',$generalSubjects)->orderBy('name')->paginate(20);        
+        $subjects = $school->subjects()->orderBy('name')->paginate(20);
 		$combinations = Combination::whereDoesntHave('schools', function ($query) use ($schoolId) {
 				$query->where('school_id', $schoolId);
 			})->get();
@@ -239,7 +240,7 @@ class SubjectController extends Controller
 			$school->subjects()->create(['name' => $subject, 'created_by_system' => true, 'school_level' => json_encode(['O-Level','A-Level'])]);
 		} 
 */		
-
+dd(count($subjects));
         //return view('subjects.list', compact('subjects', 'classes', 'classId'));
         return view('subjects.list', compact('subjects', 'school', 'combinations'));
     }
