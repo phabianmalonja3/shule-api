@@ -72,19 +72,25 @@ class School extends Model
 
 public function subjects()
 {
+    $schoolId = $this->id;
     $levels = Arr::wrap($this->school_type);
 
     return $this->hasMany(Subject::class, 'school_id', 'id')
-        ->orWhere(function ($query) use ($levels) {
-            $query->whereNull('school_id');
-            
-            if (!empty($levels)) {
-                $query->where(function ($subQuery) use ($levels) {
-                    foreach ($levels as $level) {
-                        $subQuery->orWhereJsonContains('school_level', $level);
-                    }
-                });
-            }
+        ->setEagerLoads([]) // Optional safeguard
+        ->where(function ($query) use ($schoolId, $levels) {
+            // This overrides/re-groups the default hasMany constraint safely
+            $query->where('school_id', $schoolId)
+                  ->orWhere(function ($q) use ($levels) {
+                      $q->whereNull('school_id');
+                      
+                      if (!empty($levels)) {
+                          $q->where(function ($subQuery) use ($levels) {
+                              foreach ($levels as $level) {
+                                  $subQuery->orWhereJsonContains('school_level', $level);
+                              }
+                          });
+                      }
+                  });
         });
 }
 

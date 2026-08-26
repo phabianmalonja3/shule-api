@@ -224,17 +224,7 @@ public function index(Request $request)
     $combinations = Combination::whereDoesntHave('schools', function ($query) use ($schoolId) {
         $query->where('school_id', $schoolId);
     })->get();
-dd((Subject::orWhere(function ($query) use ($levels) {
-            $query->whereNull('school_id');
-            
-            if (!empty($levels)) {
-                $query->where(function ($subQuery) use ($levels) {
-                    foreach ($levels as $level) {
-                        $subQuery->orWhereJsonContains('school_level', $level);
-                    }
-                });
-            }
-        })));
+dd(count($subjects));
     return view('subjects.list', compact('subjects', 'school', 'combinations'));
 }
     
