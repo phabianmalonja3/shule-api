@@ -224,7 +224,7 @@ public function index(Request $request)
     $combinations = Combination::whereDoesntHave('schools', function ($query) use ($schoolId) {
         $query->where('school_id', $schoolId);
     })->get();
-dd(count($subjects));
+
     return view('subjects.list', compact('subjects', 'school', 'combinations'));
 }
     
