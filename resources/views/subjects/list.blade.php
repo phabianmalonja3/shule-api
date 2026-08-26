@@ -13,13 +13,9 @@
 					<div class="col-12">
 						<div class="card">
 							<div class="card-header">
-								<h4> Combinations & Subjects</h4>
+								<h4> Combinations</h4>
 								@role('academic teacher')
 								<div class="card-header-form d-flex justify-content-between align-items-center">
-								
-									<a href="{{ route('subjects.create') }}" class="mt-3 mr-3 btn btn-success">
-										<i class="fas fa-plus"></i> Add Subject
-									</a>
 
 									<button type="button" class="mt-3 mr-3 btn btn-success" data-toggle="modal" data-target="#addCombinationModal">
 										<i class="fas fa-plus"></i> Add Combination
@@ -64,6 +60,60 @@
 								@empty
 									<div class="text-center py-4">
 										<p>No combinations found for this school.</p>
+									</div>
+								@endforelse
+							</div>
+						</div>
+
+						<div class="card">
+							<div class="card-header">
+								<h4> Subjects</h4>
+								@role('academic teacher')
+								<div class="card-header-form d-flex justify-content-between align-items-center">
+								
+									<a href="{{ route('subjects.create') }}" class="mt-3 mr-3 btn btn-success">
+										<i class="fas fa-plus"></i> Add Subject
+									</a>
+
+									@if(count($school->subjects) > 0)
+										<button type="button" class="mt-3 mr-3 btn btn-info" data-toggle="modal" data-target="#editSubjectModal">
+											<i class="fas fa-edit"></i> Edit Subject
+										</button>
+								
+										<button type="button" class="mt-3 mr-3 btn btn-danger" data-toggle="modal" data-target="#deleteSubjectModal">
+											<i class="fas fa-trash-alt mr-1"></i> Delete Subject
+										</button>	
+									@endif
+									
+								</div>
+								@endrole
+							</div>
+
+							<div class="card-body p-3">
+								@forelse($school->combinations as $combination)
+									<fieldset class="mb-4 p-3" style="border: 1px solid #e4e6fc; border-radius: 8px;">
+										<legend class="w-auto px-2 ml-3">
+											<h6 class="font-weight-bold">
+												{{ ucfirst($combination->name) }}
+											</h6>
+										</legend>
+
+										<div class="row">
+											@forelse($combination->subjects as $subject)
+												<div class="col-md-3 col-sm-6 mb-2 d-flex align-items-center">
+													<i class="fas fa-circle mr-2" style="font-size: 8px; color: #6777ef;"></i>
+													<span>{{ $subject->name }}</span>
+												</div>
+											@empty
+												<div class="col-12 text-muted italic">
+													No subjects assigned to this combination.
+												</div>
+											@endforelse
+										</div>
+									</fieldset>
+								@empty
+									<div class="text-center py-4">
+										<p>No subjects found for this school.</p>
 									</div>
 								@endforelse
 							</div>
