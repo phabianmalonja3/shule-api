@@ -74,7 +74,7 @@ public function subjects()
 {
     $schoolId = $this->id;
     $levels = Arr::wrap($this->school_type);
-
+dd($levels);
     $query = Subject::query()->where(function ($query) use ($schoolId, $levels) {
         $query->where(function ($q) use ($levels) {
             $q->whereNull('school_id');
