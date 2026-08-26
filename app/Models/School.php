@@ -75,12 +75,10 @@ public function subjects()
     $schoolId = $this->id;
     $levels = Arr::wrap($this->school_type);
 
-    return Subject::query()->where(function ($query) use ($schoolId, $levels) {
-        
-        // 1. Global subjects where school_id is null and level matches
+    $query = Subject::query()->where(function ($query) use ($schoolId, $levels) {
         $query->where(function ($q) use ($levels) {
             $q->whereNull('school_id');
-            
+
             if (!empty($levels)) {
                 $q->where(function ($subQuery) use ($levels) {
                     foreach ($levels as $level) {
@@ -88,11 +86,13 @@ public function subjects()
                     }
                 });
             }
-        })
-        // 2. OR extra subjects explicitly tied to this school
-        ->orWhere('school_id', $schoolId);
-        
+        })->orWhere('school_id', $schoolId);
     });
+
+    // Run this to see the raw SQL output in your browser:
+     dd($query->toSql(), $query->getBindings());
+
+    return $query;
 }
 
 	public function annoucements()
