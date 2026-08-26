@@ -75,22 +75,17 @@ public function subjects()
     $schoolId = $this->id;
     $levels = Arr::wrap($this->school_type);
 
+    // Return a standard HasMany relationship instance mapped to the local key/foreign key
     return $this->hasMany(Subject::class, 'school_id', 'id')
-        ->setEagerLoads([]) // Optional safeguard
-        ->where(function ($query) use ($schoolId, $levels) {
-            // This overrides/re-groups the default hasMany constraint safely
-            $query->where('school_id', $schoolId)
-                  ->orWhere(function ($q) use ($levels) {
-                      $q->whereNull('school_id');
-                      
-                      if (!empty($levels)) {
-                          $q->where(function ($subQuery) use ($levels) {
-                              foreach ($levels as $level) {
-                                  $subQuery->orWhereJsonContains('school_level', $level);
-                              }
-                          });
-                      }
-                  });
+        ->orWhere(function ($query) use ($levels) {
+            $query->whereNull('school_id');
+            if (!empty($levels)) {
+                $query->where(function ($subQuery) use ($levels) {
+                    foreach ($levels as $level) {
+                        $subQuery->orWhereJsonContains('school_level', $level);
+                    }
+                });
+            }
         });
 }
 
