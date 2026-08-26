@@ -73,14 +73,7 @@ class School extends Model
 public function subjects()
 {
     $schoolId = $this->id;
-if (is_string($this->school_type)) {
-        // Decode if it's a JSON string, otherwise treat as a single-item array
-        $levels = json_decode($this->school_type, true) ?: [$this->school_type];
-    } else {
-        $levels = Arr::wrap($this->school_type);
-    }
-    
-    $levels = array_filter($levels);
+    $levels = $this->school_type;
 
     $query = Subject::query()->where(function ($query) use ($schoolId, $levels) {
         
@@ -90,9 +83,9 @@ if (is_string($this->school_type)) {
 
             if (!empty($levels)) {
                 $q->where(function ($subQuery) use ($levels) {
-                    // foreach ($levels as $level) {
-                        $subQuery->orWhereJsonContains('school_level', $levels);
-                    //}
+                    foreach ($levels as $level) {
+                        $subQuery->orWhereJsonContains('school_level', $level);
+                    }
                 });
             }
         })
