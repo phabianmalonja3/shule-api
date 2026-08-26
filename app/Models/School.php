@@ -97,7 +97,7 @@ public function subjects()
 
 
     // Run this to see the raw SQL output in your browser:
-    // dd($subjects->toSql(), $subjects->getBindings());
+     dd($subjects->toSql(), $subjects->getBindings());
 
     return $subjects;
 }
