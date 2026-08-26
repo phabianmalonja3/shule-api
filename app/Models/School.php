@@ -74,7 +74,7 @@ public function subjects()
 {
     $schoolId = $this->id;
     $levels = Arr::wrap($this->school_type);
-dd(count($levels));
+
     $query = Subject::query()->where(function ($query) use ($schoolId, $levels) {
         
         // Part 1: Global subjects (school_id is null AND matches levels)
@@ -84,7 +84,7 @@ dd(count($levels));
             if (!empty($levels)) {
                 $q->where(function ($subQuery) use ($levels) {
                     foreach ($levels as $level) {
-                        $subQuery->orWhereJsonContains('school_level', $level);
+                        $subQuery->orWhere('school_level', $level);
                     }
                 });
             }
