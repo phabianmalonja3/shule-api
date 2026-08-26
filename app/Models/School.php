@@ -75,22 +75,18 @@ public function subjects()
     $schoolId = $this->id;
     $levels = Arr::wrap($this->school_type);
 
-    return Subject::where(function ($query) use ($schoolId, $levels) {
-        // Condition 1: Subjects belonging directly to the school
-        $query->where('school_id', $schoolId);
-
-        // Condition 2: Global/default subjects matching the school levels
-        if (!empty($levels)) {
-            $query->orWhere(function ($q) use ($levels) {
-                $q->whereNull('school_id')
-                  ->where(function ($subQuery) use ($levels) {
-                      foreach ($levels as $level) {
-                          $subQuery->orWhereJsonContains('school_level', $level);
-                      }
-                  });
-            });
-        }
-    });
+    // Return a standard HasMany relationship instance mapped to the local key/foreign key
+    return $this->hasMany(Subject::class, 'school_id', 'id')
+        ->orWhere(function ($query) use ($levels) {
+            $query->whereNull('school_id');
+            if (!empty($levels)) {
+                $query->where(function ($subQuery) use ($levels) {
+                    foreach ($levels as $level) {
+                        $subQuery->orWhereJsonContains('school_level', $level);
+                    }
+                });
+            }
+        });
 }
 
 	public function annoucements()
