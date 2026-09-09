@@ -268,7 +268,6 @@ public function index(Request $request)
         $query->where('school_id', $schoolId);
     })->get();
 
-    dd($subjects);
     return view('subjects.list', compact('subjects', 'school', 'combinations'));
 }
     

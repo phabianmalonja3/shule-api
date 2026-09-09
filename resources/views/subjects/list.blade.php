@@ -90,32 +90,20 @@
 							</div>
 
 							<div class="card-body p-3">
-								@forelse($school->combinations as $combination)
-									<fieldset class="mb-4 p-3" style="border: 1px solid #e4e6fc; border-radius: 8px;">
-										<legend class="w-auto px-2 ml-3">
-											<h6 class="font-weight-bold">
-												{{ ucfirst($combination->name) }}
-											</h6>
-										</legend>
-
-										<div class="row">
-											@forelse($combination->subjects as $subject)
-												<div class="col-md-3 col-sm-6 mb-2 d-flex align-items-center">
-													<i class="fas fa-circle mr-2" style="font-size: 8px; color: #6777ef;"></i>
-													<span>{{ $subject->name }}</span>
-												</div>
-											@empty
-												<div class="col-12 text-muted italic">
-													No subjects assigned to this combination.
-												</div>
-											@endforelse
-										</div>
-									</fieldset>
-								@empty
-									<div class="text-center py-4">
-										<p>No subjects found for this school.</p>
-									</div>
-								@endforelse
+@forelse($subjects->chunk(4) as $subjectRow)
+        <div class="row mb-3">
+            @foreach($subjectRow as $subject)
+                <div class="col-md-3 col-sm-6 mb-2 d-flex align-items-center">
+                    <i class="fas fa-circle mr-2" style="font-size: 8px; color: #6777ef;"></i>
+                    <span>{{ $subject->name }}</span>
+                </div>
+            @endforeach
+        </div>
+    @empty
+        <div class="text-center py-4">
+            <p>No subjects found for this school.</p>
+        </div>
+    @endforelse
 							</div>
 						</div>
 					</div>
