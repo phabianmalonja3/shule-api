@@ -88,8 +88,8 @@ class SubjectController extends Controller
 	
 	public function getSubjects($id)
 	{
-		$schoolId = Auth::user()->;
-		$school = School::find($schschool_idoolId);
+		$schoolId = Auth::user()->school_id;
+		$school = School::find($schoolId);
 		$combination = Combination::with('subjects')->findOrFail($id);
 		$generalSubjects    = ['English Language','Business Studies','Historia ya Tanzania na Maadili','Kiswahili','Basic Mathematics','Geography'];
 		$allSubjects = $school->subjects()->whereNotIn('name',$generalSubjects)->orderBy('name')->get();
@@ -254,7 +254,7 @@ public function index(Request $request)
             });
         })
         ->get();
-dd($levelSubjects);
+dd($levelSubjects)
     // 2. Get subjects directly related to the school and combine/merge them
     $subjects = $school->subjects()
         ->get()
