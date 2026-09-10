@@ -289,7 +289,7 @@
 <div class="form-group">
     <label class="font-weight-bold">Select Subjects</label>
     <div>
-        @foreach($school->subjects as $subject)
+        @foreach($school->subjects()->get() as $subject)
             <div class="form-check form-check-inline mr-3 mb-2">
                 <input class="form-check-input" 
                        type="checkbox" 
