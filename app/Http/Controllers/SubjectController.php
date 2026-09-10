@@ -190,26 +190,35 @@ class SubjectController extends Controller
 
 public function deleteSchoolSubjects(Request $request)
 {
-    // 1. Validate that 'subject_id' is an array and the IDs exist in the database
     $request->validate([
         'subject_id'   => 'required|array',
         'subject_id.*' => 'exists:subjects,id'
     ]);
 
     $schoolId = Auth::user()->school_id;
-    $school = School::findOrFail($schoolId);
 
-    // 2. Loop through each selected subject and check if students are enrolled
-    // Note: This assumes you have a relationship setup or need to check across combinations.
-    // If you are deleting a specific Combination containing these subjects, we need its ID.
-    
-    // 3. Detach the selected subjects from the school
-    $school->subjects()->detach($request->subject_id);
+    // 1. Verify ownership: Only query subjects that belong to this school
+    $subjectsQuery = Subject::whereIn('id', $request->subject_id)
+                            ->where('school_id', $schoolId);
+
+    // 2. Safety Check: Ensure these subjects aren't actively tied to student combinations
+    // (Adjust 'combinations' or relationship name to match your schema)
+    $hasStudents = Combination::whereHas('subjects', function($q) use ($request) {
+                        $q->whereIn('id', $request->subject_id);
+                   })->whereHas('students')->exists();
+
+    if ($hasStudents) {
+        return back()->with('error', 'Cannot delete because students are enrolled in combinations using these subjects.');
+    }
+
+    // 3. Securely execute the delete
+    $subjectsQuery->delete();
 
     flash()->option('position', 'bottom-right')->success('Selected subjects deleted successfully.');
 
     return back();
 }
+
 
 
 
