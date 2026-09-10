@@ -253,7 +253,7 @@
     <label class="font-weight-bold mb-3">Manage Subjects & Names</label>
     
     <div class="row">
-        @foreach($school->subjects as $subject)
+        @foreach($school->subjects()->get() as $subject)
             <div class="col-md-6 col-lg-4 mb-3">
                 <div class="input-group">
                     <!-- Checkbox Prepend Area -->
