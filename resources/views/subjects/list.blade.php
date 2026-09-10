@@ -90,20 +90,20 @@
 							</div>
 
 							<div class="card-body p-3">
-	@forelse($subjects->chunk(4) as $subjectRow)
-        <div class="row mb-3">
-            @foreach($subjectRow as $subject)
-                <div class="col-md-3 col-sm-6 mb-2 d-flex align-items-center">
-                    <i class="fas fa-circle mr-2" style="font-size: 8px; color: #6777ef;"></i>
-                    <span>{{ $subject->name }}</span>
-                </div>
-            @endforeach
-        </div>
-    @empty
-        <div class="text-center py-4">
-            <p>No subjects found for this school.</p>
-        </div>
-    @endforelse
+							@forelse($subjects->chunk(4) as $subjectRow)
+								<div class="row mb-3">
+									@foreach($subjectRow as $subject)
+										<div class="col-md-3 col-sm-6 mb-2 d-flex align-items-center">
+											<i class="fas fa-circle mr-2" style="font-size: 8px; color: #6777ef;"></i>
+											<span>{{ $subject->name }}</span>
+										</div>
+									@endforeach
+								</div>
+							@empty
+								<div class="text-center py-4">
+									<p>No subjects found for this school.</p>
+								</div>
+							@endforelse
 							</div>
 						</div>
 					</div>
@@ -234,7 +234,76 @@
 					</form>
 				</div>
 			</div>
-		</div>	
+		</div>
+		
+		<div class="modal fade" id="editSubjectModal" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Edit Subject</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<form action="{{ route('combination.update') }}" method="POST">
+						@csrf
+						@method('PUT')
+						<div class="modal-body">
+							<div class="form-group">
+								<label>Select Subject</label>
+								<select class="form-control select2" id="edit_subject_id" name="subject_id" required style="width: 100%;">
+									<option value="" selected disabled>-- Choose Subject --</option>
+									@foreach($school->subjects()->get() as $subject)
+										<option value="{{ $subject->id }}">{{ $subject->name }}</option>
+									@endforeach
+								</select>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+							<button type="submit" class="btn btn-danger">Update Subject</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+		<div class="modal fade" id="deleteSubjectModal" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title text-danger">Delete Subject</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<form action="{{ route('combination.delete') }}" method="POST">
+						@csrf
+						@method('DELETE')
+						<div class="modal-body">
+							<div class="alert alert-warning">
+								<i class="fas fa-exclamation-triangle"></i> 
+								<span class="text-small"><strong>Warning:</strong> This will remove the subject from the school.</span>
+							</div>
+							
+							<div class="form-group">
+								<label>Select Subject</label>
+								<select class="form-control select2" id="delete_subject_id" name="subject_id" required style="width: 100%;">
+									<option value="" selected disabled>-- Choose Subject --</option>
+									@foreach($school->subjects()->get() as $subject)
+										<option value="{{ $subject->id }}">{{ $subject->name }}</option>
+									@endforeach
+								</select>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+							<button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete the subject(s)?')">Delete</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>		
     </div>
 </x-layout>
 
@@ -275,4 +344,5 @@ $(document).ready(function() {
         });
     });
 });
+
 </script>
