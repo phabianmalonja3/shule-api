@@ -18,16 +18,16 @@
 								<div class="card-header-form d-flex justify-content-between align-items-center">
 
 									<button type="button" class="mt-3 mr-3 btn btn-success" data-toggle="modal" data-target="#addCombinationModal">
-										<i class="fas fa-plus"></i> Add Combination
+										<i class="fas fa-plus"></i> Add
 									</button>
 
 									@if(count($school->combinations) > 0)
 										<button type="button" class="mt-3 mr-3 btn btn-info" data-toggle="modal" data-target="#editCombinationModal">
-											<i class="fas fa-edit"></i> Edit Combination
+											<i class="fas fa-edit"></i> Edit
 										</button>
 								
 										<button type="button" class="mt-3 mr-3 btn btn-danger" data-toggle="modal" data-target="#deleteCombinationModal">
-											<i class="fas fa-trash-alt mr-1"></i> Delete Combination
+											<i class="fas fa-trash-alt mr-1"></i> Delete
 										</button>	
 									@endif
 									
@@ -77,11 +77,11 @@
 
 									@if(!empty($school->subjects()->get()) && count($school->subjects()->get()) > 0)
 										<button type="button" class="mt-3 mr-3 btn btn-info" data-toggle="modal" data-target="#editSubjectModal">
-											<i class="fas fa-edit"></i> Edit Subject
+											<i class="fas fa-edit"></i> Edit
 										</button>
 								
 										<button type="button" class="mt-3 mr-3 btn btn-danger" data-toggle="modal" data-target="#deleteSubjectModal">
-											<i class="fas fa-trash-alt mr-1"></i> Delete Subject
+											<i class="fas fa-trash-alt mr-1"></i> Delete
 										</button>	
 									@endif
 									
@@ -115,7 +115,7 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="addCombinationModalLabel">Add</h5>
+						<h5 class="modal-title" id="addCombinationModalLabel">Add Combination</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -164,7 +164,7 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title">Edit</h5>
+						<h5 class="modal-title">Edit Combination</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -203,7 +203,7 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title text-danger">Delete</h5>
+						<h5 class="modal-title text-danger">Delete Combination</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -240,7 +240,7 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title">Edit</h5>
+						<h5 class="modal-title">Edit Subject</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -272,7 +272,7 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title text-danger">Delete</h5>
+						<h5 class="modal-title text-danger">Delete Subject</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
