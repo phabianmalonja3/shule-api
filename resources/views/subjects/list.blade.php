@@ -214,7 +214,7 @@
 						<div class="modal-body">
 							<div class="alert alert-warning">
 								<i class="fas fa-exclamation-triangle"></i> 
-								<span class="text-small"><strong>Warning:</strong> This will remove the combination from the school. Assigned subjects will be detached.</span>
+								<span class="text-small"><strong>Warning:</strong> This will remove the combination from the list.</span>
 							</div>
 							
 							<div class="form-group">
@@ -283,7 +283,7 @@
 						<div class="modal-body">
 							<div class="alert alert-warning">
 								<i class="fas fa-exclamation-triangle"></i> 
-								<span class="text-small"><strong>Warning:</strong> This will remove the selected subject(s) from the school.</span>
+								<span class="text-small"><strong>Warning:</strong> This will remove the selected subject(s) from the list.</span>
 							</div>
 							
 <div class="form-group">
