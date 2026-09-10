@@ -287,21 +287,23 @@
 							</div>
 							
 <div class="form-group">
-    <label class="d-block">Select Subjects</label>
-    
-    @foreach($school->subjects()->get() as $subject)
-        <div class="form-check form-check-inline mb-2">
-            <input class="form-check-input" 
-                   type="checkbox" 
-                   name="subject_id[]" 
-                   id="subject_{{ $subject->id }}" 
-                   value="{{ $subject->id }}">
-            <label class="form-check-input-label ml-1" for="subject_{{ $subject->id }}">
-                {{ $subject->name }}
-            </label>
-        </div>
-    @endforeach
+    <label class="font-weight-bold">Select Subjects</label>
+    <div>
+        @foreach($school->subjects as $subject)
+            <div class="form-check form-check-inline mr-3 mb-2">
+                <input class="form-check-input" 
+                       type="checkbox" 
+                       name="subject_id[]" 
+                       id="subject_{{ $subject->id }}" 
+                       value="{{ $subject->id }}">
+                <label class="form-check-label" for="subject_{{ $subject->id }}">
+                    {{ $subject->name }}
+                </label>
+            </div>
+        @endforeach
+    </div>
 </div>
+
 
 						</div>
 						<div class="modal-footer">
