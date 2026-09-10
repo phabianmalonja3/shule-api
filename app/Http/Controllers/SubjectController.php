@@ -259,7 +259,7 @@ public function index(Request $request)
     $subjects = $school->subjects()
         ->get()
         ->merge($levelSubjects)
-        ->unique('id')     // Remove duplicates if any overlap
+        ->unique('name')     // Remove duplicates if any overlap
         ->sortBy('name')   // Sort alphabetically by name
         ->values();        // Reset collection keys
 
