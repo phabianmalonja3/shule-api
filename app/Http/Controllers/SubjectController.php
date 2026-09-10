@@ -158,13 +158,13 @@ class SubjectController extends Controller
 
 
     	public function updateSchoolSubjects(Request $request)
-	{
+	{dd($request);
 		$request->validate([
-			'combination_id' => 'required|exists:combinations,id',
+			'subject_id' => 'required|exists:combinations,id',
 			'subjects' => 'nullable|array',
 		]);
 
-		$combination = Combination::findOrFail($request->combination_id);
+		$subject = Subject::findOrFail($request->subject_id);
 
 		$generalSubjectNames = [
 			'English Language', 'Business Studies', 'Historia ya Tanzania na Maadili', 
@@ -188,36 +188,32 @@ class SubjectController extends Controller
         return back();
 	}
 
-public function deleteSchoolSubjects(Request $request)
-{
-    $request->validate([
-        'subject_id'   => 'required|array',
-        'subject_id.*' => 'exists:subjects,id'
-    ]);
+    public function deleteSchoolSubjects(Request $request)
+    {
+        $request->validate([
+            'subject_id'   => 'required|array',
+            'subject_id.*' => 'exists:subjects,id'
+        ]);
 
-    $schoolId = Auth::user()->school_id;
+        $schoolId = Auth::user()->school_id;
 
-    // 1. Verify ownership: Only query subjects that belong to this school
-    $subjectsQuery = Subject::whereIn('id', $request->subject_id)
-                            ->where('school_id', $schoolId);
+        $subjectsQuery = Subject::whereIn('id', $request->subject_id)
+                                ->where('school_id', $schoolId);
 
-    // 2. Safety Check: Ensure these subjects aren't actively tied to student combinations
-    // (Adjust 'combinations' or relationship name to match your schema)
-    $hasStudents = Combination::whereHas('subjects', function($q) use ($request) {
-                        $q->whereIn('id', $request->subject_id);
-                   })->whereHas('students')->exists();
+        $hasStudents = Combination::whereHas('subjects', function($q) use ($request) {
+                            $q->whereIn('id', $request->subject_id);
+                    })->whereHas('students')->exists();
 
-    if ($hasStudents) {
-        return back()->with('error', 'Cannot delete because students are enrolled in combinations using these subjects.');
+        if ($hasStudents) {
+            return back()->with('error', 'Cannot delete because students are enrolled in combinations using these subjects.');
+        }
+
+        $subjectsQuery->delete();
+
+        flash()->option('position', 'bottom-right')->success('Selected subjects deleted successfully.');
+
+        return back();
     }
-
-    // 3. Securely execute the delete
-    $subjectsQuery->delete();
-
-    flash()->option('position', 'bottom-right')->success('Selected subjects deleted successfully.');
-
-    return back();
-}
 
 
 
