@@ -277,7 +277,7 @@
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<form action="{{ route('combination.delete') }}" method="POST">
+					<form action="{{ route('schoolSubjects.delete') }}" method="POST">
 						@csrf
 						@method('DELETE')
 						<div class="modal-body">
