@@ -371,3 +371,24 @@ $(document).ready(function() {
 });
 
 </script>
+
+<script>
+$(document).ready(function() {
+    // Listen for changes on the select dropdown
+    $('#edit_subject_id').on('change', function() {
+        // Get the selected option element
+        var selectedOption = $(this).find('option:selected');
+        var subjectName = selectedOption.data('name');
+
+        if ($(this).val()) {
+            // Populate the text box with the subject name
+            $('#edit_subject_name').val(subjectName);
+            // Reveal the text field container by removing Bootstrap's 'd-none' class
+            $('#subject_name_edit_container').removeClass('d-none');
+        } else {
+            // Hide it if no valid subject is chosen
+            $('#subject_name_edit_container').addClass('d-none');
+        }
+    });
+});
+</script>
