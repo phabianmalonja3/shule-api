@@ -72,7 +72,7 @@
 								<div class="card-header-form d-flex justify-content-between align-items-center">
 								
 									<a href="{{ route('subjects.create') }}" class="mt-3 mr-3 btn btn-success">
-										<i class="fas fa-plus"></i> Add Subject
+										<i class="fas fa-plus"></i> Add
 									</a>
 
 									@if(!empty($school->subjects()->get()) && count($school->subjects()->get()) > 0)
@@ -115,7 +115,7 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="addCombinationModalLabel">Add Combination</h5>
+						<h5 class="modal-title" id="addCombinationModalLabel">Add</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -164,7 +164,7 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title">Edit Combination</h5>
+						<h5 class="modal-title">Edit</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -203,7 +203,7 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title text-danger">Delete Combination</h5>
+						<h5 class="modal-title text-danger">Delete</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -240,7 +240,7 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title">Edit Subject</h5>
+						<h5 class="modal-title">Edit</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -272,7 +272,7 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title text-danger">Delete Subject</h5>
+						<h5 class="modal-title text-danger">Delete</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -287,7 +287,7 @@
 							</div>
 							
 <div class="form-group">
-    <label class="font-weight-bold">Select Subjects</label>
+    <label class="font-weight-bold">Choose Subject(s)</label>
     <div>
         @foreach($school->subjects()->get() as $subject)
             <div class="form-check form-check-inline mr-3 mb-2">
