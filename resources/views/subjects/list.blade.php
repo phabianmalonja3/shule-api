@@ -250,34 +250,27 @@
 						@method('PUT')
 						<div class="modal-body">
 <div class="form-group">
-    <label class="font-weight-bold mb-3">Manage Subjects & Names</label>
-    
-    <div class="row">
+    <label for="edit_subject_id">Select Subject</label>
+    <select class="form-control select2" id="edit_subject_id" name="subject_id" required style="width: 100%;">
+        <option value="" selected disabled>-- Choose Subject --</option>
         @foreach($school->subjects()->get() as $subject)
-            <div class="col-md-6 col-lg-4 mb-3">
-                <div class="input-group">
-                    <!-- Checkbox Prepend Area -->
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">
-                            <input type="checkbox" 
-                                   name="subjects[{{ $subject->id }}][selected]" 
-                                   value="1"
-                                   id="edit_subject_{{ $subject->id }}"
-                                   @if(isset($combination) && $combination->subjects->contains($subject->id)) checked @endif>
-                        </div>
-                    </div>
-                    
-                    <!-- Text Input for Editing Name -->
-                    <input type="text" 
-                           name="subjects[{{ $subject->id }}][name]" 
-                           value="{{ old('subjects.'.$subject->id.'.name', $subject->name) }}" 
-                           class="form-control" 
-                           placeholder="Subject Name"
-                           aria-label="Subject Name">
-                </div>
-            </div>
+            <!-- We pass the current name as a data attribute so JavaScript can read it -->
+            <option value="{{ $subject->id }}" data-name="{{ $subject->name }}">
+                {{ $subject->name }}
+            </option>
         @endforeach
-    </div>
+    </select>
+</div>
+
+<!-- This section remains hidden until a subject is selected -->
+<div class="form-group d-none" id="subject_name_edit_container">
+    <label for="edit_subject_name">Edit Subject Name</label>
+    <input type="text" 
+           class="form-control" 
+           id="edit_subject_name" 
+           name="subject_name" 
+           placeholder="Modify subject name here...">
+    <small class="form-text text-muted">Changing this will update the name of the selected subject.</small>
 </div>
 
 						</div>
