@@ -157,36 +157,37 @@ class SubjectController extends Controller
 
 
 
-    	public function updateSchoolSubjects(Request $request)
-	{
-		$request->validate([
-			'subject_id' => 'required|exists:combinations,id',
-			'subjects' => 'nullable|array',
-		]);
+public function updateSchoolSubjects(Request $request)
+{
+    // 1. Validate that the subject exists in the subjects table and the new name is filled
+    $request->validate([
+        'subject_id'   => 'required|exists:subjects,id',
+        'subject_name' => 'required|string|max:255',
+    ]);
 
-		$subject = Subject::findOrFail($request->subject_id);
+    // 2. Secure the query to the logged-in user's school
+    $schoolId = Auth::user()->school_id;
 
-		$generalSubjectNames = [
-			'English Language', 'Business Studies', 'Historia ya Tanzania na Maadili', 
-			'Kiswahili', 'Basic Mathematics', 'Geography'
-		];
-		
-		$generalSubjectIds = Subject::whereIn('name', $generalSubjectNames)->pluck('id')->toArray();
-		$currentAssignedIds = $combination->subjects->pluck('id')->toArray();
-		$newSelectedIds = $request->subjects ?? [];
-		$toRemoveIds = array_diff($currentAssignedIds, $newSelectedIds);
-		$filteredRemovalIds = array_diff($toRemoveIds, $generalSubjectIds);
+    $subject = Subject::where('id', $request->subject_id)
+                      ->where('school_id', $schoolId)
+                      ->first();
 
-		if (!empty($filteredRemovalIds)) {
-			$combination->subjects()->detach($filteredRemovalIds);
-		}
-
-		$combination->subjects()->syncWithoutDetaching($newSelectedIds);
-		
-        flash()->option('position', 'bottom-right')->success('Combination updated successfully.');
-
+    // 3. Fallback check if someone tampered with the ID or it doesn't belong to this school
+    if (!$subject) {
+        flash()->option('position', 'bottom-right')->error('Subject not found or unauthorized.');
         return back();
-	}
+    }
+
+    // 4. Update the subject name with the new text string
+    $subject->update([
+        'name' => $request->subject_name
+    ]);
+    
+    flash()->option('position', 'bottom-right')->success('Subject updated successfully.');
+
+    return back();
+}
+
 
     public function deleteSchoolSubjects(Request $request)
     {
