@@ -158,7 +158,7 @@ class SubjectController extends Controller
 
 
     	public function updateSchoolSubjects(Request $request)
-	{dd($request);
+	{
 		$request->validate([
 			'subject_id' => 'required|exists:combinations,id',
 			'subjects' => 'nullable|array',

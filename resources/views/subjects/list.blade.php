@@ -249,15 +249,37 @@
 						@csrf
 						@method('PUT')
 						<div class="modal-body">
-							<div class="form-group">
-								<label>Select Subject</label>
-								<select class="form-control select2" id="edit_subject_id" name="subject_id" required style="width: 100%;">
-									<option value="" selected disabled>-- Choose Subject --</option>
-									@foreach($school->subjects()->get() as $subject)
-										<option value="{{ $subject->id }}">{{ $subject->name }}</option>
-									@endforeach
-								</select>
-							</div>
+<div class="form-group">
+    <label class="font-weight-bold mb-3">Manage Subjects & Names</label>
+    
+    <div class="row">
+        @foreach($school->subjects as $subject)
+            <div class="col-md-6 col-lg-4 mb-3">
+                <div class="input-group">
+                    <!-- Checkbox Prepend Area -->
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="checkbox" 
+                                   name="subjects[{{ $subject->id }}][selected]" 
+                                   value="1"
+                                   id="edit_subject_{{ $subject->id }}"
+                                   @if(isset($combination) && $combination->subjects->contains($subject->id)) checked @endif>
+                        </div>
+                    </div>
+                    
+                    <!-- Text Input for Editing Name -->
+                    <input type="text" 
+                           name="subjects[{{ $subject->id }}][name]" 
+                           value="{{ old('subjects.'.$subject->id.'.name', $subject->name) }}" 
+                           class="form-control" 
+                           placeholder="Subject Name"
+                           aria-label="Subject Name">
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div>
+
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
