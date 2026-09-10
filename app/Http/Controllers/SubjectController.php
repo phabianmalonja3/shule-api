@@ -154,6 +154,65 @@ class SubjectController extends Controller
         return back();
 	}
 	
+
+
+
+    	public function updateSchoolSubjects(Request $request)
+	{
+		$request->validate([
+			'combination_id' => 'required|exists:combinations,id',
+			'subjects' => 'nullable|array',
+		]);
+
+		$combination = Combination::findOrFail($request->combination_id);
+
+		$generalSubjectNames = [
+			'English Language', 'Business Studies', 'Historia ya Tanzania na Maadili', 
+			'Kiswahili', 'Basic Mathematics', 'Geography'
+		];
+		
+		$generalSubjectIds = Subject::whereIn('name', $generalSubjectNames)->pluck('id')->toArray();
+		$currentAssignedIds = $combination->subjects->pluck('id')->toArray();
+		$newSelectedIds = $request->subjects ?? [];
+		$toRemoveIds = array_diff($currentAssignedIds, $newSelectedIds);
+		$filteredRemovalIds = array_diff($toRemoveIds, $generalSubjectIds);
+
+		if (!empty($filteredRemovalIds)) {
+			$combination->subjects()->detach($filteredRemovalIds);
+		}
+
+		$combination->subjects()->syncWithoutDetaching($newSelectedIds);
+		
+        flash()->option('position', 'bottom-right')->success('Combination updated successfully.');
+
+        return back();
+	}
+
+public function deleteSchoolSubjects(Request $request)
+{
+    // 1. Validate that 'subject_id' is an array and the IDs exist in the database
+    $request->validate([
+        'subject_id'   => 'required|array',
+        'subject_id.*' => 'exists:subjects,id'
+    ]);
+
+    $schoolId = Auth::user()->school_id;
+    $school = School::findOrFail($schoolId);
+
+    // 2. Loop through each selected subject and check if students are enrolled
+    // Note: This assumes you have a relationship setup or need to check across combinations.
+    // If you are deleting a specific Combination containing these subjects, we need its ID.
+    
+    // 3. Detach the selected subjects from the school
+    $school->subjects()->detach($request->subject_id);
+
+    flash()->option('position', 'bottom-right')->success('Selected subjects deleted successfully.');
+
+    return back();
+}
+
+
+
     public function edit(Request $request, $id)
     {
         // Get the currently authenticated user's school ID

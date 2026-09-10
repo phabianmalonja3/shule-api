@@ -155,7 +155,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/combinations/{id}/subjects', [SubjectController::class, 'getSubjects']);
 Route::put('/combination/update', [SubjectController::class, 'updateCombination'])->name('combination.update');
 Route::delete('combination/delete', [SubjectController::class, 'deleteCombination'])->name('combination.delete');
-Route::put('/schoolSubjects/update', [SubjectController::class, 'updateschoolSubjects'])->name('schoolSubjects.update');
+Route::put('/schoolSubjects/update', [SubjectController::class, 'updateSchoolSubjects'])->name('schoolSubjects.update');
 Route::delete('schoolSubjects/delete', [SubjectController::class, 'deleteSchoolSubjects'])->name('schoolSubjects.delete');
 
     Route::post('/timetable/store/{class_id}', [TimeTableController::class, 'store'])->name('timetable.store');
