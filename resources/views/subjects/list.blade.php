@@ -76,7 +76,7 @@
                     <i class="fas fa-plus"></i> Add
                 </a>
 
-                @if($school->subjects()->get()->isNotEmpty())
+                @if($school->subjects->isNotEmpty())
                     <button type="button" class="btn btn-info mr-1" data-toggle="modal" data-target="#editSubjectModal">
                         <i class="fas fa-edit"></i> Edit
                     </button>
@@ -90,18 +90,25 @@
     </div>
 
     <div class="card-body p-3">
+        @php
+            $schoolSubjectIds = $school->subjects()->get()->pluck('id')->toArray();
+        @endphp
+
         @forelse($school->subjects()->get()->chunk(4) as $subjectRow)
             <div class="row mb-3 pl-3">
                 @foreach($subjectRow as $subject)
+                    @php
+                        $isSchoolSubject = in_array($subject->id, $schoolSubjectIds);
+                    @endphp
                     <div class="col-md-3 col-sm-6 mb-2 d-flex align-items-center">
-                        <i class="fas fa-circle mr-2 text-danger" style="font-size: 8px;"></i>
+                        <i class="fas fa-circle mr-2 {{ $isSchoolSubject ? 'text-danger' : 'text-secondary' }}" style="font-size: 8px;"></i>
                         <span>{{ $subject->name }}</span>
                     </div>
                 @endforeach
             </div>
         @empty
             <div class="text-center py-4 text-muted">
-                <p class="mb-0">No subjects found for this school.</p>
+                <p class="mb-0">No subjects found.</p>
             </div>
         @endforelse
     </div>
