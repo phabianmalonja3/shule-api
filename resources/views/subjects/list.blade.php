@@ -90,7 +90,7 @@
     </div>
 
     <div class="card-body p-3">
-        @forelse($subjects()->get()->chunk(4) as $subjectRow)
+        @forelse($school->subjects()->get()->chunk(4) as $subjectRow)
             <div class="row mb-3 pl-3">
                 @foreach($subjectRow as $subject)
                     <div class="col-md-3 col-sm-6 mb-2 d-flex align-items-center">
