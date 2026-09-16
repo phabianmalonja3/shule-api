@@ -258,15 +258,15 @@ document.addEventListener('DOMContentLoaded', function () {
         
         // Now, you must also ensure Primary is checked and O/A-Levels are unchecked 
         // to handle the case where the user deletes 'Secondary' from the name.
-        if (primaryCheckbox) {
-            primaryCheckbox.closest('.form-check').style.display = 'inline-block';
-            primaryCheckbox.checked = true; // Force Primary selection
-        }
+        // if (primaryCheckbox) {
+        //     primaryCheckbox.closest('.form-check').style.display = 'inline-block';
+        //     primaryCheckbox.checked = true; // Force Primary selection
+        // }
         
-        otherCheckboxes.forEach(checkbox => {
-            checkbox.closest('.form-check').style.display = 'none';
-            checkbox.checked = false; // Force O/A-Level uncheck
-        });
+        // otherCheckboxes.forEach(checkbox => {
+        //     checkbox.closest('.form-check').style.display = 'none';
+        //     checkbox.checked = false; // Force O/A-Level uncheck
+        // });
             
             if (primaryCheckbox) {
                 primaryCheckbox.closest('.form-check').style.display = 'inline-block';
