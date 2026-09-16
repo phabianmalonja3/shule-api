@@ -76,7 +76,7 @@
                     <i class="fas fa-plus"></i> Add
                 </a>
 
-                @if($school->subjects->isNotEmpty())
+                @if($school->subjects()->get()->isNotEmpty())
                     <button type="button" class="btn btn-info mr-1" data-toggle="modal" data-target="#editSubjectModal">
                         <i class="fas fa-edit"></i> Edit
                     </button>
@@ -90,7 +90,7 @@
     </div>
 
     <div class="card-body p-3">
-        @forelse($subjects->chunk(4) as $subjectRow)
+        @forelse($subjects()->get()->chunk(4) as $subjectRow)
             <div class="row mb-3 pl-3">
                 @foreach($subjectRow as $subject)
                     <div class="col-md-3 col-sm-6 mb-2 d-flex align-items-center">
