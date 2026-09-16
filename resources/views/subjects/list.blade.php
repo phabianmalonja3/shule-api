@@ -76,7 +76,7 @@
                     <i class="fas fa-plus"></i> Add
                 </a>
 
-                @if($school->subjects->isNotEmpty())
+                @if($school->subjects()->get()->isNotEmpty())
                     <button type="button" class="btn btn-info mr-1" data-toggle="modal" data-target="#editSubjectModal">
                         <i class="fas fa-edit"></i> Edit
                     </button>
