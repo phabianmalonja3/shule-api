@@ -101,7 +101,7 @@
                         $isSchoolSubject = in_array($subject->id, $schoolSubjectIds);
                     @endphp
                     <div class="col-md-3 col-sm-6 mb-2 d-flex align-items-center">
-                        <i class="fas fa-circle mr-2 {{ $isSchoolSubject ? 'text-danger' : 'text-secondary' }}" style="font-size: 8px;"></i>
+                        <i class="fas fa-circle mr-2 {{ $isSchoolSubject ? 'text-danger' : 'text-info' }}" style="font-size: 8px;"></i>
                         <span>{{ $subject->name }}</span>
                     </div>
                 @endforeach
