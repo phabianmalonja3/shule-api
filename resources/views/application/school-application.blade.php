@@ -223,60 +223,73 @@ document.addEventListener('DOMContentLoaded', function () {
         schoolIndex = allBlocks.length > 0 ? allBlocks.length - 1 : 0; 
     }
 
-function manageSchoolLevel(inputElement) {
-    const schoolName = inputElement.value.trim().toLowerCase();
-    const parentBlock = inputElement.closest('.school-fields');
-    if (!parentBlock) return;
+    function manageSchoolLevel(inputElement) {
+        const schoolName = inputElement.value.toLowerCase();
+        const parentBlock = inputElement.closest('.school-fields');
+        if (!parentBlock) return;
 
-    const schoolLevelContainer = parentBlock.querySelector('.school-level-container');
-    const sponsorshipContainer = parentBlock.querySelector('.sponsorship-type-container');
-    const primaryCheckbox = parentBlock.querySelector('input[value="Primary"]');
-    const otherCheckboxes = parentBlock.querySelectorAll('input[value="O-Level"], input[value="A-Level"]');
-    const sponsorshipFormGroup = sponsorshipContainer ? sponsorshipContainer.closest('.form-group') : null;
+        const schoolLevelContainer = parentBlock.querySelector('.school-level-container');
+        const sponsorshipContainer = parentBlock.querySelector('.sponsorship-type-container');
+        const primaryCheckbox = parentBlock.querySelector('input[value="Primary"]');
+        const otherCheckboxes = parentBlock.querySelectorAll('input[value="O-Level"], input[value="A-Level"]');
+        const sponsorshipFormGroup = sponsorshipContainer ? sponsorshipContainer.closest('.form-group') : null;
 
-    const isGroup = document.getElementById('groupOfSchools').checked;
-    const isSecondary = /secondary|high|sekondari/i.test(schoolName);
+        const isGroup = document.getElementById('groupOfSchools').checked;
+        const isSecondary = schoolName.includes('secondary') || schoolName.includes('high') || schoolName.includes('sekondari');
 
-    if (isSecondary) {
-        // Show Level Options for Secondary
-        schoolLevelContainer.style.display = 'block';
+        if (isSecondary) {
+            schoolLevelContainer.style.display = 'block';
+            if (primaryCheckbox) {
+                primaryCheckbox.closest('.form-check').style.display = 'none';
+                primaryCheckbox.checked = false;
+            }
+            
+            otherCheckboxes.forEach(checkbox => {
+                checkbox.closest('.form-check').style.display = 'inline-block';
+            });
 
-        if (primaryCheckbox) {
-            primaryCheckbox.closest('.form-check').style.display = 'none';
-            primaryCheckbox.checked = false;
-        }
+            if (sponsorshipFormGroup) {
+                sponsorshipFormGroup.classList.remove('col-lg-12');
+                sponsorshipFormGroup.classList.add('col-lg-6');
+            }
+        } else {
 
-        otherCheckboxes.forEach(checkbox => {
-            checkbox.closest('.form-check').style.display = 'inline-block';
-        });
-
-        if (sponsorshipFormGroup) {
-            sponsorshipFormGroup.classList.remove('col-lg-12');
-            sponsorshipFormGroup.classList.add('col-lg-6');
-        }
-    } else {
-        // Primary / Default Case
+            schoolLevelContainer.style.display = 'none'; 
+        
+        // Now, you must also ensure Primary is checked and O/A-Levels are unchecked 
+        // to handle the case where the user deletes 'Secondary' from the name.
         if (primaryCheckbox) {
             primaryCheckbox.closest('.form-check').style.display = 'inline-block';
-            primaryCheckbox.checked = true; // Default to Primary selected
+            primaryCheckbox.checked = true; // Force Primary selection
         }
-
+        
         otherCheckboxes.forEach(checkbox => {
-            checkbox.closest('.form-check').style.display = isGroup ? 'inline-block' : 'none';
-            if (!isGroup) {
-                checkbox.checked = false;
-            }
+            checkbox.closest('.form-check').style.display = 'none';
+            checkbox.checked = false; // Force O/A-Level uncheck
         });
+            
+            if (primaryCheckbox) {
+                primaryCheckbox.closest('.form-check').style.display = 'inline-block';
 
-        // Hide level container entirely for non-secondary single school registrations
-        schoolLevelContainer.style.display = (isGroup || schoolName.length > 0) ? 'block' : 'none';
+                if (!isGroup || schoolName.length === 0) {
+                    primaryCheckbox.checked = true;
+                }
+            }
+            
+            otherCheckboxes.forEach(checkbox => {
+                checkbox.closest('.form-check').style.display = isGroup ? 'inline-block' : 'none';
 
-        if (sponsorshipFormGroup) {
-            sponsorshipFormGroup.classList.remove('col-lg-6');
-            sponsorshipFormGroup.classList.add('col-lg-12');
-        }
-    }
-}
+                if (!isGroup || schoolName.length === 0) {
+                    checkbox.checked = false; 
+                }
+            });
+            
+            if (sponsorshipFormGroup) {
+                sponsorshipFormGroup.classList.remove('col-lg-6');
+                sponsorshipFormGroup.classList.add('col-lg-12');
+            }
+        }
+    }
 
     function updateFieldAttributes(clonedElement, index, resetValue = true) {
         clonedElement.querySelectorAll('input, select, textarea, label').forEach(element => {
