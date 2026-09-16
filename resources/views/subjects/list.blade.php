@@ -94,7 +94,7 @@
             $schoolSubjectIds = $school->subjects()->get()->pluck('id')->toArray();
         @endphp
 
-        @forelse($school->subjects()->get()->chunk(4) as $subjectRow)
+        @forelse($subjects->chunk(4) as $subjectRow)
             <div class="row mb-3 pl-3">
                 @foreach($subjectRow as $subject)
                     @php
