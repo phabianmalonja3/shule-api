@@ -66,47 +66,46 @@
 							</div>
 						</div>
 						@endif
-						<div class="card">
-							<div class="card-header">
-								<h4> Subjects</h4>
-								@role('academic teacher')
-								<div class="card-header-form d-flex justify-content-between align-items-center">
-								
-									<a href="{{ route('subjects.create') }}" class="mt-3 mr-3 btn btn-success">
-										<i class="fas fa-plus"></i> Add
-									</a>
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">Subjects</h4>
 
-									@if(!empty($school->subjects()->get()) && count($school->subjects()->get()) > 0)
-										<button type="button" class="mt-3 mr-3 btn btn-info" data-toggle="modal" data-target="#editSubjectModal">
-											<i class="fas fa-edit"></i> Edit
-										</button>
-								
-										<button type="button" class="mt-3 mr-3 btn btn-danger" data-toggle="modal" data-target="#deleteSubjectModal">
-											<i class="fas fa-trash-alt mr-1"></i> Delete
-										</button>	
-									@endif
-									
-								</div>
-								@endrole
-							</div>
+        @role('academic teacher')
+            <div class="card-header-action">
+                <a href="{{ route('subjects.create') }}" class="btn btn-success mr-1">
+                    <i class="fas fa-plus"></i> Add
+                </a>
 
-							<div class="card-body p-3">
-							@forelse($subjects->chunk(4) as $subjectRow)
-								<div class="row mb-3">
-									@foreach($subjectRow as $subject)
-										<div class="col-md-3 col-sm-6 mb-2 d-flex align-items-center">
-											<i class="fas fa-circle mr-2" style="font-size: 8px; color: #6777ef;"></i>
-											<span>{{ $subject->name }}</span>
-										</div>
-									@endforeach
-								</div>
-							@empty
-								<div class="text-center py-4">
-									<p>No subjects found for this school.</p>
-								</div>
-							@endforelse
-							</div>
-						</div>
+                @if($school->subjects->isNotEmpty())
+                    <button type="button" class="btn btn-info mr-1" data-toggle="modal" data-target="#editSubjectModal">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteSubjectModal">
+                        <i class="fas fa-trash-alt mr-1"></i> Delete
+                    </button>   
+                @endif
+            </div>
+        @endrole
+    </div>
+
+    <div class="card-body p-3">
+        @forelse($subjects->chunk(4) as $subjectRow)
+            <div class="row mb-3 pl-3">
+                @foreach($subjectRow as $subject)
+                    <div class="col-md-3 col-sm-6 mb-2 d-flex align-items-center">
+                        <i class="fas fa-circle mr-2 text-danger" style="font-size: 8px;"></i>
+                        <span>{{ $subject->name }}</span>
+                    </div>
+                @endforeach
+            </div>
+        @empty
+            <div class="text-center py-4 text-muted">
+                <p class="mb-0">No subjects found for this school.</p>
+            </div>
+        @endforelse
+    </div>
+</div>
 					</div>
 
                 </div>
