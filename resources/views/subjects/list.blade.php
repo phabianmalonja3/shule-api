@@ -11,6 +11,7 @@
             <div class="section-body">
                 <div class="row">
 					<div class="col-12">
+						@if(in_array('O-Level', $school->school_type) || in_array('A-Level', $school->school_type))
 						<div class="card">
 							<div class="card-header">
 								<h4> Combinations</h4>
@@ -64,7 +65,7 @@
 								@endforelse
 							</div>
 						</div>
-
+						@endif
 						<div class="card">
 							<div class="card-header">
 								<h4> Subjects</h4>
@@ -249,29 +250,29 @@
 						@csrf
 						@method('PUT')
 						<div class="modal-body">
-<div class="form-group">
-    <label for="edit_subject_id">Select Subject</label>
-    <select class="form-control select2" id="edit_subject_id" name="subject_id" required style="width: 100%;">
-        <option value="" selected disabled>-- Choose Subject --</option>
-        @foreach($school->subjects()->get() as $subject)
-            <!-- We pass the current name as a data attribute so JavaScript can read it -->
-            <option value="{{ $subject->id }}" data-name="{{ $subject->name }}">
-                {{ $subject->name }}
-            </option>
-        @endforeach
-    </select>
-</div>
+							<div class="form-group">
+								<label for="edit_subject_id">Select Subject</label>
+								<select class="form-control select2" id="edit_subject_id" name="subject_id" required style="width: 100%;">
+									<option value="" selected disabled>-- Choose Subject --</option>
+									@foreach($school->subjects()->get() as $subject)
+										<!-- We pass the current name as a data attribute so JavaScript can read it -->
+										<option value="{{ $subject->id }}" data-name="{{ $subject->name }}">
+											{{ $subject->name }}
+										</option>
+									@endforeach
+								</select>
+							</div>
 
-<!-- This section remains hidden until a subject is selected -->
-<div class="form-group d-none" id="subject_name_edit_container">
-    <label for="edit_subject_name">Edit Subject Name</label>
-    <input type="text" 
-           class="form-control" 
-           id="edit_subject_name" 
-           name="subject_name" 
-           placeholder="Modify subject name here...">
-    <small class="form-text text-muted">Changing this will update the name of the selected subject.</small>
-</div>
+							<!-- This section remains hidden until a subject is selected -->
+							<div class="form-group d-none" id="subject_name_edit_container">
+								<label for="edit_subject_name">Edit Subject Name</label>
+								<input type="text" 
+									class="form-control" 
+									id="edit_subject_name" 
+									name="subject_name" 
+									placeholder="Modify subject name here...">
+								<small class="form-text text-muted">Changing this will update the name of the selected subject.</small>
+							</div>
 
 						</div>
 						<div class="modal-footer">
