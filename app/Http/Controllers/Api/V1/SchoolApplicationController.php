@@ -74,8 +74,8 @@ class SchoolApplicationController extends Controller
     }
 
     public function create(Request $request){
-              return Combination::get();
-        return view('application.school-application');
+        $combinations = Combination::get();
+        return view('application.school-application',compact('combinations'));
     }
 
     public function store(Request $request)
