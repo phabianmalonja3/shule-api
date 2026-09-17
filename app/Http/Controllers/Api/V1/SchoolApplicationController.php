@@ -74,6 +74,7 @@ class SchoolApplicationController extends Controller
     }
 
     public function create(Request $request){
+              return Combination::get();
         return view('application.school-application');
     }
 
@@ -178,7 +179,6 @@ class SchoolApplicationController extends Controller
     public function show(SchoolApplication $application)
     {
         $school = School::where('name',  $application->school_name)->first();
-        return Combination::get();
         return view('application.application-show',compact('application','school'));
     }
 
