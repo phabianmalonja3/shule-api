@@ -373,7 +373,8 @@ document.addEventListener('DOMContentLoaded', function () {
              schoolNameInput.addEventListener('input', (event) => manageSchoolLevel(event.target));
         }
 
-
+const oLevelCheckbox = clonedElement.querySelector('input[value="O-Level"]');
+const aLevelCheckbox = clonedElement.querySelector('input[value="A-Level"]');
 
 if (oLevelCheckbox) {
     oLevelCheckbox.addEventListener('change', function () {
