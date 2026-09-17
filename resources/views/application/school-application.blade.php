@@ -374,6 +374,22 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
 
+
+if (oLevelCheckbox) {
+    oLevelCheckbox.addEventListener('change', function () {
+        toggleCombinationsVisibility(clonedElement);
+    });
+}
+
+if (aLevelCheckbox) {
+    aLevelCheckbox.addEventListener('change', function () {
+        toggleCombinationsVisibility(clonedElement);
+    });
+}
+
+// Initial check state evaluation for pre-loaded forms
+toggleCombinationsVisibility(clonedElement);
+
         const regionSelect = clonedElement.querySelector('select[name*="[region]"]');
         if (regionSelect) {
             regionSelect.onchange = () => fetchDistricts(regionSelect.id, `district_${index}`, `ward_${index}`);
