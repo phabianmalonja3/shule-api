@@ -112,7 +112,7 @@
     <div class="row">
         <!-- Add your O-Level checkboxes/select options here -->
 @foreach($combinations as $combination)
-    @if($combination->level == 'O-Level')
+    @if($combination->level == 'O-Level' && $combination->id != 1)
             <div class="col-md-3 mb-2">
                 <div class="form-check">
                     <input class="form-check-input" 
