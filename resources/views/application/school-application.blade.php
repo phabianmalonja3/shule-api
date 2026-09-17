@@ -94,6 +94,18 @@
                                             </div>
 
                                         </div>
+                                        
+                                        <div class="form-group col-lg-6 col-12 sponsorship-type-container" id="sponsorshipContainer_0">
+                                            <label>Sponsorship Type</label><br>
+                                            <div class="form-check form-check-inline">
+                                                <input type="radio" class="form-check-input" id="government_0" name="schools[0][sponsorship_type]" value="Government" {{ old('schools.0.sponsorship_type')=='Government' ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="government_0">Government</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type="radio" class="form-check-input" id="private_0" name="schools[0][sponsorship_type]" value="Private" {{ old('schools.0.sponsorship_type')=='Private' ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="private_0">Private</label>
+                                            </div>
+                                        </div>
                                                                                     <!-- O-Level Combinations / Subjects Container -->
 <div class="o-level-combinations-container mt-3" style="display: none;">
     <label class="font-weight-bold">O-Level Combinations:</label>
@@ -130,17 +142,6 @@
         </div>
     </div>
 </div>
-                                        <div class="form-group col-lg-6 col-12 sponsorship-type-container" id="sponsorshipContainer_0">
-                                            <label>Sponsorship Type</label><br>
-                                            <div class="form-check form-check-inline">
-                                                <input type="radio" class="form-check-input" id="government_0" name="schools[0][sponsorship_type]" value="Government" {{ old('schools.0.sponsorship_type')=='Government' ? 'checked' : '' }}>
-                                                <label class="form-check-label" for="government_0">Government</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input type="radio" class="form-check-input" id="private_0" name="schools[0][sponsorship_type]" value="Private" {{ old('schools.0.sponsorship_type')=='Private' ? 'checked' : '' }}>
-                                                <label class="form-check-label" for="private_0">Private</label>
-                                            </div>
-                                        </div>
                                     </div>
                                     <div class="headteacher-fields">
                                         <h6 class="mb-4" style="border-bottom: 2px solid #007bff; padding-bottom: 10px;">
