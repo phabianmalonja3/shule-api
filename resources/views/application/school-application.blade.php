@@ -92,6 +92,44 @@
                                                     <label class="form-check-label" for="A-level_0">A-level</label>
                                                 </div>
                                             </div>
+
+                                            <!-- O-Level Combinations / Subjects Container -->
+<div class="o-level-combinations-container mt-3" style="display: none;">
+    <label class="font-weight-bold">O-Level Combinations:</label>
+    <div class="row">
+        <!-- Add your O-Level checkboxes/select options here -->
+        <div class="col-md-3">
+            <input type="checkbox" name="schools[0][o_level_subjects][]" value="Mathematics"> Mathematics
+        </div>
+        <div class="col-md-3">
+            <input type="checkbox" name="schools[0][o_level_subjects][]" value="English"> English
+        </div>
+        <div class="col-md-3">
+            <input type="checkbox" name="schools[0][o_level_subjects][]" value="Biology"> Biology
+        </div>
+    </div>
+</div>
+
+<!-- A-Level Combinations Container -->
+<div class="a-level-combinations-container mt-3" style="display: none;">
+    <label class="font-weight-bold">A-Level Combinations:</label>
+    <div class="row">
+        <!-- Add your A-Level combination options here -->
+        <div class="col-md-3">
+            <input type="checkbox" name="schools[0][a_level_combinations][]" value="PCM"> PCM (Physics, Chemistry, Math)
+        </div>
+        <div class="col-md-3">
+            <input type="checkbox" name="schools[0][a_level_combinations][]" value="PCB"> PCB (Physics, Chemistry, Biology)
+        </div>
+        <div class="col-md-3">
+            <input type="checkbox" name="schools[0][a_level_combinations][]" value="CBG"> CBG (Chemistry, Biology, Geography)
+        </div>
+        <div class="col-md-3">
+            <input type="checkbox" name="schools[0][a_level_combinations][]" value="HGL"> HGL (History, Geography, Language)
+        </div>
+    </div>
+</div>
+
                                         </div>
                                         <div class="form-group col-lg-6 col-12 sponsorship-type-container" id="sponsorshipContainer_0">
                                             <label>Sponsorship Type</label><br>
@@ -138,52 +176,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- School Level Checkboxes -->
-<div class="form-check form-check-inline">
-    <input class="form-check-input school-level-checkbox" type="checkbox" name="schools[0][school_type][]" id="o_level_0" value="O-Level">
-    <label class="form-check-label" for="o_level_0">O-Level</label>
-</div>
-<div class="form-check form-check-inline">
-    <input class="form-check-input school-level-checkbox" type="checkbox" name="schools[0][school_type][]" id="a_level_0" value="A-Level">
-    <label class="form-check-label" for="a_level_0">A-Level</label>
-</div>
 
-<!-- O-Level Combinations / Subjects Container -->
-<div class="o-level-combinations-container mt-3" style="display: none;">
-    <label class="font-weight-bold">O-Level Combinations:</label>
-    <div class="row">
-        <!-- Add your O-Level checkboxes/select options here -->
-        <div class="col-md-3">
-            <input type="checkbox" name="schools[0][o_level_subjects][]" value="Mathematics"> Mathematics
-        </div>
-        <div class="col-md-3">
-            <input type="checkbox" name="schools[0][o_level_subjects][]" value="English"> English
-        </div>
-        <div class="col-md-3">
-            <input type="checkbox" name="schools[0][o_level_subjects][]" value="Biology"> Biology
-        </div>
-    </div>
-</div>
-
-<!-- A-Level Combinations Container -->
-<div class="a-level-combinations-container mt-3" style="display: none;">
-    <label class="font-weight-bold">A-Level Combinations:</label>
-    <div class="row">
-        <!-- Add your A-Level combination options here -->
-        <div class="col-md-3">
-            <input type="checkbox" name="schools[0][a_level_combinations][]" value="PCM"> PCM (Physics, Chemistry, Math)
-        </div>
-        <div class="col-md-3">
-            <input type="checkbox" name="schools[0][a_level_combinations][]" value="PCB"> PCB (Physics, Chemistry, Biology)
-        </div>
-        <div class="col-md-3">
-            <input type="checkbox" name="schools[0][a_level_combinations][]" value="CBG"> CBG (Chemistry, Biology, Geography)
-        </div>
-        <div class="col-md-3">
-            <input type="checkbox" name="schools[0][a_level_combinations][]" value="HGL"> HGL (History, Geography, Language)
-        </div>
-    </div>
-</div>
                                 </div>
                             </div>
                             <div class="form-group d-flex mt-4">
@@ -380,23 +373,6 @@ document.addEventListener('DOMContentLoaded', function () {
              schoolNameInput.addEventListener('input', (event) => manageSchoolLevel(event.target));
         }
 
-const oLevelCheckbox = clonedElement.querySelector('input[value="O-Level"]');
-const aLevelCheckbox = clonedElement.querySelector('input[value="A-Level"]');
-
-if (oLevelCheckbox) {
-    oLevelCheckbox.addEventListener('change', function () {
-        toggleCombinationsVisibility(clonedElement);
-    });
-}
-
-if (aLevelCheckbox) {
-    aLevelCheckbox.addEventListener('change', function () {
-        toggleCombinationsVisibility(clonedElement);
-    });
-}
-
-// Initial check state evaluation for pre-loaded forms
-toggleCombinationsVisibility(clonedElement);
 
         const regionSelect = clonedElement.querySelector('select[name*="[region]"]');
         if (regionSelect) {
