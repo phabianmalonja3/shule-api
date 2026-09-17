@@ -93,7 +93,8 @@
                                                 </div>
                                             </div>
 
-                                            <!-- O-Level Combinations / Subjects Container -->
+                                        </div>
+                                                                                    <!-- O-Level Combinations / Subjects Container -->
 <div class="o-level-combinations-container mt-3" style="display: none;">
     <label class="font-weight-bold">O-Level Combinations:</label>
     <div class="row">
@@ -129,8 +130,6 @@
         </div>
     </div>
 </div>
-
-                                        </div>
                                         <div class="form-group col-lg-6 col-12 sponsorship-type-container" id="sponsorshipContainer_0">
                                             <label>Sponsorship Type</label><br>
                                             <div class="form-check form-check-inline">
