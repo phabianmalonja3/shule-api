@@ -174,7 +174,6 @@ DB::transaction(function () use ($registrationType, $schoolCount, $request, $sch
         $aLevelCombs = $school['a_level_combinations'] ?? [];
         $mergedCombinations = array_values(array_merge($oLevelCombs, $aLevelCombs));
 
-        dd($mergedCombinations);
         SchoolApplication::create([
             'generic_school_id' => $genericSchoolID,
             'school_name' => ucwords(strtolower($school['school_name'])),
