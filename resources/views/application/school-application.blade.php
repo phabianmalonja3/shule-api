@@ -113,20 +113,17 @@
                                                 <!-- Add your O-Level checkboxes/select options here -->
                                                 @foreach($combinations as $combination)
                                                     @if($combination->level == 'O-Level' && $combination->id != 1)
-<div class="col-md-3 col-sm-4 col-6 mb-2">
-                        <div class="form-check d-flex align-items-center">
-                            <input type="checkbox" 
-                                   name="schools[0][o_level_combinations][]" 
-                                   id="o_comb_0_{{ $combination->id }}" 
-                                   value="{{ $combination->id }}">
-                            <label class="form-check-label text-truncate" 
-                                   for="o_comb_0_{{ $combination->id }}" 
-                                   title="{{ $combination->name }}"
-                                   style="max-width: 100%; cursor: pointer;">
-                                {{ $combination->name }}
-                            </label>
-                        </div>
-                    </div>
+                                                            <div class="col-md-3 mb-2">
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" 
+                                                                        name="schools[0][o_level_combinations][]" 
+                                                                        id="o_comb_0_{{ $combination->id }}" 
+                                                                        value="{{ $combination->id }}">
+                                                                    <label class="form-check-label" for="o_comb_0_{{ $combination->id }}">
+                                                                        {{ $combination->name }}
+                                                                    </label>
+                                                                </div>
+                                                            </div>
                                                     @endif
                                                 @endforeach
                                             </div>
