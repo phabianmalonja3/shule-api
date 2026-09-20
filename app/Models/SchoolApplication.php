@@ -14,6 +14,7 @@ class SchoolApplication extends Model
         'postal_code',    // Add postal code to fillable fields
         'city',           // Add city to fillable fields
         'school_type',
+        'combinations',
         'fullname',
         'registration_number',
         'first_name',
@@ -28,6 +29,8 @@ class SchoolApplication extends Model
     ];
 
     protected $casts = [
+        'school_type' => 'array',
+        'combinations' => 'array',
         'location' => 'array',
     ];
 }
