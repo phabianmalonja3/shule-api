@@ -8,8 +8,7 @@
             <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h4>Register a School</h4> 
-                        <span class="text-muted" style="font-size: .85em;"> (If you have already registered your school, DO NOT register it again. Call us on +255(0) 760 400 200.)</span>
+                        <h4>Register a School</h4> <span class="text-muted" style="font-size: .85em;"> (If you have already registered your school, DO NOT register it again. Call us on +255(0) 760 400 200.)</span>
                     </div>
                     <div class="card-body">
 
@@ -34,8 +33,7 @@
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input type="radio" class="form-check-input" id="groupOfSchools" name="registration_type" value="group">
-                                    <label class="form-check-label" for="groupOfSchools" style="margin-right:-12px">Group of Schools</label>
-                                    <span class="text-muted">(Under one Ownership)</span>
+                                    <label class="form-check-label" for="groupOfSchools" style="margin-right:-12px">Group of Schools</label><span class="text-muted">(Under one Ownership)</span>
                                 </div>
                             </div>
 
@@ -94,6 +92,7 @@
                                                     <label class="form-check-label" for="A-level_0">A-level</label>
                                                 </div>
                                             </div>
+
                                         </div>
                                         
                                         <div class="form-group col-lg-6 col-12 sponsorship-type-container" id="sponsorshipContainer_0">
@@ -107,63 +106,51 @@
                                                 <label class="form-check-label" for="private_0">Private</label>
                                             </div>
                                         </div>
-
-<!-- O-Level Combinations Container -->
-<div class="o-level-combinations-container mt-3 col-12" style="display: none;">
+                                                                                    <!-- O-Level Combinations / Subjects Container -->
+<div class="o-level-combinations-container mt-3" style="display: none;">
     <label class="font-weight-bold">O-Level Combinations:</label>
     <div class="row">
-        @foreach($combinations as $combination)
-            @if($combination->level == 'O-Level' && $combination->id != 1)
-                <div class="col-md-3 mb-2">
-                    <div class="form-check">
-                        <input class="form-check-input o-level-comb-input" 
-                               type="checkbox" 
-                               name="schools[0][o_level_combinations][]" 
-                               id="o_comb_0_{{ $combination->id }}" 
-                               value="{{ $combination->id }}">
-                        <label class="form-check-label" for="o_comb_0_{{ $combination->id }}">
-                            {{ $combination->name }}
-                        </label>
-                    </div>
+        <!-- Add your O-Level checkboxes/select options here -->
+@foreach($combinations as $combination)
+    @if($combination->level == 'O-Level' && $combination->id != 1)
+            <div class="col-md-3 mb-2">
+                <div class="form-check">
+                    <input class="form-check-input" 
+                           type="checkbox" 
+                           name="schools[0][o_level_combinations][]" 
+                           id="o_comb_0_{{ $combination->id }}" 
+                           value="{{ $combination->id }}">
+                    <label class="form-check-label" for="o_comb_0_{{ $combination->id }}">
+                        {{ $combination->name }}
+                    </label>
                 </div>
-            @endif
-        @endforeach
+            </div>
+    @endif
+@endforeach
     </div>
 </div>
 
 <!-- A-Level Combinations Container -->
-<div class="a-level-combinations-container mt-3 col-12" style="display: none;">
+<div class="a-level-combinations-container mt-3" style="display: none;">
     <label class="font-weight-bold">A-Level Combinations:</label>
     <div class="row">
-        <div class="col-md-3 mb-2">
-            <div class="form-check">
-                <input class="form-check-input a-level-comb-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_pcm" value="PCM">
-                <label class="form-check-label" for="a_comb_0_pcm">PCM (Physics, Chemistry, Math)</label>
-            </div>
+        <!-- Add your A-Level combination options here -->
+        <div class="col-md-3">
+            <input type="checkbox" name="schools[0][a_level_combinations][]" value="PCM"> PCM (Physics, Chemistry, Math)
         </div>
-        <div class="col-md-3 mb-2">
-            <div class="form-check">
-                <input class="form-check-input a-level-comb-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_pcb" value="PCB">
-                <label class="form-check-label" for="a_comb_0_pcb">PCB (Physics, Chemistry, Biology)</label>
-            </div>
+        <div class="col-md-3">
+            <input type="checkbox" name="schools[0][a_level_combinations][]" value="PCB"> PCB (Physics, Chemistry, Biology)
         </div>
-        <div class="col-md-3 mb-2">
-            <div class="form-check">
-                <input class="form-check-input a-level-comb-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_cbg" value="CBG">
-                <label class="form-check-label" for="a_comb_0_cbg">CBG (Chemistry, Biology, Geography)</label>
-            </div>
+        <div class="col-md-3">
+            <input type="checkbox" name="schools[0][a_level_combinations][]" value="CBG"> CBG (Chemistry, Biology, Geography)
         </div>
-        <div class="col-md-3 mb-2">
-            <div class="form-check">
-                <input class="form-check-input a-level-comb-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_hgl" value="HGL">
-                <label class="form-check-label" for="a_comb_0_hgl">HGL (History, Geography, Language)</label>
-            </div>
+        <div class="col-md-3">
+            <input type="checkbox" name="schools[0][a_level_combinations][]" value="HGL"> HGL (History, Geography, Language)
         </div>
     </div>
 </div>
                                     </div>
-
-                                    <div class="headteacher-fields mt-3">
+                                    <div class="headteacher-fields">
                                         <h6 class="mb-4" style="border-bottom: 2px solid #007bff; padding-bottom: 10px;">
                                             Headteacher/Head of School Details
                                         </h6>
@@ -184,12 +171,11 @@
                                         <div class="row">
                                             <div class="form-group col-12">
                                                 <small class="pt-2 form-text text-info">
-                                                    <i class="fas fa-exclamation-circle text-info"></i>&nbsp;The phone number will be used to send your username and password.
-                                                </small>
+                                                    <i class="fas fa-exclamation-circle text-info"></i>&nbsp;The phone number will be used to send your username and password.</small>
                                             </div>
                                             <div class="form-group col-lg-6 col-12" style="margin-top:-20px">
                                                 <label for="phone_0">Primary Phone Number</label>
-                                                <input type="text" class="form-control" id="phone_0" placeholder="07XXXXXXXX" name="schools[0][phone]" value="{{ old('schools.0.phone') }}">
+                                                <input type="text" class="form-control" id="phone_0" placeholder="07XXXXXXXXXX" name="schools[0][phone]" value="{{ old('schools.0.phone') }}">
                                             </div>
                                             <div class="form-group col-lg-6 col-12" style="margin-top:-20px">
                                                 <label for="email_0">Email (Optional)</label>
@@ -197,9 +183,9 @@
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
-
                             <div class="form-group d-flex mt-4">
                                 <button type="button" class="btn btn-primary" id="addSchoolBtn" style="display: none;">
                                     <i class="fas fa-plus"></i> Add School
@@ -212,215 +198,363 @@
             </div>
         </div>
     </div>
-</x-layout>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
-    const registrationTypeRadios = document.querySelectorAll('input[name="registration_type"]');
-    const genericNameField = document.getElementById('genericNameField');
-    const addSchoolBtn = document.getElementById('addSchoolBtn');
-    const submitButton = document.getElementById('submitButton');
-    const schoolFieldsContainer = document.getElementById('schoolFieldsContainer');
-    const firstSchoolBlock = schoolFieldsContainer.querySelector('.school-fields'); 
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const registrationTypeRadios = document.querySelectorAll('input[name="registration_type"]');
+    const genericNameField = document.getElementById('genericNameField');
+    const addSchoolBtn = document.getElementById('addSchoolBtn');
+    const submitButton = document.getElementById('submitButton');
+    const schoolFieldsContainer = document.getElementById('schoolFieldsContainer');
+    const firstSchoolBlock = schoolFieldsContainer.querySelector('.school-fields'); 
 
-    const originalSchoolBlockHtml = firstSchoolBlock.outerHTML; 
-    let schoolIndex = 0;
+    const originalSchoolBlockHtml = firstSchoolBlock.outerHTML; 
 
-    function manageSubmitButtonVisibility() {
-        const isGroup = document.getElementById('groupOfSchools') && document.getElementById('groupOfSchools').checked;
-        const schoolBlocksCount = schoolFieldsContainer.querySelectorAll('.school-fields').length;
+    let schoolIndex = 0;
 
-        if (isGroup && schoolBlocksCount === 1) {
-            submitButton.style.display = 'none';
+    function manageSubmitButtonVisibility() {
+        const isGroup = document.getElementById('groupOfSchools').checked;
+        const schoolBlocksCount = schoolFieldsContainer.querySelectorAll('.school-fields').length;
+
+        if (isGroup && schoolBlocksCount === 1) {
+            submitButton.style.display = 'none';
+        } else {
+            submitButton.style.display = 'inline-block';
+        }
+    }
+
+    function createRemoveButton() {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'btn btn-danger btn-sm float-right remove-school-btn';
+        button.innerHTML = '<i class="fas fa-trash"></i> Remove School';
+        button.onclick = function() {
+            this.closest('.school-fields').remove();
+            reIndexSchoolBlocks();
+            manageSubmitButtonVisibility();
+        };
+        return button;
+    }
+
+    function reIndexSchoolBlocks() {
+        const allBlocks = schoolFieldsContainer.querySelectorAll('.school-fields');
+        schoolIndex = 0;
+        allBlocks.forEach((block, index) => {
+            if (index > 0) {
+                const heading = block.querySelector('.school-details-heading');
+                if (heading) {
+                    heading.textContent = `School Details #${index + 1}`;
+                }
+                let removeBtn = block.querySelector('.remove-school-btn');
+                if (!removeBtn) {
+                     removeBtn = createRemoveButton();
+                     const btnContainer = document.createElement('div');
+                     btnContainer.className = 'd-flex justify-content-end mb-3';
+                     btnContainer.appendChild(removeBtn);
+                     block.querySelector('.school-details-heading').insertAdjacentElement('afterend', btnContainer);
+                }
+            } else {
+                const heading = block.querySelector('.school-details-heading');
+                if (heading) {
+                    heading.textContent = 'School Details';
+                }
+                const removeBtnContainer = block.querySelector('.remove-school-btn') ? block.querySelector('.remove-school-btn').closest('div') : null;
+                if (removeBtnContainer) removeBtnContainer.remove();
+            }
+            
+            updateFieldAttributes(block, index, false); 
+            schoolIndex = index;
+        });
+        schoolIndex = allBlocks.length > 0 ? allBlocks.length - 1 : 0; 
+    }
+
+    function manageSchoolLevel(inputElement) {
+        const schoolName = inputElement.value.toLowerCase();
+        const parentBlock = inputElement.closest('.school-fields');
+        if (!parentBlock) return;
+
+        const schoolLevelContainer = parentBlock.querySelector('.school-level-container');
+        const sponsorshipContainer = parentBlock.querySelector('.sponsorship-type-container');
+        const primaryCheckbox = parentBlock.querySelector('input[value="Primary"]');
+        const otherCheckboxes = parentBlock.querySelectorAll('input[value="O-Level"], input[value="A-Level"]');
+        const sponsorshipFormGroup = sponsorshipContainer ? sponsorshipContainer.closest('.form-group') : null;
+
+        const isGroup = document.getElementById('groupOfSchools').checked;
+        const isSecondary = schoolName.includes('secondary') || schoolName.includes('high') || schoolName.includes('sekondari');
+
+        if (isSecondary) {
+            schoolLevelContainer.style.display = 'block';
+            if (primaryCheckbox) {
+                primaryCheckbox.closest('.form-check').style.display = 'none';
+                primaryCheckbox.checked = false;
+            }
+            
+            otherCheckboxes.forEach(checkbox => {
+                checkbox.closest('.form-check').style.display = 'inline-block';
+            });
+
+            if (sponsorshipFormGroup) {
+                sponsorshipFormGroup.classList.remove('col-lg-12');
+                sponsorshipFormGroup.classList.add('col-lg-6');
+            }
+        } else {
+
+            schoolLevelContainer.style.display = 'none'; 
+        
+            if (primaryCheckbox) {
+                primaryCheckbox.closest('.form-check').style.display = 'inline-block';
+
+                if (!isGroup || schoolName.length === 0) {
+                    primaryCheckbox.checked = true;
+                }
+            }
+            
+            otherCheckboxes.forEach(checkbox => {
+                checkbox.closest('.form-check').style.display = isGroup ? 'inline-block' : 'none';
+
+                if (!isGroup || schoolName.length === 0) {
+                    checkbox.checked = false; 
+                }
+            });
+            
+            if (sponsorshipFormGroup) {
+                sponsorshipFormGroup.classList.remove('col-lg-6');
+                sponsorshipFormGroup.classList.add('col-lg-12');
+            }
+        }
+    }
+
+    function updateFieldAttributes(clonedElement, index, resetValue = true) {
+        clonedElement.querySelectorAll('input, select, textarea, label').forEach(element => {
+            const originalId = element.id;
+            const originalName = element.name;
+            const originalFor = element.htmlFor;
+
+            if (originalId) {
+                element.id = originalId.replace(/_\d+$/, `_${index}`);
+            }
+            if (originalFor) {
+                element.htmlFor = originalFor.replace(/_\d+$/, `_${index}`);
+            }
+
+            if (originalName) {
+                element.name = originalName.replace(/schools\[\d+\]/, `schools[${index}]`);
+            }
+
+            if (resetValue) { 
+                if (element.tagName === 'INPUT' && (element.type === 'text' || element.type === 'email' || element.type === 'tel')) {
+                    element.value = '';
+                } else if (element.tagName === 'TEXTAREA') {
+                    element.value = '';
+                } else if (element.tagName === 'SELECT') {
+                    element.selectedIndex = 0;
+                } else if (element.type === 'radio' || element.type === 'checkbox') {
+                    element.checked = false; 
+                }
+            }
+        });
+
+        const primaryCheckbox = clonedElement.querySelector(`input[id="primary_${index}"]`);
+        const otherCheckboxes = clonedElement.querySelectorAll(`input[name="schools[${index}][school_type][]"]:not([value="Primary"])`);
+
+        if (primaryCheckbox) {
+            primaryCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    otherCheckboxes.forEach(checkbox => checkbox.checked = false);
+                }
+            });
+        }
+
+        otherCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.checked && primaryCheckbox) {
+                    primaryCheckbox.checked = false;
+                }
+            });
+        });
+
+        const schoolNameInput = clonedElement.querySelector('input[name*="[school_name]"]');
+        if (schoolNameInput) {
+             schoolNameInput.removeEventListener('input', manageSchoolLevel);
+             schoolNameInput.addEventListener('input', (event) => manageSchoolLevel(event.target));
+        }
+
+const oLevelCheckbox = clonedElement.querySelector('input[value="O-Level"]');
+const aLevelCheckbox = clonedElement.querySelector('input[value="A-Level"]');
+
+if (oLevelCheckbox) {
+    oLevelCheckbox.addEventListener('change', function () {
+        toggleCombinationsVisibility(clonedElement);
+    });
+}
+
+if (aLevelCheckbox) {
+    aLevelCheckbox.addEventListener('change', function () {
+        toggleCombinationsVisibility(clonedElement);
+    });
+}
+
+// Initial check state evaluation for pre-loaded forms
+toggleCombinationsVisibility(clonedElement);
+
+        const regionSelect = clonedElement.querySelector('select[name*="[region]"]');
+        if (regionSelect) {
+            regionSelect.onchange = () => fetchDistricts(regionSelect.id, `district_${index}`, `ward_${index}`);
+        }
+        const districtSelect = clonedElement.querySelector('select[name*="[district]"]');
+        if (districtSelect) {
+            districtSelect.onchange = () => fetchWards(districtSelect.id, `ward_${index}`);
+        }
+    }
+
+    function toggleFormFields() {
+        const isGroup = document.getElementById('groupOfSchools').checked;
+
+        genericNameField.style.display = isGroup ? 'block' : 'none';
+        addSchoolBtn.style.display = isGroup ? 'block' : 'none';
+
+        const initialSchoolNameInput = document.getElementById('school_name_0');
+        if (initialSchoolNameInput) {
+            initialSchoolNameInput.placeholder = isGroup ? "e.g. Clementina Girls Primary School - Kibiti" : "";
+        }
+        if (!isGroup) {
+            const clonedBlocks = schoolFieldsContainer.querySelectorAll('.school-fields:not(:first-child)');
+            clonedBlocks.forEach(block => block.remove());
+            schoolIndex = 0;
+            reIndexSchoolBlocks();
+
+        }
+
+        const sponsorshipContainers = document.querySelectorAll('.sponsorship-type-container');
+        sponsorshipContainers.forEach(container => {
+            const privateRadio = container.querySelector('input[value="Private"]');
+            if (isGroup) {
+                container.style.display = 'none';
+                if (privateRadio) privateRadio.checked = true;
+            } else {
+                container.style.display = 'block';
+            }
+        });
+
+        const allSchoolBlocks = document.querySelectorAll('.school-fields');
+        allSchoolBlocks.forEach(block => {
+            const schoolNameInput = block.querySelector('input[name*="[school_name]"]');
+            if (schoolNameInput) {
+                manageSchoolLevel(schoolNameInput);
+            }
+        });
+
+        manageSubmitButtonVisibility();
+    }
+
+    registrationTypeRadios.forEach(radio => {
+        radio.addEventListener('change', toggleFormFields);
+    });
+
+    addSchoolBtn.addEventListener('click', function () {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = originalSchoolBlockHtml;
+        const clonedSchoolBlock = tempDiv.querySelector('.school-fields');
+        schoolIndex++;
+
+        const heading = clonedSchoolBlock.querySelector('.school-details-heading');
+        if (heading) {
+            heading.textContent = `School Details #${schoolIndex + 1}`;
+        }
+
+        const removeButtonContainer = document.createElement('div');
+        removeButtonContainer.className = 'd-flex justify-content-end mb-3';
+        const removeBtn = createRemoveButton();
+        removeButtonContainer.appendChild(removeBtn);
+        heading.insertAdjacentElement('afterend', removeButtonContainer);
+
+        updateFieldAttributes(clonedSchoolBlock, schoolIndex, true); 
+
+        const isGroup = document.getElementById('groupOfSchools').checked;
+        const newSponsorshipRadio = clonedSchoolBlock.querySelector('input[value="Private"]');
+        const newSchoolNameInput = clonedSchoolBlock.querySelector('input[name*="[school_name]"]');
+
+        if (isGroup && newSponsorshipRadio) {
+            newSponsorshipRadio.checked = true;
+            clonedSchoolBlock.querySelector('.sponsorship-type-container').style.display = 'none';
+        } 
+
+        schoolFieldsContainer.appendChild(clonedSchoolBlock);
+        
+        if (newSchoolNameInput) {
+            manageSchoolLevel(newSchoolNameInput);
+        }
+        
+        fetchRegions(schoolIndex);
+        manageSubmitButtonVisibility();
+    });
+
+    const initialSchoolNameInput = document.getElementById('school_name_0');
+    if (initialSchoolNameInput) {
+        initialSchoolNameInput.addEventListener('input', () => manageSchoolLevel(initialSchoolNameInput));
+    }
+    const initialRegionSelect = document.getElementById('region_0');
+    const initialDistrictSelect = document.getElementById('district_0');
+    if (initialRegionSelect && initialDistrictSelect) {
+        initialRegionSelect.onchange = () => fetchDistricts('region_0', 'district_0', 'ward_0');
+        initialDistrictSelect.onchange = () => fetchWards('district_0', 'ward_0');
+    }
+
+    toggleFormFields();
+    manageSubmitButtonVisibility();
+    
+    document.querySelectorAll('.school-fields').forEach((block, index) => {
+        fetchRegions(index);
+    });
+
+function toggleCombinationsVisibility(parentBlock) {
+    if (!parentBlock) return;
+
+    const oLevelCheckbox = parentBlock.querySelector('input[value="O-Level"]');
+    const aLevelCheckbox = parentBlock.querySelector('input[value="A-Level"]');
+
+    const oLevelContainer = parentBlock.querySelector('.o-level-combinations-container');
+    const aLevelContainer = parentBlock.querySelector('.a-level-combinations-container');
+
+    // Toggle O-Level container
+    if (oLevelContainer) {
+        if (oLevelCheckbox && oLevelCheckbox.checked) {
+            oLevelContainer.style.display = 'block';
         } else {
-            submitButton.style.display = 'inline-block';
+            oLevelContainer.style.display = 'none';
+            // Optional: Uncheck options inside if hidden
+            oLevelContainer.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
         }
     }
 
-    function createRemoveButton() {
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.className = 'btn btn-danger btn-sm float-right remove-school-btn';
-        button.innerHTML = '<i class="fas fa-trash"></i> Remove School';
-        button.onclick = function() {
-            this.closest('.school-fields').remove();
-            reIndexSchoolBlocks();
-            manageSubmitButtonVisibility();
-        };
-        return button;
-    }
-
-    function reIndexSchoolBlocks() {
-        const allBlocks = schoolFieldsContainer.querySelectorAll('.school-fields');
-        allBlocks.forEach((block, index) => {
-            const heading = block.querySelector('.school-details-heading');
-            if (index > 0) {
-                if (heading) heading.textContent = `School Details #${index + 1}`;
-                
-                let removeBtn = block.querySelector('.remove-school-btn');
-                if (!removeBtn) {
-                     removeBtn = createRemoveButton();
-                     const btnContainer = document.createElement('div');
-                     btnContainer.className = 'd-flex justify-content-end mb-3';
-                     btnContainer.appendChild(removeBtn);
-                     if (heading) heading.insertAdjacentElement('afterend', btnContainer);
-                }
-            } else {
-                if (heading) heading.textContent = 'School Details';
-                const removeBtnContainer = block.querySelector('.remove-school-btn') ? block.querySelector('.remove-school-btn').closest('div') : null;
-                if (removeBtnContainer) removeBtnContainer.remove();
-            }
-            
-            updateFieldAttributes(block, index, false); 
-        });
-        schoolIndex = allBlocks.length > 0 ? allBlocks.length - 1 : 0; 
-    }
-
-    function updateFieldAttributes(clonedElement, index, resetValue = true) {
-        clonedElement.querySelectorAll('input, select, textarea, label').forEach(element => {
-            const originalId = element.id;
-            const originalName = element.name;
-            const originalFor = element.htmlFor;
-
-            if (originalId) {
-                element.id = originalId
-                    .replace(/schools\[\d+\]/g, `schools[${index}]`)
-                    .replace(/o_comb_\d+_/g, `o_comb_${index}_`)
-                    .replace(/a_comb_\d+_/g, `a_comb_${index}_`)
-                    .replace(/_\d+$/g, `_${index}`);
-            }
-
-            if (originalFor) {
-                element.htmlFor = originalFor
-                    .replace(/schools\[\d+\]/g, `schools[${index}]`)
-                    .replace(/o_comb_\d+_/g, `o_comb_${index}_`)
-                    .replace(/a_comb_\d+_/g, `a_comb_${index}_`)
-                    .replace(/_\d+$/g, `_${index}`);
-            }
-
-            if (originalName) {
-                element.name = originalName.replace(/schools\[\d+\]/g, `schools[${index}]`);
-            }
-
-            if (resetValue) { 
-                if (element.tagName === 'INPUT' && ['text', 'email', 'tel'].includes(element.type)) {
-                    element.value = '';
-                } else if (element.tagName === 'TEXTAREA') {
-                    element.value = '';
-                } else if (element.tagName === 'SELECT') {
-                    element.selectedIndex = 0;
-                } else if (element.type === 'radio' || element.type === 'checkbox') {
-                    element.checked = false; 
-                }
-            }
-        });
-
-        // Toggle combinations display based purely on checkbox status
-        const oLevelCheckbox = clonedElement.querySelector('input[value="O-Level"]');
-        const aLevelCheckbox = clonedElement.querySelector('input[value="A-Level"]');
-
-        if (oLevelCheckbox) {
-            oLevelCheckbox.onchange = function() {
-                const container = clonedElement.querySelector('.o-level-combinations-container');
-                if (container) container.style.display = this.checked ? 'block' : 'none';
-            };
-        }
-
-        if (aLevelCheckbox) {
-            aLevelCheckbox.onchange = function() {
-                const container = clonedElement.querySelector('.a-level-combinations-container');
-                if (container) container.style.display = this.checked ? 'block' : 'none';
-            };
-        }
-
-        // Re-bind Region / District / Ward dynamic dropdowns
-        const regionSelect = clonedElement.querySelector('select[name*="[region]"]');
-        const districtSelect = clonedElement.querySelector('select[name*="[district]"]');
-        const wardSelect = clonedElement.querySelector('select[name*="[ward]"]');
-
-        if (regionSelect && districtSelect && wardSelect) {
-            regionSelect.onchange = () => fetchDistricts(regionSelect, districtSelect, wardSelect);
-            districtSelect.onchange = () => fetchWards(districtSelect, wardSelect);
+    // Toggle A-Level container
+    if (aLevelContainer) {
+        if (aLevelCheckbox && aLevelCheckbox.checked) {
+            aLevelContainer.style.display = 'block';
+        } else {
+            aLevelContainer.style.display = 'none';
+            // Optional: Uncheck options inside if hidden
+            aLevelContainer.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
         }
     }
+}
 
-    function toggleFormFields() {
-        const isGroup = document.getElementById('groupOfSchools') && document.getElementById('groupOfSchools').checked;
+    function fetchRegions(index) {
+        const regionSelectId = `region_${index}`;
+        const regionSelect = document.getElementById(regionSelectId);
+        if (!regionSelect) return;
 
-        if (genericNameField) genericNameField.style.display = isGroup ? 'block' : 'none';
-        if (addSchoolBtn) addSchoolBtn.style.display = isGroup ? 'block' : 'none';
-
-        const initialSchoolNameInput = document.getElementById('school_name_0');
-        if (initialSchoolNameInput) {
-            initialSchoolNameInput.placeholder = isGroup ? "e.g. Clementina Girls Primary School - Kibiti" : "";
-        }
-        
-        if (!isGroup) {
-            const clonedBlocks = schoolFieldsContainer.querySelectorAll('.school-fields:not(:first-child)');
-            clonedBlocks.forEach(block => block.remove());
-            schoolIndex = 0;
-            reIndexSchoolBlocks();
-        }
-
-        const sponsorshipContainers = document.querySelectorAll('.sponsorship-type-container');
-        sponsorshipContainers.forEach(container => {
-            const privateRadio = container.querySelector('input[value="Private"]');
-            if (isGroup) {
-                container.style.display = 'none';
-                if (privateRadio) privateRadio.checked = true;
-            } else {
-                container.style.display = 'block';
-            }
-        });
-
-        manageSubmitButtonVisibility();
-    }
-
-    registrationTypeRadios.forEach(radio => {
-        radio.addEventListener('change', toggleFormFields);
-    });
-
-    addSchoolBtn.addEventListener('click', function () {
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = originalSchoolBlockHtml;
-        const clonedSchoolBlock = tempDiv.querySelector('.school-fields');
-        schoolIndex++;
-
-        const heading = clonedSchoolBlock.querySelector('.school-details-heading');
-        if (heading) {
-            heading.textContent = `School Details #${schoolIndex + 1}`;
-        }
-
-        const removeButtonContainer = document.createElement('div');
-        removeButtonContainer.className = 'd-flex justify-content-end mb-3';
-        const removeBtn = createRemoveButton();
-        removeButtonContainer.appendChild(removeBtn);
-        if (heading) heading.insertAdjacentElement('afterend', removeButtonContainer);
-
-        updateFieldAttributes(clonedSchoolBlock, schoolIndex, true); 
-
-        const isGroup = document.getElementById('groupOfSchools') && document.getElementById('groupOfSchools').checked;
-        const newSponsorshipRadio = clonedSchoolBlock.querySelector('input[value="Private"]');
-
-        if (isGroup && newSponsorshipRadio) {
-            newSponsorshipRadio.checked = true;
-            const spContainer = clonedSchoolBlock.querySelector('.sponsorship-type-container');
-            if (spContainer) spContainer.style.display = 'none';
-        } 
-
-        schoolFieldsContainer.appendChild(clonedSchoolBlock);
-        fetchRegions(clonedSchoolBlock.querySelector('select[name*="[region]"]'));
-        manageSubmitButtonVisibility();
-    });
-
-    // Dynamic Fetchers
-    function fetchRegions(regionSelect) {
-        if (!regionSelect) return;
-        const regionsUrl = "{{ route('regions') }}"; 
-        
-        fetch(regionsUrl, { headers: { 'X-CSRF-TOKEN': csrfToken } })
-            .then(response => response.ok ? response.json() : { regions: [] })
+        const regionsUrl = "{{ route('regions') }}"; 
+        
+        fetch(regionsUrl, { headers: { 'X-CSRF-TOKEN': csrfToken } })
+            .then(response => {
+                if (!response.ok) {
+                     console.error(`Fetch failed for regions. Status: ${response.status}`);
+                     return { regions: [] }; 
+                }
+                return response.json();
+            })
             .then(data => {
                 regionSelect.innerHTML = '<option value="">Select a Region</option>';
                 if (data.regions && Array.isArray(data.regions)) {
@@ -433,13 +567,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
                 }
             })
-            .catch(error => console.error('Error fetching regions:', error));
-    }
+            .catch(error => console.error('Error fetching regions:', error));
+    }
 
-    function fetchDistricts(regionSelect, districtSelect, wardSelect) {
+    function fetchDistricts(regionSelectId, districtSelectId, wardSelectId) {
+        const regionSelect = document.getElementById(regionSelectId);
+        const districtSelect = document.getElementById(districtSelectId);
+        const wardSelect = document.getElementById(wardSelectId);
         if (!regionSelect || !districtSelect || !wardSelect) return;
+
         const selectedOption = regionSelect.options[regionSelect.selectedIndex];
-        const regionId = selectedOption ? selectedOption.getAttribute('data-id') : null;
+        
+        const regionId = selectedOption.getAttribute('data-id');
 
         if (!regionId) {
             districtSelect.innerHTML = '<option value="">Select a District</option>';
@@ -447,7 +586,8 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        fetch(`/get-districts?region_id=${regionId}`, { headers: { 'X-CSRF-TOKEN': csrfToken } })
+        const url = `/get-districts?region_id=${regionId}`;
+        fetch(url, { headers: { 'X-CSRF-TOKEN': csrfToken } })
             .then(response => response.json())
             .then(data => {
                 districtSelect.innerHTML = '<option value="">Select a District</option>';
@@ -465,17 +605,22 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error fetching districts:', error));
     }
 
-    function fetchWards(districtSelect, wardSelect) {
+    function fetchWards(districtSelectId, wardSelectId) {
+        const districtSelect = document.getElementById(districtSelectId);
+        const wardSelect = document.getElementById(wardSelectId);
         if (!districtSelect || !wardSelect) return;
+
         const selectedOption = districtSelect.options[districtSelect.selectedIndex];
-        const districtId = selectedOption ? selectedOption.getAttribute('data-id') : null;
+        
+        const districtId = selectedOption.getAttribute('data-id');
 
         if (!districtId) {
             wardSelect.innerHTML = '<option value="">Select a Ward</option>';
             return;
         }
 
-        fetch(`/get-wards?district_id=${districtId}`, { headers: { 'X-CSRF-TOKEN': csrfToken } })
+        const url = `/get-wards?district_id=${districtId}`;
+        fetch(url, { headers: { 'X-CSRF-TOKEN': csrfToken } })
             .then(response => response.json())
             .then(data => {
                 wardSelect.innerHTML = '<option value="">Select a Ward</option>';
@@ -491,10 +636,7 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(error => console.error('Error fetching wards:', error));
     }
-
-    // Initialize first block bindings & regions on load
-    updateFieldAttributes(firstSchoolBlock, 0, false);
-    fetchRegions(document.getElementById('region_0'));
-    toggleFormFields();
 });
 </script>
+
+</x-layout>
