@@ -126,7 +126,7 @@
                 </div>
             </div>
     @endif
-        @endforeach
+@endforeach
     </div>
 </div>
 
@@ -198,363 +198,322 @@
             </div>
         </div>
     </div>
-
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    const registrationTypeRadios = document.querySelectorAll('input[name="registration_type"]');
-    const genericNameField = document.getElementById('genericNameField');
-    const addSchoolBtn = document.getElementById('addSchoolBtn');
-    const submitButton = document.getElementById('submitButton');
-    const schoolFieldsContainer = document.getElementById('schoolFieldsContainer');
-    const firstSchoolBlock = schoolFieldsContainer.querySelector('.school-fields'); 
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const registrationTypeRadios = document.querySelectorAll('input[name="registration_type"]');
+    const genericNameField = document.getElementById('genericNameField');
+    const addSchoolBtn = document.getElementById('addSchoolBtn');
+    const submitButton = document.getElementById('submitButton');
+    const schoolFieldsContainer = document.getElementById('schoolFieldsContainer');
+    const firstSchoolBlock = schoolFieldsContainer.querySelector('.school-fields'); 
 
-    const originalSchoolBlockHtml = firstSchoolBlock.outerHTML; 
+    const originalSchoolBlockHtml = firstSchoolBlock.outerHTML; 
+    let schoolIndex = 0;
 
-    let schoolIndex = 0;
+    function manageSubmitButtonVisibility() {
+        const isGroup = document.getElementById('groupOfSchools') && document.getElementById('groupOfSchools').checked;
+        const schoolBlocksCount = schoolFieldsContainer.querySelectorAll('.school-fields').length;
 
-    function manageSubmitButtonVisibility() {
-        const isGroup = document.getElementById('groupOfSchools').checked;
-        const schoolBlocksCount = schoolFieldsContainer.querySelectorAll('.school-fields').length;
-
-        if (isGroup && schoolBlocksCount === 1) {
-            submitButton.style.display = 'none';
-        } else {
-            submitButton.style.display = 'inline-block';
-        }
-    }
-
-    function createRemoveButton() {
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.className = 'btn btn-danger btn-sm float-right remove-school-btn';
-        button.innerHTML = '<i class="fas fa-trash"></i> Remove School';
-        button.onclick = function() {
-            this.closest('.school-fields').remove();
-            reIndexSchoolBlocks();
-            manageSubmitButtonVisibility();
-        };
-        return button;
-    }
-
-    function reIndexSchoolBlocks() {
-        const allBlocks = schoolFieldsContainer.querySelectorAll('.school-fields');
-        schoolIndex = 0;
-        allBlocks.forEach((block, index) => {
-            if (index > 0) {
-                const heading = block.querySelector('.school-details-heading');
-                if (heading) {
-                    heading.textContent = `School Details #${index + 1}`;
-                }
-                let removeBtn = block.querySelector('.remove-school-btn');
-                if (!removeBtn) {
-                     removeBtn = createRemoveButton();
-                     const btnContainer = document.createElement('div');
-                     btnContainer.className = 'd-flex justify-content-end mb-3';
-                     btnContainer.appendChild(removeBtn);
-                     block.querySelector('.school-details-heading').insertAdjacentElement('afterend', btnContainer);
-                }
-            } else {
-                const heading = block.querySelector('.school-details-heading');
-                if (heading) {
-                    heading.textContent = 'School Details';
-                }
-                const removeBtnContainer = block.querySelector('.remove-school-btn') ? block.querySelector('.remove-school-btn').closest('div') : null;
-                if (removeBtnContainer) removeBtnContainer.remove();
-            }
-            
-            updateFieldAttributes(block, index, false); 
-            schoolIndex = index;
-        });
-        schoolIndex = allBlocks.length > 0 ? allBlocks.length - 1 : 0; 
-    }
-
-    function manageSchoolLevel(inputElement) {
-        const schoolName = inputElement.value.toLowerCase();
-        const parentBlock = inputElement.closest('.school-fields');
-        if (!parentBlock) return;
-
-        const schoolLevelContainer = parentBlock.querySelector('.school-level-container');
-        const sponsorshipContainer = parentBlock.querySelector('.sponsorship-type-container');
-        const primaryCheckbox = parentBlock.querySelector('input[value="Primary"]');
-        const otherCheckboxes = parentBlock.querySelectorAll('input[value="O-Level"], input[value="A-Level"]');
-        const sponsorshipFormGroup = sponsorshipContainer ? sponsorshipContainer.closest('.form-group') : null;
-
-        const isGroup = document.getElementById('groupOfSchools').checked;
-        const isSecondary = schoolName.includes('secondary') || schoolName.includes('high') || schoolName.includes('sekondari');
-
-        if (isSecondary) {
-            schoolLevelContainer.style.display = 'block';
-            if (primaryCheckbox) {
-                primaryCheckbox.closest('.form-check').style.display = 'none';
-                primaryCheckbox.checked = false;
-            }
-            
-            otherCheckboxes.forEach(checkbox => {
-                checkbox.closest('.form-check').style.display = 'inline-block';
-            });
-
-            if (sponsorshipFormGroup) {
-                sponsorshipFormGroup.classList.remove('col-lg-12');
-                sponsorshipFormGroup.classList.add('col-lg-6');
-            }
-        } else {
-
-            schoolLevelContainer.style.display = 'none'; 
-        
-            if (primaryCheckbox) {
-                primaryCheckbox.closest('.form-check').style.display = 'inline-block';
-
-                if (!isGroup || schoolName.length === 0) {
-                    primaryCheckbox.checked = true;
-                }
-            }
-            
-            otherCheckboxes.forEach(checkbox => {
-                checkbox.closest('.form-check').style.display = isGroup ? 'inline-block' : 'none';
-
-                if (!isGroup || schoolName.length === 0) {
-                    checkbox.checked = false; 
-                }
-            });
-            
-            if (sponsorshipFormGroup) {
-                sponsorshipFormGroup.classList.remove('col-lg-6');
-                sponsorshipFormGroup.classList.add('col-lg-12');
-            }
-        }
-    }
-
-    function updateFieldAttributes(clonedElement, index, resetValue = true) {
-        clonedElement.querySelectorAll('input, select, textarea, label').forEach(element => {
-            const originalId = element.id;
-            const originalName = element.name;
-            const originalFor = element.htmlFor;
-
-            if (originalId) {
-                element.id = originalId.replace(/_\d+$/, `_${index}`);
-            }
-            if (originalFor) {
-                element.htmlFor = originalFor.replace(/_\d+$/, `_${index}`);
-            }
-
-            if (originalName) {
-                element.name = originalName.replace(/schools\[\d+\]/, `schools[${index}]`);
-            }
-
-            if (resetValue) { 
-                if (element.tagName === 'INPUT' && (element.type === 'text' || element.type === 'email' || element.type === 'tel')) {
-                    element.value = '';
-                } else if (element.tagName === 'TEXTAREA') {
-                    element.value = '';
-                } else if (element.tagName === 'SELECT') {
-                    element.selectedIndex = 0;
-                } else if (element.type === 'radio' || element.type === 'checkbox') {
-                    element.checked = false; 
-                }
-            }
-        });
-
-        const primaryCheckbox = clonedElement.querySelector(`input[id="primary_${index}"]`);
-        const otherCheckboxes = clonedElement.querySelectorAll(`input[name="schools[${index}][school_type][]"]:not([value="Primary"])`);
-
-        if (primaryCheckbox) {
-            primaryCheckbox.addEventListener('change', function() {
-                if (this.checked) {
-                    otherCheckboxes.forEach(checkbox => checkbox.checked = false);
-                }
-            });
-        }
-
-        otherCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                if (this.checked && primaryCheckbox) {
-                    primaryCheckbox.checked = false;
-                }
-            });
-        });
-
-        const schoolNameInput = clonedElement.querySelector('input[name*="[school_name]"]');
-        if (schoolNameInput) {
-             schoolNameInput.removeEventListener('input', manageSchoolLevel);
-             schoolNameInput.addEventListener('input', (event) => manageSchoolLevel(event.target));
-        }
-
-const oLevelCheckbox = clonedElement.querySelector('input[value="O-Level"]');
-const aLevelCheckbox = clonedElement.querySelector('input[value="A-Level"]');
-
-if (oLevelCheckbox) {
-    oLevelCheckbox.addEventListener('change', function () {
-        toggleCombinationsVisibility(clonedElement);
-    });
-}
-
-if (aLevelCheckbox) {
-    aLevelCheckbox.addEventListener('change', function () {
-        toggleCombinationsVisibility(clonedElement);
-    });
-}
-
-// Initial check state evaluation for pre-loaded forms
-toggleCombinationsVisibility(clonedElement);
-
-        const regionSelect = clonedElement.querySelector('select[name*="[region]"]');
-        if (regionSelect) {
-            regionSelect.onchange = () => fetchDistricts(regionSelect.id, `district_${index}`, `ward_${index}`);
-        }
-        const districtSelect = clonedElement.querySelector('select[name*="[district]"]');
-        if (districtSelect) {
-            districtSelect.onchange = () => fetchWards(districtSelect.id, `ward_${index}`);
-        }
-    }
-
-    function toggleFormFields() {
-        const isGroup = document.getElementById('groupOfSchools').checked;
-
-        genericNameField.style.display = isGroup ? 'block' : 'none';
-        addSchoolBtn.style.display = isGroup ? 'block' : 'none';
-
-        const initialSchoolNameInput = document.getElementById('school_name_0');
-        if (initialSchoolNameInput) {
-            initialSchoolNameInput.placeholder = isGroup ? "e.g. Clementina Girls Primary School - Kibiti" : "";
-        }
-        if (!isGroup) {
-            const clonedBlocks = schoolFieldsContainer.querySelectorAll('.school-fields:not(:first-child)');
-            clonedBlocks.forEach(block => block.remove());
-            schoolIndex = 0;
-            reIndexSchoolBlocks();
-
-        }
-
-        const sponsorshipContainers = document.querySelectorAll('.sponsorship-type-container');
-        sponsorshipContainers.forEach(container => {
-            const privateRadio = container.querySelector('input[value="Private"]');
-            if (isGroup) {
-                container.style.display = 'none';
-                if (privateRadio) privateRadio.checked = true;
-            } else {
-                container.style.display = 'block';
-            }
-        });
-
-        const allSchoolBlocks = document.querySelectorAll('.school-fields');
-        allSchoolBlocks.forEach(block => {
-            const schoolNameInput = block.querySelector('input[name*="[school_name]"]');
-            if (schoolNameInput) {
-                manageSchoolLevel(schoolNameInput);
-            }
-        });
-
-        manageSubmitButtonVisibility();
-    }
-
-    registrationTypeRadios.forEach(radio => {
-        radio.addEventListener('change', toggleFormFields);
-    });
-
-    addSchoolBtn.addEventListener('click', function () {
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = originalSchoolBlockHtml;
-        const clonedSchoolBlock = tempDiv.querySelector('.school-fields');
-        schoolIndex++;
-
-        const heading = clonedSchoolBlock.querySelector('.school-details-heading');
-        if (heading) {
-            heading.textContent = `School Details #${schoolIndex + 1}`;
-        }
-
-        const removeButtonContainer = document.createElement('div');
-        removeButtonContainer.className = 'd-flex justify-content-end mb-3';
-        const removeBtn = createRemoveButton();
-        removeButtonContainer.appendChild(removeBtn);
-        heading.insertAdjacentElement('afterend', removeButtonContainer);
-
-        updateFieldAttributes(clonedSchoolBlock, schoolIndex, true); 
-
-        const isGroup = document.getElementById('groupOfSchools').checked;
-        const newSponsorshipRadio = clonedSchoolBlock.querySelector('input[value="Private"]');
-        const newSchoolNameInput = clonedSchoolBlock.querySelector('input[name*="[school_name]"]');
-
-        if (isGroup && newSponsorshipRadio) {
-            newSponsorshipRadio.checked = true;
-            clonedSchoolBlock.querySelector('.sponsorship-type-container').style.display = 'none';
-        } 
-
-        schoolFieldsContainer.appendChild(clonedSchoolBlock);
-        
-        if (newSchoolNameInput) {
-            manageSchoolLevel(newSchoolNameInput);
-        }
-        
-        fetchRegions(schoolIndex);
-        manageSubmitButtonVisibility();
-    });
-
-    const initialSchoolNameInput = document.getElementById('school_name_0');
-    if (initialSchoolNameInput) {
-        initialSchoolNameInput.addEventListener('input', () => manageSchoolLevel(initialSchoolNameInput));
-    }
-    const initialRegionSelect = document.getElementById('region_0');
-    const initialDistrictSelect = document.getElementById('district_0');
-    if (initialRegionSelect && initialDistrictSelect) {
-        initialRegionSelect.onchange = () => fetchDistricts('region_0', 'district_0', 'ward_0');
-        initialDistrictSelect.onchange = () => fetchWards('district_0', 'ward_0');
-    }
-
-    toggleFormFields();
-    manageSubmitButtonVisibility();
-    
-    document.querySelectorAll('.school-fields').forEach((block, index) => {
-        fetchRegions(index);
-    });
-
-function toggleCombinationsVisibility(parentBlock) {
-    if (!parentBlock) return;
-
-    const oLevelCheckbox = parentBlock.querySelector('input[value="O-Level"]');
-    const aLevelCheckbox = parentBlock.querySelector('input[value="A-Level"]');
-
-    const oLevelContainer = parentBlock.querySelector('.o-level-combinations-container');
-    const aLevelContainer = parentBlock.querySelector('.a-level-combinations-container');
-
-    // Toggle O-Level container
-    if (oLevelContainer) {
-        if (oLevelCheckbox && oLevelCheckbox.checked) {
-            oLevelContainer.style.display = 'block';
+        if (isGroup && schoolBlocksCount === 1) {
+            submitButton.style.display = 'none';
         } else {
-            oLevelContainer.style.display = 'none';
-            // Optional: Uncheck options inside if hidden
-            oLevelContainer.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            submitButton.style.display = 'inline-block';
         }
     }
 
-    // Toggle A-Level container
-    if (aLevelContainer) {
-        if (aLevelCheckbox && aLevelCheckbox.checked) {
-            aLevelContainer.style.display = 'block';
+    function createRemoveButton() {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'btn btn-danger btn-sm float-right remove-school-btn';
+        button.innerHTML = '<i class="fas fa-trash"></i> Remove School';
+        button.onclick = function() {
+            this.closest('.school-fields').remove();
+            reIndexSchoolBlocks();
+            manageSubmitButtonVisibility();
+        };
+        return button;
+    }
+
+    function reIndexSchoolBlocks() {
+        const allBlocks = schoolFieldsContainer.querySelectorAll('.school-fields');
+        allBlocks.forEach((block, index) => {
+            const heading = block.querySelector('.school-details-heading');
+            if (index > 0) {
+                if (heading) heading.textContent = `School Details #${index + 1}`;
+                
+                let removeBtn = block.querySelector('.remove-school-btn');
+                if (!removeBtn) {
+                     removeBtn = createRemoveButton();
+                     const btnContainer = document.createElement('div');
+                     btnContainer.className = 'd-flex justify-content-end mb-3';
+                     btnContainer.appendChild(removeBtn);
+                     if (heading) heading.insertAdjacentElement('afterend', btnContainer);
+                }
+            } else {
+                if (heading) heading.textContent = 'School Details';
+                const removeBtnContainer = block.querySelector('.remove-school-btn') ? block.querySelector('.remove-school-btn').closest('div') : null;
+                if (removeBtnContainer) removeBtnContainer.remove();
+            }
+            
+            updateFieldAttributes(block, index, false); 
+        });
+        schoolIndex = allBlocks.length > 0 ? allBlocks.length - 1 : 0; 
+    }
+
+    function manageSchoolLevel(inputElement) {
+        const schoolName = inputElement.value.toLowerCase();
+        const parentBlock = inputElement.closest('.school-fields');
+        if (!parentBlock) return;
+
+        const schoolLevelContainer = parentBlock.querySelector('.school-level-container');
+        const sponsorshipContainer = parentBlock.querySelector('.sponsorship-type-container');
+        const primaryCheckbox = parentBlock.querySelector('input[value="Primary"]');
+        const otherCheckboxes = parentBlock.querySelectorAll('input[value="O-Level"], input[value="A-Level"]');
+        const sponsorshipFormGroup = sponsorshipContainer ? sponsorshipContainer.closest('.form-group') : null;
+
+        const isGroup = document.getElementById('groupOfSchools') && document.getElementById('groupOfSchools').checked;
+        const isSecondary = schoolName.includes('secondary') || schoolName.includes('high') || schoolName.includes('sekondari');
+
+        if (isSecondary) {
+            if (schoolLevelContainer) schoolLevelContainer.style.display = 'block';
+            if (primaryCheckbox) {
+                primaryCheckbox.closest('.form-check').style.display = 'none';
+                primaryCheckbox.checked = false;
+            }
+            
+            otherCheckboxes.forEach(checkbox => {
+                checkbox.closest('.form-check').style.display = 'inline-block';
+            });
+
+            if (sponsorshipFormGroup) {
+                sponsorshipFormGroup.classList.remove('col-lg-12');
+                sponsorshipFormGroup.classList.add('col-lg-6');
+            }
         } else {
-            aLevelContainer.style.display = 'none';
-            // Optional: Uncheck options inside if hidden
-            aLevelContainer.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            if (schoolLevelContainer) schoolLevelContainer.style.display = 'none'; 
+        
+            if (primaryCheckbox) {
+                primaryCheckbox.closest('.form-check').style.display = 'inline-block';
+                if (!isGroup || schoolName.length === 0) {
+                    primaryCheckbox.checked = true;
+                }
+            }
+            
+            otherCheckboxes.forEach(checkbox => {
+                checkbox.closest('.form-check').style.display = isGroup ? 'inline-block' : 'none';
+                if (!isGroup || schoolName.length === 0) {
+                    checkbox.checked = false; 
+                }
+            });
+            
+            if (sponsorshipFormGroup) {
+                sponsorshipFormGroup.classList.remove('col-lg-6');
+                sponsorshipFormGroup.classList.add('col-lg-12');
+            }
+        }
+        toggleCombinationsVisibility(parentBlock);
+    }
+
+    function updateFieldAttributes(clonedElement, index, resetValue = true) {
+        // Fix 1: Properly replace indexing inside input names, IDs, and label "for" attributes
+        clonedElement.querySelectorAll('input, select, textarea, label').forEach(element => {
+            const originalId = element.id;
+            const originalName = element.name;
+            const originalFor = element.htmlFor;
+
+            if (originalId) {
+                // Replaces schools[0], o_comb_0_1, region_0, primary_0, etc.
+                element.id = originalId
+                    .replace(/schools\[\d+\]/, `schools[${index}]`)
+                    .replace(/o_comb_\d+_/, `o_comb_${index}_`)
+                    .replace(/a_comb_\d+_/, `a_comb_${index}_`)
+                    .replace(/_\d+$/, `_${index}`);
+            }
+            if (originalFor) {
+                element.htmlFor = originalFor
+                    .replace(/schools\[\d+\]/, `schools[${index}]`)
+                    .replace(/o_comb_\d+_/, `o_comb_${index}_`)
+                    .replace(/a_comb_\d+_/, `a_comb_${index}_`)
+                    .replace(/_\d+$/, `_${index}`);
+            }
+
+            if (originalName) {
+                element.name = originalName.replace(/schools\[\d+\]/, `schools[${index}]`);
+            }
+
+            if (resetValue) { 
+                if (element.tagName === 'INPUT' && ['text', 'email', 'tel'].includes(element.type)) {
+                    element.value = '';
+                } else if (element.tagName === 'TEXTAREA') {
+                    element.value = '';
+                } else if (element.tagName === 'SELECT') {
+                    element.selectedIndex = 0;
+                } else if (element.type === 'radio' || element.type === 'checkbox') {
+                    element.checked = false; 
+                }
+            }
+        });
+
+        // Toggle handlers for Level selection
+        const primaryCheckbox = clonedElement.querySelector(`input[value="Primary"]`);
+        const otherCheckboxes = clonedElement.querySelectorAll(`input[value="O-Level"], input[value="A-Level"]`);
+
+        if (primaryCheckbox) {
+            primaryCheckbox.onchange = function() {
+                if (this.checked) {
+                    otherCheckboxes.forEach(checkbox => checkbox.checked = false);
+                    toggleCombinationsVisibility(clonedElement);
+                }
+            };
+        }
+
+        otherCheckboxes.forEach(checkbox => {
+            checkbox.onchange = function() {
+                if (this.checked && primaryCheckbox) {
+                    primaryCheckbox.checked = false;
+                }
+                toggleCombinationsVisibility(clonedElement);
+            };
+        });
+
+        // School Name Input trigger
+        const schoolNameInput = clonedElement.querySelector('input[name*="[school_name]"]');
+        if (schoolNameInput) {
+            schoolNameInput.oninput = (event) => manageSchoolLevel(event.target);
+        }
+
+        // Region / District / Ward Dynamic dropdown bindings
+        const regionSelect = clonedElement.querySelector('select[name*="[region]"]');
+        const districtSelect = clonedElement.querySelector('select[name*="[district]"]');
+        const wardSelect = clonedElement.querySelector('select[name*="[ward]"]');
+
+        if (regionSelect && districtSelect && wardSelect) {
+            regionSelect.onchange = () => fetchDistricts(regionSelect, districtSelect, wardSelect);
+            districtSelect.onchange = () => fetchWards(districtSelect, wardSelect);
+        }
+
+        toggleCombinationsVisibility(clonedElement);
+    }
+
+    function toggleFormFields() {
+        const isGroup = document.getElementById('groupOfSchools') && document.getElementById('groupOfSchools').checked;
+
+        if (genericNameField) genericNameField.style.display = isGroup ? 'block' : 'none';
+        if (addSchoolBtn) addSchoolBtn.style.display = isGroup ? 'block' : 'none';
+
+        const initialSchoolNameInput = document.getElementById('school_name_0');
+        if (initialSchoolNameInput) {
+            initialSchoolNameInput.placeholder = isGroup ? "e.g. Clementina Girls Primary School - Kibiti" : "";
+        }
+        
+        if (!isGroup) {
+            const clonedBlocks = schoolFieldsContainer.querySelectorAll('.school-fields:not(:first-child)');
+            clonedBlocks.forEach(block => block.remove());
+            schoolIndex = 0;
+            reIndexSchoolBlocks();
+        }
+
+        const sponsorshipContainers = document.querySelectorAll('.sponsorship-type-container');
+        sponsorshipContainers.forEach(container => {
+            const privateRadio = container.querySelector('input[value="Private"]');
+            if (isGroup) {
+                container.style.display = 'none';
+                if (privateRadio) privateRadio.checked = true;
+            } else {
+                container.style.display = 'block';
+            }
+        });
+
+        const allSchoolBlocks = document.querySelectorAll('.school-fields');
+        allSchoolBlocks.forEach(block => {
+            const schoolNameInput = block.querySelector('input[name*="[school_name]"]');
+            if (schoolNameInput) {
+                manageSchoolLevel(schoolNameInput);
+            }
+        });
+
+        manageSubmitButtonVisibility();
+    }
+
+    registrationTypeRadios.forEach(radio => {
+        radio.addEventListener('change', toggleFormFields);
+    });
+
+    addSchoolBtn.addEventListener('click', function () {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = originalSchoolBlockHtml;
+        const clonedSchoolBlock = tempDiv.querySelector('.school-fields');
+        schoolIndex++;
+
+        const heading = clonedSchoolBlock.querySelector('.school-details-heading');
+        if (heading) {
+            heading.textContent = `School Details #${schoolIndex + 1}`;
+        }
+
+        const removeButtonContainer = document.createElement('div');
+        removeButtonContainer.className = 'd-flex justify-content-end mb-3';
+        const removeBtn = createRemoveButton();
+        removeButtonContainer.appendChild(removeBtn);
+        if (heading) heading.insertAdjacentElement('afterend', removeButtonContainer);
+
+        updateFieldAttributes(clonedSchoolBlock, schoolIndex, true); 
+
+        const isGroup = document.getElementById('groupOfSchools') && document.getElementById('groupOfSchools').checked;
+        const newSponsorshipRadio = clonedSchoolBlock.querySelector('input[value="Private"]');
+        const newSchoolNameInput = clonedSchoolBlock.querySelector('input[name*="[school_name]"]');
+
+        if (isGroup && newSponsorshipRadio) {
+            newSponsorshipRadio.checked = true;
+            const spContainer = clonedSchoolBlock.querySelector('.sponsorship-type-container');
+            if (spContainer) spContainer.style.display = 'none';
+        } 
+
+        schoolFieldsContainer.appendChild(clonedSchoolBlock);
+        
+        if (newSchoolNameInput) {
+            manageSchoolLevel(newSchoolNameInput);
+        }
+        
+        fetchRegions(clonedSchoolBlock.querySelector('select[name*="[region]"]'));
+        manageSubmitButtonVisibility();
+    });
+
+    function toggleCombinationsVisibility(parentBlock) {
+        if (!parentBlock) return;
+
+        const oLevelCheckbox = parentBlock.querySelector('input[value="O-Level"]');
+        const aLevelCheckbox = parentBlock.querySelector('input[value="A-Level"]');
+
+        const oLevelContainer = parentBlock.querySelector('.o-level-combinations-container');
+        const aLevelContainer = parentBlock.querySelector('.a-level-combinations-container');
+
+        if (oLevelContainer) {
+            if (oLevelCheckbox && oLevelCheckbox.checked) {
+                oLevelContainer.style.display = 'block';
+            } else {
+                oLevelContainer.style.display = 'none';
+                oLevelContainer.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            }
+        }
+
+        if (aLevelContainer) {
+            if (aLevelCheckbox && aLevelCheckbox.checked) {
+                aLevelContainer.style.display = 'block';
+            } else {
+                aLevelContainer.style.display = 'none';
+                aLevelContainer.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            }
         }
     }
-}
 
-    function fetchRegions(index) {
-        const regionSelectId = `region_${index}`;
-        const regionSelect = document.getElementById(regionSelectId);
-        if (!regionSelect) return;
-
-        const regionsUrl = "{{ route('regions') }}"; 
-        
-        fetch(regionsUrl, { headers: { 'X-CSRF-TOKEN': csrfToken } })
-            .then(response => {
-                if (!response.ok) {
-                     console.error(`Fetch failed for regions. Status: ${response.status}`);
-                     return { regions: [] }; 
-                }
-                return response.json();
-            })
+    // Direct Element Reference Dynamic Fetchers
+    function fetchRegions(regionSelect) {
+        if (!regionSelect) return;
+        const regionsUrl = "{{ route('regions') }}"; 
+        
+        fetch(regionsUrl, { headers: { 'X-CSRF-TOKEN': csrfToken } })
+            .then(response => response.ok ? response.json() : { regions: [] })
             .then(data => {
                 regionSelect.innerHTML = '<option value="">Select a Region</option>';
                 if (data.regions && Array.isArray(data.regions)) {
@@ -567,18 +526,13 @@ function toggleCombinationsVisibility(parentBlock) {
                     });
                 }
             })
-            .catch(error => console.error('Error fetching regions:', error));
-    }
+            .catch(error => console.error('Error fetching regions:', error));
+    }
 
-    function fetchDistricts(regionSelectId, districtSelectId, wardSelectId) {
-        const regionSelect = document.getElementById(regionSelectId);
-        const districtSelect = document.getElementById(districtSelectId);
-        const wardSelect = document.getElementById(wardSelectId);
+    function fetchDistricts(regionSelect, districtSelect, wardSelect) {
         if (!regionSelect || !districtSelect || !wardSelect) return;
-
         const selectedOption = regionSelect.options[regionSelect.selectedIndex];
-        
-        const regionId = selectedOption.getAttribute('data-id');
+        const regionId = selectedOption ? selectedOption.getAttribute('data-id') : null;
 
         if (!regionId) {
             districtSelect.innerHTML = '<option value="">Select a District</option>';
@@ -586,8 +540,7 @@ function toggleCombinationsVisibility(parentBlock) {
             return;
         }
 
-        const url = `/get-districts?region_id=${regionId}`;
-        fetch(url, { headers: { 'X-CSRF-TOKEN': csrfToken } })
+        fetch(`/get-districts?region_id=${regionId}`, { headers: { 'X-CSRF-TOKEN': csrfToken } })
             .then(response => response.json())
             .then(data => {
                 districtSelect.innerHTML = '<option value="">Select a District</option>';
@@ -605,22 +558,17 @@ function toggleCombinationsVisibility(parentBlock) {
             .catch(error => console.error('Error fetching districts:', error));
     }
 
-    function fetchWards(districtSelectId, wardSelectId) {
-        const districtSelect = document.getElementById(districtSelectId);
-        const wardSelect = document.getElementById(wardSelectId);
+    function fetchWards(districtSelect, wardSelect) {
         if (!districtSelect || !wardSelect) return;
-
         const selectedOption = districtSelect.options[districtSelect.selectedIndex];
-        
-        const districtId = selectedOption.getAttribute('data-id');
+        const districtId = selectedOption ? selectedOption.getAttribute('data-id') : null;
 
         if (!districtId) {
             wardSelect.innerHTML = '<option value="">Select a Ward</option>';
             return;
         }
 
-        const url = `/get-wards?district_id=${districtId}`;
-        fetch(url, { headers: { 'X-CSRF-TOKEN': csrfToken } })
+        fetch(`/get-wards?district_id=${districtId}`, { headers: { 'X-CSRF-TOKEN': csrfToken } })
             .then(response => response.json())
             .then(data => {
                 wardSelect.innerHTML = '<option value="">Select a Ward</option>';
@@ -636,6 +584,16 @@ function toggleCombinationsVisibility(parentBlock) {
             })
             .catch(error => console.error('Error fetching wards:', error));
     }
+
+    // Initial setup for the first existing block
+    if (firstSchoolBlock) {
+        updateFieldAttributes(firstSchoolBlock, 0, false);
+        const initialRegionSelect = firstSchoolBlock.querySelector('select[name*="[region]"]');
+        if (initialRegionSelect) fetchRegions(initialRegionSelect);
+    }
+
+    toggleFormFields();
+    manageSubmitButtonVisibility();
 });
 </script>
 
