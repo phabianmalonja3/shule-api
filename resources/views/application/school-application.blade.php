@@ -108,59 +108,59 @@
                                             </div>
                                         </div>
 
-                                        <!-- O-Level Combinations Container -->
-                                        <div class="o-level-combinations-container mt-3 col-12" style="display: none;">
-                                            <label class="font-weight-bold">O-Level Combinations:</label>
-                                            <div class="row">
-                                                @foreach($combinations as $combination)
-                                                    @if($combination->level == 'O-Level' && $combination->id != 1)
-                                                        <div class="col-md-3 mb-2">
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" 
-                                                                       type="checkbox" 
-                                                                       name="schools[0][o_level_combinations][]" 
-                                                                       id="o_comb_0_{{ $combination->id }}" 
-                                                                       value="{{ $combination->id }}">
-                                                                <label class="form-check-label" for="o_comb_0_{{ $combination->id }}">
-                                                                    {{ $combination->name }}
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    @endif
-                                                @endforeach
-                                            </div>
-                                        </div>
+<!-- O-Level Combinations Container -->
+<div class="o-level-combinations-container mt-3 col-12" style="display: none;">
+    <label class="font-weight-bold">O-Level Combinations:</label>
+    <div class="row">
+        @foreach($combinations as $combination)
+            @if($combination->level == 'O-Level' && $combination->id != 1)
+                <div class="col-md-3 mb-2">
+                    <div class="form-check">
+                        <input class="form-check-input o-level-comb-input" 
+                               type="checkbox" 
+                               name="schools[0][o_level_combinations][]" 
+                               id="o_comb_0_{{ $combination->id }}" 
+                               value="{{ $combination->id }}">
+                        <label class="form-check-label" for="o_comb_0_{{ $combination->id }}">
+                            {{ $combination->name }}
+                        </label>
+                    </div>
+                </div>
+            @endif
+        @endforeach
+    </div>
+</div>
 
-                                        <!-- A-Level Combinations Container -->
-                                        <div class="a-level-combinations-container mt-3 col-12" style="display: none;">
-                                            <label class="font-weight-bold">A-Level Combinations:</label>
-                                            <div class="row">
-                                                <div class="col-md-3 mb-2">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_pcm" value="PCM">
-                                                        <label class="form-check-label" for="a_comb_0_pcm">PCM (Physics, Chemistry, Math)</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3 mb-2">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_pcb" value="PCB">
-                                                        <label class="form-check-label" for="a_comb_0_pcb">PCB (Physics, Chemistry, Biology)</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3 mb-2">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_cbg" value="CBG">
-                                                        <label class="form-check-label" for="a_comb_0_cbg">CBG (Chemistry, Biology, Geography)</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3 mb-2">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_hgl" value="HGL">
-                                                        <label class="form-check-label" for="a_comb_0_hgl">HGL (History, Geography, Language)</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+<!-- A-Level Combinations Container -->
+<div class="a-level-combinations-container mt-3 col-12" style="display: none;">
+    <label class="font-weight-bold">A-Level Combinations:</label>
+    <div class="row">
+        <div class="col-md-3 mb-2">
+            <div class="form-check">
+                <input class="form-check-input a-level-comb-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_pcm" value="PCM">
+                <label class="form-check-label" for="a_comb_0_pcm">PCM (Physics, Chemistry, Math)</label>
+            </div>
+        </div>
+        <div class="col-md-3 mb-2">
+            <div class="form-check">
+                <input class="form-check-input a-level-comb-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_pcb" value="PCB">
+                <label class="form-check-label" for="a_comb_0_pcb">PCB (Physics, Chemistry, Biology)</label>
+            </div>
+        </div>
+        <div class="col-md-3 mb-2">
+            <div class="form-check">
+                <input class="form-check-input a-level-comb-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_cbg" value="CBG">
+                <label class="form-check-label" for="a_comb_0_cbg">CBG (Chemistry, Biology, Geography)</label>
+            </div>
+        </div>
+        <div class="col-md-3 mb-2">
+            <div class="form-check">
+                <input class="form-check-input a-level-comb-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_hgl" value="HGL">
+                <label class="form-check-label" for="a_comb_0_hgl">HGL (History, Geography, Language)</label>
+            </div>
+        </div>
+    </div>
+</div>
                                     </div>
 
                                     <div class="headteacher-fields mt-3">
@@ -332,22 +332,24 @@ document.addEventListener('DOMContentLoaded', function () {
             const originalFor = element.htmlFor;
 
             if (originalId) {
+                // Precision regex replacement for indices: schools[0] -> schools[X], o_comb_0_ -> o_comb_X_, primary_0 -> primary_X
                 element.id = originalId
-                    .replace(/schools\[\d+\]/, `schools[${index}]`)
-                    .replace(/o_comb_\d+_/, `o_comb_${index}_`)
-                    .replace(/a_comb_\d+_/, `a_comb_${index}_`)
-                    .replace(/_\d+$/, `_${index}`);
+                    .replace(/schools\[\d+\]/g, `schools[${index}]`)
+                    .replace(/o_comb_\d+_/g, `o_comb_${index}_`)
+                    .replace(/a_comb_\d+_/g, `a_comb_${index}_`)
+                    .replace(/_\d+$/g, `_${index}`);
             }
+
             if (originalFor) {
                 element.htmlFor = originalFor
-                    .replace(/schools\[\d+\]/, `schools[${index}]`)
-                    .replace(/o_comb_\d+_/, `o_comb_${index}_`)
-                    .replace(/a_comb_\d+_/, `a_comb_${index}_`)
-                    .replace(/_\d+$/, `_${index}`);
+                    .replace(/schools\[\d+\]/g, `schools[${index}]`)
+                    .replace(/o_comb_\d+_/g, `o_comb_${index}_`)
+                    .replace(/a_comb_\d+_/g, `a_comb_${index}_`)
+                    .replace(/_\d+$/g, `_${index}`);
             }
 
             if (originalName) {
-                element.name = originalName.replace(/schools\[\d+\]/, `schools[${index}]`);
+                element.name = originalName.replace(/schools\[\d+\]/g, `schools[${index}]`);
             }
 
             if (resetValue) { 
@@ -363,7 +365,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // Re-bind Level Checkbox Handlers
+        // Dynamic Level Checkbox Isolation
         const primaryCheckbox = clonedElement.querySelector('input[value="Primary"]');
         const oLevelCheckbox = clonedElement.querySelector('input[value="O-Level"]');
         const aLevelCheckbox = clonedElement.querySelector('input[value="A-Level"]');
@@ -396,13 +398,13 @@ document.addEventListener('DOMContentLoaded', function () {
             };
         }
 
-        // Re-bind School Name Input Trigger
+        // Re-bind Name Input Trigger
         const schoolNameInput = clonedElement.querySelector('input[name*="[school_name]"]');
         if (schoolNameInput) {
             schoolNameInput.oninput = (event) => manageSchoolLevel(event.target);
         }
 
-        // Re-bind Region / District / Ward dynamic dropdowns
+        // Re-bind Region / District / Ward dropdowns
         const regionSelect = clonedElement.querySelector('select[name*="[region]"]');
         const districtSelect = clonedElement.querySelector('select[name*="[district]"]');
         const wardSelect = clonedElement.querySelector('select[name*="[ward]"]');
@@ -508,19 +510,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const aLevelContainer = parentBlock.querySelector('.a-level-combinations-container');
 
         if (oLevelContainer) {
-            if (oLevelCheckbox && oLevelCheckbox.checked) {
-                oLevelContainer.style.display = 'block';
-            } else {
-                oLevelContainer.style.display = 'none';
-            }
+            oLevelContainer.style.display = (oLevelCheckbox && oLevelCheckbox.checked) ? 'block' : 'none';
         }
 
         if (aLevelContainer) {
-            if (aLevelCheckbox && aLevelCheckbox.checked) {
-                aLevelContainer.style.display = 'block';
-            } else {
-                aLevelContainer.style.display = 'none';
-            }
+            aLevelContainer.style.display = (aLevelCheckbox && aLevelCheckbox.checked) ? 'block' : 'none';
         }
     }
 
