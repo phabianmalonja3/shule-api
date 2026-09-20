@@ -81,7 +81,7 @@ class SchoolApplicationController extends Controller
     public function store(Request $request)
     {   
         $registrationType = $request->input('registration_type', 'single');
-
+return $request;
         $schoolsRules = [
             'schools.*.school_name' => ['required', 'string', 'max:255'],
             'schools.*.address' => 'sometimes|max:255',
