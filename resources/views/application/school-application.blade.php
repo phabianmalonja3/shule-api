@@ -115,7 +115,7 @@
     @if($combination->level == 'O-Level' && $combination->id != 1)
             <div class="col-md-3 mb-2">
                 <div class="form-check">
-                    <input class="form-check-input" 
+                    <input 
                            type="checkbox" 
                            name="schools[0][o_level_combinations][]" 
                            id="o_comb_0_{{ $combination->id }}" 
@@ -124,6 +124,11 @@
                         {{ $combination->name }}
                     </label>
                 </div>
+
+
+
+
+
             </div>
     @endif
 @endforeach
