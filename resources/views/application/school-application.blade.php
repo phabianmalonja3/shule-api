@@ -111,20 +111,24 @@
     <div class="form-group mb-0 p-3 bg-light rounded border">
         <label class="font-weight-bold mb-2 text-dark">O-Level Combinations</label>
         <div class="row pl-2">
-            @foreach($combinations as $combination)
-                @if($combination->level == 'O-Level' && $combination->id != 1)
-                    <div class="col-md-3 col-sm-4 col-6 mb-2">
-                        <div class="form-check">
-                            <input type="checkbox" 
-                                   name="schools[0][o_level_combinations][]" 
-                                   id="o_comb_0_{{ $combination->id }}" 
-                                   value="{{ $combination->id }}">
-                            <label class="form-check-label" for="o_comb_0_{{ $combination->id }}">
-                                {{ $combination->name }}
-                            </label>
-                        </div>
+            @php
+                $oLevelCombinations = $combinations
+                    ->filter(fn($c) => $c->level == 'O-Level' && $c->id != 1)
+                    ->sortBy(fn($c) => strlen($c->name));
+            @endphp
+
+            @foreach($oLevelCombinations as $combination)
+                <div class="col-md-3 col-sm-4 col-6 mb-2">
+                    <div class="form-check">
+                        <input type="checkbox" 
+                               name="schools[0][o_level_combinations][]" 
+                               id="o_comb_0_{{ $combination->id }}" 
+                               value="{{ $combination->id }}">
+                        <label class="form-check-label" for="o_comb_0_{{ $combination->id }}">
+                            {{ $combination->name }}
+                        </label>
                     </div>
-                @endif
+                </div>
             @endforeach
         </div>
     </div>
@@ -135,28 +139,29 @@
     <div class="form-group mb-0 p-3 bg-light rounded border">
         <label class="font-weight-bold mb-2 text-dark">A-Level Combinations</label>
         <div class="row pl-2">
+            <!-- Rendered in order of label character length (Shortest -> Longest) -->
             <div class="col-md-3 col-sm-4 col-6 mb-2">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_pcm" value="PCM">
-                    <label class="form-check-label" for="a_comb_0_pcm">PCM (Physics, Chem, Math)</label>
+                    <input class="form-check-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_cbg" value="CBG">
+                    <label class="form-check-label" for="a_comb_0_cbg">CBG (Chem, Bio, Geo)</label> <!-- 19 chars -->
                 </div>
             </div>
             <div class="col-md-3 col-sm-4 col-6 mb-2">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_pcb" value="PCB">
-                    <label class="form-check-label" for="a_comb_0_pcb">PCB (Physics, Chem, Bio)</label>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-4 col-6 mb-2">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_cbg" value="CBG">
-                    <label class="form-check-label" for="a_comb_0_cbg">CBG (Chem, Bio, Geo)</label>
+                    <label class="form-check-label" for="a_comb_0_pcb">PCB (Physics, Chem, Bio)</label> <!-- 22 chars -->
                 </div>
             </div>
             <div class="col-md-3 col-sm-4 col-6 mb-2">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_hgl" value="HGL">
-                    <label class="form-check-label" for="a_comb_0_hgl">HGL (History, Geo, Lang)</label>
+                    <label class="form-check-label" for="a_comb_0_hgl">HGL (History, Geo, Lang)</label> <!-- 23 chars -->
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-4 col-6 mb-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_pcm" value="PCM">
+                    <label class="form-check-label" for="a_comb_0_pcm">PCM (Physics, Chem, Math)</label> <!-- 23 chars -->
                 </div>
             </div>
         </div>
