@@ -19,6 +19,7 @@ class School extends Model
         'city',           
         'school_type',
         'sponsorship_type',
+        'combinations',
         'district',
         'ward',
         'region',
@@ -38,6 +39,8 @@ class School extends Model
     {
         return [
             'school_type' => 'array',
+            'combinations' => 'array',
+            'location' => 'array',
         ];
     }
 

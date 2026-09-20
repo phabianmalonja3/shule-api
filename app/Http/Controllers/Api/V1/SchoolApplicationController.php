@@ -78,103 +78,125 @@ class SchoolApplicationController extends Controller
         return view('application.school-application',compact('combinations'));
     }
 
-    public function store(Request $request)
-    {   
-        $registrationType = $request->input('registration_type', 'single');
-return $request;
-        $schoolsRules = [
-            'schools.*.school_name' => ['required', 'string', 'max:255'],
-            'schools.*.address' => 'sometimes|max:255',
-            'schools.*.school_type' => 'required|array|min:1|in:Primary,O-Level,A-Level',
-            'schools.*.region' => 'required|string',
-            'schools.*.district' => 'required|string',
-            'schools.*.ward' => 'required|string',
-            'schools.*.sponsorship_type' => 'required|in:Government,Private',
-            'schools.*.first_name' => 'required|string',
-            'schools.*.surname' => 'required|string',
-            'schools.*.middle_name' => 'nullable|string',
-            'schools.*.phone' => ['required', 'regex:/^0[0-9]{9}$/'],
-            'schools.*.email' => ['nullable', 'email'],
+public function store(Request $request)
+{
+    $registrationType = $request->input('registration_type', 'single');
+
+    $schoolsRules = [
+        'schools.*.school_name' => ['required', 'string', 'max:255'],
+        'schools.*.address' => ['nullable', 'string', 'max:255'],
+        'schools.*.school_type' => ['required', 'array', 'min:1'],
+        'schools.*.school_type.*' => ['in:Primary,O-Level,A-Level'],
+        'schools.*.o_level_combinations' => ['nullable', 'array'],
+        'schools.*.o_level_combinations.*' => ['integer'],
+        'schools.*.a_level_combinations' => ['nullable', 'array'],
+        'schools.*.a_level_combinations.*' => ['string'],
+        'schools.*.region' => ['required', 'string'],
+        'schools.*.district' => ['required', 'string'],
+        'schools.*.ward' => ['required', 'string'],
+        'schools.*.sponsorship_type' => ['required', 'in:Government,Private'],
+        'schools.*.first_name' => ['required', 'string', 'max:100'],
+        'schools.*.surname' => ['required', 'string', 'max:100'],
+        'schools.*.middle_name' => ['nullable', 'string', 'max:100'],
+        'schools.*.phone' => ['required', 'regex:/^0[0-9]{9}$/'],
+        'schools.*.email' => ['nullable', 'email', 'max:255'],
+    ];
+
+    $validationRules = $schoolsRules;
+    if ($registrationType === 'group') {
+        $validationRules['generic_name'] = ['required', 'string', 'max:255'];
+    }
+
+    $validatedData = $request->validate($validationRules, [
+        'schools.*.phone.regex' => 'The phone number must start with 0 and contain exactly 10 digits.',
+        'schools.*.school_type.required' => 'Please select at least one school level.',
+    ]);
+
+    $schoolsData = $validatedData['schools'];
+    $schoolCount = count($schoolsData);
+
+    if ($registrationType === 'group' && $schoolCount > 1) {
+        $genericSchoolExists = GenericSchool::where('name', $request->generic_name)->exists();
+        if ($genericSchoolExists) {
+            return redirect()->back()->withInput()->withErrors([
+                'error' => "The generic school name '{$request->generic_name}' has already been registered."
+            ]);
+        }
+    }
+
+    foreach ($schoolsData as $index => $school) {
+        $nameLower = strtolower($school['school_name']);
+        $types = $school['school_type'];
+
+        if (in_array('Primary', $types) && !Str::contains($nameLower, ['primary', 'msingi'])) {
+            return redirect()->back()->withInput()->withErrors([
+                'error' => "School #".($index + 1)." ({$school['school_name']}) is marked as Primary but its name does not contain 'Primary' or 'Msingi'."
+            ]);
+        }
+
+        $schoolExists = School::where('name', $school['school_name'])
+            ->where('region', $school['region'])
+            ->where('district', $school['district'])
+            ->where('ward', $school['ward'])
+            ->exists();
+
+        if ($schoolExists) {
+            return redirect()->back()->withInput()->withErrors([
+                'error' => "The school '{$school['school_name']}' is already registered in {$school['region']}, {$school['district']} ({$school['ward']})."
+            ]);
+        }
+
+        $headTeacherExists = SchoolApplication::where('phone', $school['phone'])->exists();
+        if ($headTeacherExists) {
+            return redirect()->back()->withInput()->withErrors([
+                'error' => "User with phone number {$school['phone']} already exists in the system."
+            ]);
+        }
+    }
+
+DB::transaction(function () use ($registrationType, $schoolCount, $request, $schoolsData) {
+    $genericSchoolID = 1;
+
+    if ($registrationType === 'group' && $schoolCount > 1) {
+        $newGeneric = GenericSchool::create(['name' => $request->generic_name]);
+        $genericSchoolID = $newGeneric->id;
+    }
+
+    foreach ($schoolsData as $school) {
+        $location = [
+            'ward' => $school['ward'],
+            'region' => $school['region'],
+            'district' => $school['district'],
         ];
 
-        $validationRules = $schoolsRules;
-        if ($registrationType === 'group') {
-            $validationRules = array_merge($validationRules, ['generic_name' => 'required|string']);
-        }
+        // Merge O-Level and A-Level selections into one flat array
+        $oLevelCombs = $school['o_level_combinations'] ?? [];
+        $aLevelCombs = $school['a_level_combinations'] ?? [];
+        $mergedCombinations = array_values(array_merge($oLevelCombs, $aLevelCombs));
 
-        $validatedData = $request->validate($validationRules, [
-            'schools.*.phone.regex' => 'The phone number must start with 0 and contain exactly 10 digits.',
-            'schools.*.phone.unique' => 'The phone number has already been used. Please make sure you are registering a new school or crosscheck the phone number.',
+        SchoolApplication::create([
+            'generic_school_id' => $genericSchoolID,
+            'school_name' => ucwords(strtolower($school['school_name'])),
+            'address' => $school['address'] ?? null,
+            'school_type' => $school['school_type'],
+            'sponsorship_type' => $school['sponsorship_type'],
+            'combinations' => $mergedCombinations, // Saved as a flat JSON array
+            'location' => $location,
+            'first_name' => $school['first_name'],
+            'middle_name' => $school['middle_name'] ?? null,
+            'surname' => $school['surname'],
+            'fullname' => $this->buildFullName($school),
+            'phone' => $school['phone'],
+            'email' => $school['email'] ?? null,
+            'status' => 'pending',
         ]);
-
-        $schoolsData = $validatedData['schools'];
-        
-        $genericSchoolID = 1;
-        $schoolCount = count($request->schools);
-
-        if($registrationType === 'group' && $schoolCount > 1){
-
-            $genericSchoolExists = GenericSchool::where('name', $request->generic_name)
-                ->exists();
-
-            if ($genericSchoolExists) {
-                return redirect()->back()->withErrors([
-                    'error' => "The schools' generic name has already been used. Please check with the Administrator."
-                ]);
-            }
-
-            $genericSchool['name'] = $request->generic_name;
-            $new = GenericSchool::create($genericSchool);
-            $genericSchoolID = $new->id;
-        }
-
-        foreach ($schoolsData as $school) {
-
-            if(in_array('Primary', $school['school_type']) && strpos(strtolower($school['school_name']),'primary') == 0 && strpos(strtolower($school['school_name']),'ya msingi') == 0){
-                return redirect()->back()->withErrors([
-                    'error' => $school['school_type']]);
-            }
-
-            $schoolExists = School::where('name', $school['school_name'])
-                ->where('region', $school['region'])
-                ->where('district', $school['district'])
-                ->where('ward', $school['ward'])
-                ->exists();
-
-            if ($schoolExists) {
-                return redirect()->back()->withErrors([
-                    'error' => 'This school has already been registered in the ' . $school['region'] . ' ' . $school['district'] . ' ' . ' and' . ' ' . $school['ward']
-                ]);
-            }
-
-            $headTeacherExists = SchoolApplication::where('phone',$school['phone'])->exists();
-            
-            if ($headTeacherExists) {
-                return redirect()->back()->withErrors(['error' => 'User with phone number '.$school['phone'].' already exists in the system.']);
-            }
-
-            $location = [
-                'ward' => $school['ward'],
-                'region' => $school['region'],
-                'district' => $school['district'],
-            ];
-
-            $school['status'] = 'pending';
-            $school['school_name'] = ucwords(strtolower($school['school_name']));
-            $school['school_type'] = json_encode($school['school_type']);
-            $school['sponsorship_type'] = $school['sponsorship_type'];
-            $school['location'] = json_encode($location);
-            $school['fullname'] = $this->buildFullName($school);
-            $school['generic_school_id'] = $genericSchoolID;
-
-            SchoolApplication::create($school);
-        }
-
-        flash()->option('position', 'bottom-right')
-            ->success('You have successfully submitted your application. We will contact you soon.');
-
-        return redirect()->route('application.waiting');
     }
+});
+    flash()->option('position', 'bottom-right')
+        ->success('You have successfully submitted your application. We will contact you soon.');
+
+    return redirect()->route('application.waiting');
+}
 
     public function show(SchoolApplication $application)
     {
