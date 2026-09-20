@@ -108,7 +108,7 @@
                                         </div>
 <!-- O-Level Combinations Container -->
 <div class="o-level-combinations-container col-12 mt-3" style="display: none;">
-    <div class="form-group bg-light rounded border">
+    <div class="form-group mb-0 p-3 bg-light rounded">
         <label class="font-weight-bold mb-2 text-dark">O-Level Combinations</label>
         <div class="row pl-2">
             @foreach($combinations as $combination)
