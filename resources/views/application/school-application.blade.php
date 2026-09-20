@@ -8,7 +8,8 @@
             <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h4>Register a School</h4> <span class="text-muted" style="font-size: .85em;"> (If you have already registered your school, DO NOT register it again. Call us on +255(0) 760 400 200.)</span>
+                        <h4>Register a School</h4> 
+                        <span class="text-muted" style="font-size: .85em;"> (If you have already registered your school, DO NOT register it again. Call us on +255(0) 760 400 200.)</span>
                     </div>
                     <div class="card-body">
 
@@ -33,7 +34,8 @@
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input type="radio" class="form-check-input" id="groupOfSchools" name="registration_type" value="group">
-                                    <label class="form-check-label" for="groupOfSchools" style="margin-right:-12px">Group of Schools</label><span class="text-muted">(Under one Ownership)</span>
+                                    <label class="form-check-label" for="groupOfSchools" style="margin-right:-12px">Group of Schools</label>
+                                    <span class="text-muted">(Under one Ownership)</span>
                                 </div>
                             </div>
 
@@ -92,7 +94,6 @@
                                                     <label class="form-check-label" for="A-level_0">A-level</label>
                                                 </div>
                                             </div>
-
                                         </div>
                                         
                                         <div class="form-group col-lg-6 col-12 sponsorship-type-container" id="sponsorshipContainer_0">
@@ -106,51 +107,63 @@
                                                 <label class="form-check-label" for="private_0">Private</label>
                                             </div>
                                         </div>
-                                                                                    <!-- O-Level Combinations / Subjects Container -->
-<div class="o-level-combinations-container mt-3" style="display: none;">
-    <label class="font-weight-bold">O-Level Combinations:</label>
-    <div class="row">
-        <!-- Add your O-Level checkboxes/select options here -->
-@foreach($combinations as $combination)
-    @if($combination->level == 'O-Level' && $combination->id != 1)
-            <div class="col-md-3 mb-2">
-                <div class="form-check">
-                    <input class="form-check-input" 
-                           type="checkbox" 
-                           name="schools[0][o_level_combinations][]" 
-                           id="o_comb_0_{{ $combination->id }}" 
-                           value="{{ $combination->id }}">
-                    <label class="form-check-label" for="o_comb_0_{{ $combination->id }}">
-                        {{ $combination->name }}
-                    </label>
-                </div>
-            </div>
-    @endif
-@endforeach
-    </div>
-</div>
 
-<!-- A-Level Combinations Container -->
-<div class="a-level-combinations-container mt-3" style="display: none;">
-    <label class="font-weight-bold">A-Level Combinations:</label>
-    <div class="row">
-        <!-- Add your A-Level combination options here -->
-        <div class="col-md-3">
-            <input type="checkbox" name="schools[0][a_level_combinations][]" value="PCM"> PCM (Physics, Chemistry, Math)
-        </div>
-        <div class="col-md-3">
-            <input type="checkbox" name="schools[0][a_level_combinations][]" value="PCB"> PCB (Physics, Chemistry, Biology)
-        </div>
-        <div class="col-md-3">
-            <input type="checkbox" name="schools[0][a_level_combinations][]" value="CBG"> CBG (Chemistry, Biology, Geography)
-        </div>
-        <div class="col-md-3">
-            <input type="checkbox" name="schools[0][a_level_combinations][]" value="HGL"> HGL (History, Geography, Language)
-        </div>
-    </div>
-</div>
+                                        <!-- O-Level Combinations Container -->
+                                        <div class="o-level-combinations-container mt-3 col-12" style="display: none;">
+                                            <label class="font-weight-bold">O-Level Combinations:</label>
+                                            <div class="row">
+                                                @foreach($combinations as $combination)
+                                                    @if($combination->level == 'O-Level' && $combination->id != 1)
+                                                        <div class="col-md-3 mb-2">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" 
+                                                                       type="checkbox" 
+                                                                       name="schools[0][o_level_combinations][]" 
+                                                                       id="o_comb_0_{{ $combination->id }}" 
+                                                                       value="{{ $combination->id }}">
+                                                                <label class="form-check-label" for="o_comb_0_{{ $combination->id }}">
+                                                                    {{ $combination->name }}
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                        </div>
+
+                                        <!-- A-Level Combinations Container -->
+                                        <div class="a-level-combinations-container mt-3 col-12" style="display: none;">
+                                            <label class="font-weight-bold">A-Level Combinations:</label>
+                                            <div class="row">
+                                                <div class="col-md-3 mb-2">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_pcm" value="PCM">
+                                                        <label class="form-check-label" for="a_comb_0_pcm">PCM (Physics, Chemistry, Math)</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 mb-2">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_pcb" value="PCB">
+                                                        <label class="form-check-label" for="a_comb_0_pcb">PCB (Physics, Chemistry, Biology)</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 mb-2">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_cbg" value="CBG">
+                                                        <label class="form-check-label" for="a_comb_0_cbg">CBG (Chemistry, Biology, Geography)</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 mb-2">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_hgl" value="HGL">
+                                                        <label class="form-check-label" for="a_comb_0_hgl">HGL (History, Geography, Language)</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="headteacher-fields">
+
+                                    <div class="headteacher-fields mt-3">
                                         <h6 class="mb-4" style="border-bottom: 2px solid #007bff; padding-bottom: 10px;">
                                             Headteacher/Head of School Details
                                         </h6>
@@ -171,11 +184,12 @@
                                         <div class="row">
                                             <div class="form-group col-12">
                                                 <small class="pt-2 form-text text-info">
-                                                    <i class="fas fa-exclamation-circle text-info"></i>&nbsp;The phone number will be used to send your username and password.</small>
+                                                    <i class="fas fa-exclamation-circle text-info"></i>&nbsp;The phone number will be used to send your username and password.
+                                                </small>
                                             </div>
                                             <div class="form-group col-lg-6 col-12" style="margin-top:-20px">
                                                 <label for="phone_0">Primary Phone Number</label>
-                                                <input type="text" class="form-control" id="phone_0" placeholder="07XXXXXXXXXX" name="schools[0][phone]" value="{{ old('schools.0.phone') }}">
+                                                <input type="text" class="form-control" id="phone_0" placeholder="07XXXXXXXX" name="schools[0][phone]" value="{{ old('schools.0.phone') }}">
                                             </div>
                                             <div class="form-group col-lg-6 col-12" style="margin-top:-20px">
                                                 <label for="email_0">Email (Optional)</label>
@@ -183,9 +197,9 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
+
                             <div class="form-group d-flex mt-4">
                                 <button type="button" class="btn btn-primary" id="addSchoolBtn" style="display: none;">
                                     <i class="fas fa-plus"></i> Add School
@@ -198,9 +212,11 @@
             </div>
         </div>
     </div>
+</x-layout>
+
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
     const registrationTypeRadios = document.querySelectorAll('input[name="registration_type"]');
     const genericNameField = document.getElementById('genericNameField');
     const addSchoolBtn = document.getElementById('addSchoolBtn');
@@ -316,14 +332,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateFieldAttributes(clonedElement, index, resetValue = true) {
-        // Fix 1: Properly replace indexing inside input names, IDs, and label "for" attributes
         clonedElement.querySelectorAll('input, select, textarea, label').forEach(element => {
             const originalId = element.id;
             const originalName = element.name;
             const originalFor = element.htmlFor;
 
             if (originalId) {
-                // Replaces schools[0], o_comb_0_1, region_0, primary_0, etc.
                 element.id = originalId
                     .replace(/schools\[\d+\]/, `schools[${index}]`)
                     .replace(/o_comb_\d+_/, `o_comb_${index}_`)
@@ -355,9 +369,9 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // Toggle handlers for Level selection
-        const primaryCheckbox = clonedElement.querySelector(`input[value="Primary"]`);
-        const otherCheckboxes = clonedElement.querySelectorAll(`input[value="O-Level"], input[value="A-Level"]`);
+        // Re-bind Level Checkbox Handlers
+        const primaryCheckbox = clonedElement.querySelector('input[value="Primary"]');
+        const otherCheckboxes = clonedElement.querySelectorAll('input[value="O-Level"], input[value="A-Level"]');
 
         if (primaryCheckbox) {
             primaryCheckbox.onchange = function() {
@@ -377,13 +391,13 @@ document.addEventListener('DOMContentLoaded', function () {
             };
         });
 
-        // School Name Input trigger
+        // Re-bind School Name Input Trigger
         const schoolNameInput = clonedElement.querySelector('input[name*="[school_name]"]');
         if (schoolNameInput) {
             schoolNameInput.oninput = (event) => manageSchoolLevel(event.target);
         }
 
-        // Region / District / Ward Dynamic dropdown bindings
+        // Re-bind Region / District / Ward dynamic dropdowns
         const regionSelect = clonedElement.querySelector('select[name*="[region]"]');
         const districtSelect = clonedElement.querySelector('select[name*="[district]"]');
         const wardSelect = clonedElement.querySelector('select[name*="[ward]"]');
@@ -507,7 +521,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Direct Element Reference Dynamic Fetchers
+    // Dynamic Fetchers
     function fetchRegions(regionSelect) {
         if (!regionSelect) return;
         const regionsUrl = "{{ route('regions') }}"; 
@@ -585,16 +599,10 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error fetching wards:', error));
     }
 
-    // Initial setup for the first existing block
-    if (firstSchoolBlock) {
-        updateFieldAttributes(firstSchoolBlock, 0, false);
-        const initialRegionSelect = firstSchoolBlock.querySelector('select[name*="[region]"]');
-        if (initialRegionSelect) fetchRegions(initialRegionSelect);
-    }
-
+    // Initialize first block bindings & regions on load
+    updateFieldAttributes(firstSchoolBlock, 0, false);
+    fetchRegions(document.getElementById('region_0'));
     toggleFormFields();
-    manageSubmitButtonVisibility();
 });
 </script>
-
 </x-layout>
