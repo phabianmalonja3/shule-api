@@ -110,13 +110,12 @@
 <div class="o-level-combinations-container col-12 mt-3" style="display: none;">
     <div class="form-group mb-0 p-3 bg-light rounded border">
         <label class="font-weight-bold mb-2 text-dark">O-Level Combinations</label>
-        <div class="row pl-2">
+        <div class="row pl-1">
             @foreach($combinations as $combination)
                 @if($combination->level == 'O-Level' && $combination->id != 1)
                     <div class="col-md-3 col-sm-4 col-6 mb-2">
                         <div class="form-check">
-                            <input class="form-check-input" 
-                                   type="checkbox" 
+                            <input type="checkbox" 
                                    name="schools[0][o_level_combinations][]" 
                                    id="o_comb_0_{{ $combination->id }}" 
                                    value="{{ $combination->id }}">
