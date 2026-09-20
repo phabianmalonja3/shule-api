@@ -605,4 +605,3 @@ document.addEventListener('DOMContentLoaded', function () {
     toggleFormFields();
 });
 </script>
-</x-layout>
