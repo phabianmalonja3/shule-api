@@ -296,6 +296,7 @@ DB::transaction(function () use ($registrationType, $schoolCount, $request, $sch
                 'location' => $application->location,
                 'address' => $application->address,
                 'sponsorship_type' => $application->sponsorship_type,
+                'combinations' => $application->combinations,
                 'contract_number' => $data['contract_number'],
                 'motto' => $data['motto'] ?? 'Default Motto',
                 'logo' => $data['logo'] ?? null,
