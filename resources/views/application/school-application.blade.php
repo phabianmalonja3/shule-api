@@ -307,20 +307,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 sponsorshipFormGroup.classList.add('col-lg-6');
             }
         } else {
-            if (schoolLevelContainer) schoolLevelContainer.style.display = 'none'; 
+            if (schoolLevelContainer) schoolLevelContainer.style.display = 'block'; 
         
             if (primaryCheckbox) {
                 primaryCheckbox.closest('.form-check').style.display = 'inline-block';
-                if (!isGroup || schoolName.length === 0) {
-                    primaryCheckbox.checked = true;
-                }
             }
             
             otherCheckboxes.forEach(checkbox => {
-                checkbox.closest('.form-check').style.display = isGroup ? 'inline-block' : 'none';
-                if (!isGroup || schoolName.length === 0) {
-                    checkbox.checked = false; 
-                }
+                checkbox.closest('.form-check').style.display = 'inline-block';
             });
             
             if (sponsorshipFormGroup) {
@@ -371,25 +365,36 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Re-bind Level Checkbox Handlers
         const primaryCheckbox = clonedElement.querySelector('input[value="Primary"]');
-        const otherCheckboxes = clonedElement.querySelectorAll('input[value="O-Level"], input[value="A-Level"]');
+        const oLevelCheckbox = clonedElement.querySelector('input[value="O-Level"]');
+        const aLevelCheckbox = clonedElement.querySelector('input[value="A-Level"]');
 
         if (primaryCheckbox) {
             primaryCheckbox.onchange = function() {
                 if (this.checked) {
-                    otherCheckboxes.forEach(checkbox => checkbox.checked = false);
-                    toggleCombinationsVisibility(clonedElement);
+                    if (oLevelCheckbox) oLevelCheckbox.checked = false;
+                    if (aLevelCheckbox) aLevelCheckbox.checked = false;
                 }
+                toggleCombinationsVisibility(clonedElement);
             };
         }
 
-        otherCheckboxes.forEach(checkbox => {
-            checkbox.onchange = function() {
+        if (oLevelCheckbox) {
+            oLevelCheckbox.onchange = function() {
                 if (this.checked && primaryCheckbox) {
                     primaryCheckbox.checked = false;
                 }
                 toggleCombinationsVisibility(clonedElement);
             };
-        });
+        }
+
+        if (aLevelCheckbox) {
+            aLevelCheckbox.onchange = function() {
+                if (this.checked && primaryCheckbox) {
+                    primaryCheckbox.checked = false;
+                }
+                toggleCombinationsVisibility(clonedElement);
+            };
+        }
 
         // Re-bind School Name Input Trigger
         const schoolNameInput = clonedElement.querySelector('input[name*="[school_name]"]');
@@ -507,7 +512,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 oLevelContainer.style.display = 'block';
             } else {
                 oLevelContainer.style.display = 'none';
-                oLevelContainer.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
             }
         }
 
@@ -516,7 +520,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 aLevelContainer.style.display = 'block';
             } else {
                 aLevelContainer.style.display = 'none';
-                aLevelContainer.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
             }
         }
     }
