@@ -107,10 +107,10 @@
                                             </div>
                                         </div>
 <!-- O-Level Combinations Container -->
-<div class="o-level-combinations-container col-12 mt-3" style="display: none;">
+<div class="o-level-combinations-container col-12" style="display: none;">
     <div class="form-group mb-0 p-3 bg-light rounded border">
         <label class="font-weight-bold mb-2 text-dark">O-Level Combinations</label>
-        <div class="row pl-1">
+        <div class="row pl-2">
             @foreach($combinations as $combination)
                 @if($combination->level == 'O-Level' && $combination->id != 1)
                     <div class="col-md-3 col-sm-4 col-6 mb-2">
