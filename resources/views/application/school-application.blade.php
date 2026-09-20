@@ -106,67 +106,51 @@
                                                 <label class="form-check-label" for="private_0">Private</label>
                                             </div>
                                         </div>
-<!-- O-Level Combinations Container -->
-<div class="o-level-combinations-container col-12 mt-3" style="display: none;">
-    <div class="form-group mb-0 p-3 bg-light rounded border">
-        <label class="font-weight-bold mb-2 text-dark">O-Level Combinations</label>
-        <div class="row pl-2">
-            @php
-                $oLevelCombinations = $combinations
-                    ->filter(fn($c) => $c->level == 'O-Level' && $c->id != 1)
-                    ->sortBy(fn($c) => strlen($c->name));
-            @endphp
-
-            @foreach($oLevelCombinations as $combination)
-                <div class="col-md-3 col-sm-4 col-6 mb-2">
-                    <div class="form-check">
-                        <input type="checkbox" 
-                               name="schools[0][o_level_combinations][]" 
-                               id="o_comb_0_{{ $combination->id }}" 
-                               value="{{ $combination->id }}">
-                        <label class="form-check-label" for="o_comb_0_{{ $combination->id }}">
-                            {{ $combination->name }}
-                        </label>
+                                                                                    <!-- O-Level Combinations / Subjects Container -->
+                                        <div class="o-level-combinations-container mt-3" style="display: none;">
+                                            <label class="font-weight-bold">O-Level Combinations:</label>
+                                            <div class="row">
+                                                <!-- Add your O-Level checkboxes/select options here -->
+                                                @foreach($combinations as $combination)
+                                                    @if($combination->level == 'O-Level' && $combination->id != 1)
+<div class="col-md-3 col-sm-4 col-6 mb-2">
+                        <div class="form-check d-flex align-items-center">
+                            <input type="checkbox" 
+                                   name="schools[0][o_level_combinations][]" 
+                                   id="o_comb_0_{{ $combination->id }}" 
+                                   value="{{ $combination->id }}">
+                            <label class="form-check-label text-truncate" 
+                                   for="o_comb_0_{{ $combination->id }}" 
+                                   title="{{ $combination->name }}"
+                                   style="max-width: 100%; cursor: pointer;">
+                                {{ $combination->name }}
+                            </label>
+                        </div>
                     </div>
-                </div>
-            @endforeach
-        </div>
-    </div>
-</div>
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                        </div>
 
-<!-- A-Level Combinations Container -->
-<div class="a-level-combinations-container col-12 mt-3" style="display: none;">
-    <div class="form-group mb-0 p-3 bg-light rounded border">
-        <label class="font-weight-bold mb-2 text-dark">A-Level Combinations</label>
-        <div class="row pl-2">
-            <!-- Rendered in order of label character length (Shortest -> Longest) -->
-            <div class="col-md-3 col-sm-4 col-6 mb-2">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_cbg" value="CBG">
-                    <label class="form-check-label" for="a_comb_0_cbg">CBG (Chem, Bio, Geo)</label> <!-- 19 chars -->
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-4 col-6 mb-2">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_pcb" value="PCB">
-                    <label class="form-check-label" for="a_comb_0_pcb">PCB (Physics, Chem, Bio)</label> <!-- 22 chars -->
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-4 col-6 mb-2">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_hgl" value="HGL">
-                    <label class="form-check-label" for="a_comb_0_hgl">HGL (History, Geo, Lang)</label> <!-- 23 chars -->
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-4 col-6 mb-2">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_pcm" value="PCM">
-                    <label class="form-check-label" for="a_comb_0_pcm">PCM (Physics, Chem, Math)</label> <!-- 23 chars -->
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                                        <!-- A-Level Combinations Container -->
+                                        <div class="a-level-combinations-container mt-3" style="display: none;">
+                                            <label class="font-weight-bold">A-Level Combinations:</label>
+                                            <div class="row">
+                                                <!-- Add your A-Level combination options here -->
+                                                <div class="col-md-3">
+                                                    <input type="checkbox" name="schools[0][a_level_combinations][]" value="PCM"> PCM (Physics, Chemistry, Math)
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <input type="checkbox" name="schools[0][a_level_combinations][]" value="PCB"> PCB (Physics, Chemistry, Biology)
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <input type="checkbox" name="schools[0][a_level_combinations][]" value="CBG"> CBG (Chemistry, Biology, Geography)
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <input type="checkbox" name="schools[0][a_level_combinations][]" value="HGL"> HGL (History, Geography, Language)
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="headteacher-fields">
                                         <h6 class="mb-4" style="border-bottom: 2px solid #007bff; padding-bottom: 10px;">
