@@ -79,7 +79,7 @@ class SchoolApplicationController extends Controller
     }
 
 public function store(Request $request)
-{dd($request);
+{
     $registrationType = $request->input('registration_type', 'single');
 
     $schoolsRules = [
