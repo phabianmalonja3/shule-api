@@ -329,9 +329,7 @@ public function index(Request $request)
         ->values();        // Reset collection keys
 
     // Fetch combinations not yet linked to this school
-    $combinations = Combination::whereDoesntHave('schools', function ($query) use ($schoolId) {
-        $query->where('school_id', $schoolId);
-    })->whereIn('level',$levels)->whereNotIn('id',$school->combinations)->get();
+    $combinations = Combination::whereIn('level',$levels)->whereNotIn('id',$school->combinations)->get();
 return $combinations;
     return view('subjects.list', compact('subjects', 'school', 'combinations'));
 }
