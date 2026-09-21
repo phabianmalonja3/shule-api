@@ -47,7 +47,7 @@
                                     <th>#</th>
                                     <th>School Name</th>
                                     <th>Level</th>
-                                    <th>government/private</th>
+                                    <th>Sponsorship</th>
                                     <th>Headteacher Name</th>
                                     <th>Headteacher Phone</th>
 
