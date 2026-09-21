@@ -138,30 +138,24 @@
     <div class="form-group mb-0 p-3 bg-light rounded border">
         <label class="font-weight-bold mb-2 text-dark">A-Level Combinations</label>
         <div class="row pl-2">
-            <div class="col-md-3 col-sm-4 col-6 mb-2">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_pcm" value="PCM">
-                    <label class="form-check-label" for="a_comb_0_pcm">PCM (Physics, Chem, Math)</label>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-4 col-6 mb-2">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_pcb" value="PCB">
-                    <label class="form-check-label" for="a_comb_0_pcb">PCB (Physics, Chem, Bio)</label>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-4 col-6 mb-2">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_cbg" value="CBG">
-                    <label class="form-check-label" for="a_comb_0_cbg">CBG (Chem, Bio, Geo)</label>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-4 col-6 mb-2">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="schools[0][a_level_combinations][]" id="a_comb_0_hgl" value="HGL">
-                    <label class="form-check-label" for="a_comb_0_hgl">HGL (History, Geo, Lang)</label>
-                </div>
-            </div>
+            @foreach($combinations as $combination)
+                @if($combination->level == 'A-Level')
+                    <div class="col-md-3 col-sm-4 col-6 mb-2">
+                        <div class="form-check d-flex align-items-center">
+                            <input type="checkbox" 
+                                   name="schools[0][a_level_combinations][]" 
+                                   id="o_comb_0_{{ $combination->id }}" 
+                                   value="{{ $combination->id }}">
+                            <label class="form-check-label text-truncate" 
+                                   for="o_comb_0_{{ $combination->id }}"
+                                   title="{{ $combination->name }}"
+                                   style="max-width: 100%; cursor: pointer;">
+                                {{ $combination->name }}
+                            </label>
+                        </div>
+                    </div>
+                @endif
+            @endforeach
         </div>
     </div>
 </div>
