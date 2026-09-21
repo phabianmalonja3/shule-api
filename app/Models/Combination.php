@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 class Combination extends Model
 {
     protected $fillable = ['name', 'description'];
+    protected $casts = ['subject_id' => 'array'];
 	public $timestamps = false;
 
     public function students()
@@ -48,4 +49,17 @@ class Combination extends Model
             'subject_id'           
         );
     } 
+
+    public function getSubjectsAttribute()
+    {
+        // Get the array of IDs from your JSON column (adjust relation/property path as needed)
+        $subjectIds = $this->subject_id ?? []; 
+
+        if (empty($subjectIds)) {
+            return collect(); // Return an empty collection if no IDs exist
+        }
+
+        // Fetch and return the actual Subject models
+        return Subject::whereIn('id', $subjectIds)->get();
+    }
 }
