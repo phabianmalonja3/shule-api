@@ -186,7 +186,7 @@
 								<select class="form-control select2" id="edit_combination_id" name="combination_id" required style="width: 100%;">
 									<option value="" selected disabled>-- Choose Combination --</option>
 									@foreach($school->combinations as $comb)
-										<option value="{{ $comb->id }}">{{ $comb->name }}</option>
+										<option value="{{ $comb }}">{{ $comb }}</option>
 									@endforeach
 								</select>
 							</div>
