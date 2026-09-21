@@ -48,7 +48,7 @@
                                     <th>School Name</th>
                                     <th>Level</th>
                                     <th>Sponsorship</th>
-                                    <th>Headteacher Name</th>
+                                    <th>Headteacher</th>
                                     <th>Headteacher Phone</th>
 
                                     <th>Status</th>
