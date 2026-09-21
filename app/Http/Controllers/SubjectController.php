@@ -12,6 +12,7 @@ use App\Http\Resources\SubjectCollection;
 use App\Models\Combination;
 use App\Models\School;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class SubjectController extends Controller
 {
