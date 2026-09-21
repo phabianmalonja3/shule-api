@@ -36,8 +36,7 @@
                           
                         </th>
                         <th>School Name</th>
-                        <th>Headmaster/Headmistres</th>
-                        <th>Phone Number</th>
+                        <th>Headteacher</th>
                         <th>Location</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -50,8 +49,11 @@
                           
                         </td>
                         <td>{{$application->school_name}}</td>
-                        <td>{{$application->fullname}}</td>
-                        <td>{{$application->phone}}</td>
+                        <td>{{$application->fullname}}
+                          <span class="d-block text-muted small">
+                              {{$application->phone}}
+                          </span>
+                        </td>
                         <td>
                           @if(isset($application->region, $application->district, $application->ward))
                           {{ $application->ward }},
