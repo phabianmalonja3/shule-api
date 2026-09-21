@@ -330,12 +330,29 @@ public function index(Request $request)
 
     // Fetch combinations not yet linked to this school
     $unassignedCombinations = Combination::whereIn('level',$levels)->whereNotIn('id',$school->combinations)->get();
-    $combinations = Combination::whereIn('id',$school->combinations)->get();
-return $combinations;
-    // foreach($combinations as $combination){
-    //     $combinationSubjects[$combination->name]=[]
-    // }
+$combinationIds = $school->combinations ?? [];
+$combinations = Combination::whereIn('id', $combinationIds)->get();
 
+$packagedCombinations = [];
+
+foreach ($combinations as $combination) {
+    // Query the database table directly
+    $pivotRecord = DB::table('combination_subject')
+        ->where('combination_id', $combination->id)
+        ->first();
+
+    // Decode the JSON subject IDs
+    $subjectIds = $pivotRecord ? json_decode($pivotRecord->subject_id, true) : [];
+
+    // Fetch subject names
+    $subjectNames = Subject::whereIn('id', $subjectIds)->pluck('name')->toArray();
+
+    $packagedCombinations[] = [
+        'name' => $combination->name,
+        'subjects' => $subjectNames,
+    ];
+}
+return $packagedCombinations;
     return view('subjects.list', compact('subjects', 'school', 'unassignedCombinations'));
 }
     
