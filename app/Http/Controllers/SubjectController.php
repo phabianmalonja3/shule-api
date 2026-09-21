@@ -354,7 +354,7 @@ foreach ($combinations as $combination) {
     ];
 }
 
-    return view('subjects.list', compact('subjects', 'school', 'unassignedCombinations', 'packagedCombinations'));
+    return view('subjects.list', compact('subjects', 'school', '$combinations', 'unassignedCombinations', 'packagedCombinations'));
 }
     
     /**

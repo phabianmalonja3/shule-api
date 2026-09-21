@@ -182,7 +182,12 @@
 						<div class="modal-body">
 							<div class="form-group">
 								<label>Select Combination</label>
-
+								<select class="form-control select2" id="edit_combination_id" name="combination_id" required style="width: 100%;">
+									<option value="" selected disabled>-- Choose Combination --</option>
+									@foreach($combinations as $comb)
+										<option value="{{ $comb->id }}">{{ $comb->name }}</option>
+									@endforeach
+								</select>
 							</div>
 
 							<div class="form-group">
@@ -223,7 +228,7 @@
 								<label>Select Combination</label>
 								<select class="form-control select2" id="delete_combination_id" name="combination_id" required style="width: 100%;">
 									<option value="" selected disabled>-- Choose Combination --</option>
-									@foreach($school->combinations as $comb)
+									@foreach($combinations as $comb)
 										<option value="{{ $comb->id }}">{{ $comb->name }}</option>
 									@endforeach
 								</select>
