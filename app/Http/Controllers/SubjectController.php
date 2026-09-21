@@ -331,7 +331,7 @@ public function index(Request $request)
     // Fetch combinations not yet linked to this school
     $combinations = Combination::whereDoesntHave('schools', function ($query) use ($schoolId) {
         $query->where('school_id', $schoolId);
-    })->whereIn('level',$levels)->get();
+    })->whereIn('level',$levels)whereNotIn('id',$school->combinations)->get();
 return $combinations;
     return view('subjects.list', compact('subjects', 'school', 'combinations'));
 }
