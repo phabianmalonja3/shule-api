@@ -49,7 +49,6 @@
                                     <th>Level</th>
                                     <th>Sponsorship</th>
                                     <th>Headteacher</th>
-                                    <th>Headteacher Phone</th>
 
                                     <th>Status</th>
                                     <th>Action</th>
@@ -74,8 +73,12 @@
                                             @endif
                                         </td>
                                         <td>{{ $school->sponsorship_type }}</td>
-                                        <td>{{ $school->headerTeacher->name ?? 'Not Available' }}</td>
-                                        <td>{{ $school->headerTeacher->phone ?? 'Not Available' }}</td>
+                                        <td>
+                                            {{ $school->headerTeacher->name ?? 'Not Available' }}
+                                            <span class="d-block text-muted small">
+                                                {{ $school->headerTeacher->phone ?? 'Not Available' }}
+                                            </span>
+                                        </td>
 
 
 
