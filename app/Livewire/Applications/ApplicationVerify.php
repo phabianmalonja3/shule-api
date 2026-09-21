@@ -113,6 +113,9 @@ public function mount($application){
             // $this->application->is_verified = true;
             // $this->application->status = 'complete';
             // $this->application->save();
+         $combinations = is_string($this->application->combinations) 
+            ? json_decode($this->application->combinations, true) 
+            : $this->application->combinations;
 
             $school = School::create([
                 'name' => $this->application->school_name,
@@ -122,7 +125,8 @@ public function mount($application){
                 'city' => $this->application->city,
                 'phone' => $this->application->phone,
                 'postal_code' => $this->application->postal_code,
-                'school_type' => json_encode($schoolTypes),
+                'school_type' => $schoolTypes,
+                'combinations' => $combinations,
                 'location' => $this->application->location,
                 'address' => $this->application->address,
                 'sponsorship_type' => $this->application->sponsorship_type,
