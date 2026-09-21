@@ -302,7 +302,7 @@ public function updateSchoolSubjects(Request $request)
     
 
 public function index(Request $request)
-{return 1;
+{
     $schoolId = auth()->user()->school_id;
     $school = School::with(['combinations'])->find($schoolId);
     
@@ -332,7 +332,7 @@ public function index(Request $request)
     $combinations = Combination::whereDoesntHave('schools', function ($query) use ($schoolId) {
         $query->where('school_id', $schoolId);
     })->get();
-
+return $combinations;
     return view('subjects.list', compact('subjects', 'school', 'combinations'));
 }
     
