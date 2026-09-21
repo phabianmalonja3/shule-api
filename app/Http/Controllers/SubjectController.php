@@ -329,9 +329,14 @@ public function index(Request $request)
         ->values();        // Reset collection keys
 
     // Fetch combinations not yet linked to this school
-    $combinations = Combination::whereIn('level',$levels)->whereNotIn('id',$school->combinations)->get();
+    $unassignedCombinations = Combination::whereIn('level',$levels)->whereNotIn('id',$school->combinations)->get();
+    $combinations = Combination::whereIn('id',$school->combinations)->get();
 return $combinations;
-    return view('subjects.list', compact('subjects', 'school', 'combinations'));
+    foreach($combinations as $combination){
+        $combinationSubjects[$combination->name]=[]
+    }
+
+    return view('subjects.list', compact('subjects', 'school', 'unassignedCombinations'));
 }
     
     /**

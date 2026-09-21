@@ -135,7 +135,7 @@
 								<label for="combination_id">Select Combination</label>
 								<select class="form-control select2" id="combination_id" name="combination_id" required style="width: 100%;">
 									<option value="" selected disabled>-- Choose Combination --</option>
-									@foreach($combinations as $combination)
+									@foreach($unassignedCombinations as $combination)
 										<option value="{{ $combination->id }}">{{ $combination->name }}</option>
 									@endforeach
 								</select>						
