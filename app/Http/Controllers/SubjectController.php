@@ -353,8 +353,8 @@ foreach ($combinations as $combination) {
         'subjects' => $subjectNames,
     ];
 }
-return $packagedCombinations;
-    return view('subjects.list', compact('subjects', 'school', 'unassignedCombinations'));
+
+    return view('subjects.list', compact('subjects', 'school', 'unassignedCombinations', 'packagedCombinations'));
 }
     
     /**
