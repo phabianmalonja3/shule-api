@@ -332,9 +332,9 @@ public function index(Request $request)
     $unassignedCombinations = Combination::whereIn('level',$levels)->whereNotIn('id',$school->combinations)->get();
     $combinations = Combination::whereIn('id',$school->combinations)->get();
 return $combinations;
-    foreach($combinations as $combination){
-        $combinationSubjects[$combination->name]=[]
-    }
+    // foreach($combinations as $combination){
+    //     $combinationSubjects[$combination->name]=[]
+    // }
 
     return view('subjects.list', compact('subjects', 'school', 'unassignedCombinations'));
 }
