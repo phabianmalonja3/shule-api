@@ -302,7 +302,7 @@ public function updateSchoolSubjects(Request $request)
     
 
 public function index(Request $request)
-{
+{return 1;
     $schoolId = auth()->user()->school_id;
     $school = School::with(['combinations'])->find($schoolId);
     

@@ -37,33 +37,32 @@
 							</div>
 
 							<div class="card-body p-3">
-@forelse($school->combinations as $combination)
-    <fieldset class="mb-4 p-3" style="border: 1px solid #e4e6fc; border-radius: 8px;">
-        <legend class="w-auto px-2 ml-3">
-            <h6 class="font-weight-bold mb-0">
-                {{ ucfirst($combination->name ?? $combination) }}
-            </h6>
-        </legend>
+								@forelse($school->combinations as $combination)
+									<fieldset class="mb-4 p-3" style="border: 1px solid #e4e6fc; border-radius: 8px;">
+										<legend class="w-auto px-2 ml-3">
+											<h6 class="font-weight-bold">
+												{{ ucfirst($combination->name) }}
+											</h6>
+										</legend>
 
-        <div class="row">
-            @forelse($combination->subjects ?? $combination['subjects'] ?? [] as $subject)
-                <div class="col-md-3 col-sm-6 mb-2 d-flex align-items-center">
-                    <i class="fas fa-circle mr-2" style="font-size: 8px; color: #6777ef;"></i>
-                    <!-- If $subject is a string, print it directly. If it's an object, use ->name -->
-                    <span>{{ is_string($subject) ? $subject : $subject->name }}</span>
-                </div>
-            @empty
-                <div class="col-12 text-muted font-italic">
-                    No subjects assigned to this combination.
-                </div>
-            @endforelse
-        </div>
-    </fieldset>
-@empty
-    <div class="text-center py-4">
-        <p class="text-muted">No combinations found for this school.</p>
-    </div>
-@endforelse
+										<div class="row">
+											@forelse($combination->subjects as $subject)
+												<div class="col-md-3 col-sm-6 mb-2 d-flex align-items-center">
+													<i class="fas fa-circle mr-2" style="font-size: 8px; color: #6777ef;"></i>
+													<span>{{ $subject->name }}</span>
+												</div>
+											@empty
+												<div class="col-12 text-muted italic">
+													No subjects assigned to this combination.
+												</div>
+											@endforelse
+										</div>
+									</fieldset>
+								@empty
+									<div class="text-center py-4">
+										<p>No combinations found for this school.</p>
+									</div>
+								@endforelse
 							</div>
 						</div>
 						@endif
@@ -186,7 +185,7 @@
 								<select class="form-control select2" id="edit_combination_id" name="combination_id" required style="width: 100%;">
 									<option value="" selected disabled>-- Choose Combination --</option>
 									@foreach($school->combinations as $comb)
-										<option value="{{ $comb }}">{{ $comb }}</option>
+										<option value="{{ $comb->id }}">{{ $comb->name }}</option>
 									@endforeach
 								</select>
 							</div>
