@@ -33,9 +33,8 @@
                     <tbody>
                       <tr>
                         <th class="text-center">
-                          
+                          #
                         </th>
-                        <th>#</th>
                         <th>School Name</th>
                         <th>Headteacher</th>
                         <th>Location</th>
