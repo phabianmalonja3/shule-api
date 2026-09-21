@@ -255,6 +255,10 @@ DB::transaction(function () use ($registrationType, $schoolCount, $request, $sch
             return back()->withErrors(['school_type' => 'Invalid school type data provided.']);
         }
 
+         $combinations = is_string($application->combinations) 
+            ? json_decode($application->combinations, true) 
+            : $application->combinations;
+
         try {
             DB::beginTransaction();
 
@@ -292,11 +296,11 @@ DB::transaction(function () use ($registrationType, $schoolCount, $request, $sch
                 'city' => $application->city,
                 'phone' => $application->phone,
                 'postal_code' => $application->postal_code,
-                'school_type' => json_encode($schoolTypes),
+                'school_type' => $schoolTypes,
                 'location' => $application->location,
                 'address' => $application->address,
                 'sponsorship_type' => $application->sponsorship_type,
-                'combinations' => $application->combinations,
+                'combinations' => $combinations,
                 'contract_number' => $data['contract_number'],
                 'motto' => $data['motto'] ?? 'Default Motto',
                 'logo' => $data['logo'] ?? null,
