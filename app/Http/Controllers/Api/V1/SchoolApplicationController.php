@@ -181,6 +181,9 @@ DB::transaction(function () use ($registrationType, $schoolCount, $request, $sch
             'school_type' => $school['school_type'],
             'sponsorship_type' => $school['sponsorship_type'],
             'combinations' => $mergedCombinations, // Saved as a flat JSON array
+            'region' => $school['region'],
+            'district' => $school['district'],
+            'ward' => $school['ward'],
             'location' => $location,
             'first_name' => $school['first_name'],
             'middle_name' => $school['middle_name'] ?? null,
