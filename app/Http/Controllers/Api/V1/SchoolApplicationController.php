@@ -287,7 +287,7 @@ DB::transaction(function () use ($registrationType, $schoolCount, $request, $sch
                 'is_verified' => true,
                 'status' => 'complete',
             ]);
-
+dd($combinations);
             $school = School::create([
                 'name' => $application->school_name,
                 'ward' => $application->ward,
