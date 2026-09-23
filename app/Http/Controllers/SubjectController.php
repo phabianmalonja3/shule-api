@@ -337,20 +337,33 @@ $combinations = Combination::whereIn('id', $combinationIds)->get();
 $packagedCombinations = [];
 
 foreach ($combinations as $combination) {
-    // Query the database table directly
+    // Source 1: Fetch default subjects from the pivot table (your original logic)
     $pivotRecord = DB::table('combination_subject')
         ->where('combination_id', $combination->id)
         ->first();
+        
+    $pivotSubjectIds = $pivotRecord ? json_decode($pivotRecord->subject_id, true) : [];
+    $pivotSubjectNames = Subject::whereIn('id', $pivotSubjectIds)->pluck('name')->toArray();
 
-    // Decode the JSON subject IDs
-    $subjectIds = $pivotRecord ? json_decode($pivotRecord->subject_id, true) : [];
+    // Source 2: Filter school-specific subjects from the pre-loaded $subjects collection
+    $schoolSpecificSubjectNames = $subjects->filter(function ($subject) use ($combination) {
+        $combinationIds = is_string($subject->combination_id) 
+            ? json_decode($subject->combination_id, true) 
+            : $subject->combination_id;
 
-    // Fetch subject names
-    $subjectNames = Subject::whereIn('id', $subjectIds)->pluck('name')->toArray();
+        return is_array($combinationIds) && in_array($combination->id, $combinationIds);
+    })->pluck('name')->toArray();
+
+    // Merge both sources, remove duplicates, and sort alphabetically
+    $mergedSubjectNames = array_values(array_unique(array_merge(
+        $pivotSubjectNames, 
+        $schoolSpecificSubjectNames
+    )));
+    natcasesort($mergedSubjectNames); // Optional: Sorts names alphabetically case-insensitively
 
     $packagedCombinations[] = [
         'name' => $combination->name,
-        'subjects' => $subjectNames,
+        'subjects' => array_values($mergedSubjectNames),
     ];
 }
 
