@@ -353,6 +353,7 @@ public function updateSchoolSubjects(Request $request)
 //     return view('subjects.list', compact('subjects', 'school', 'combinations'));
 // }
 
+
 public function index(Request $request)
 {
     $school = Auth::user()->school;
@@ -369,17 +370,29 @@ public function index(Request $request)
     $levels = Arr::wrap($school->school_type);
 
     // -------------------------------------------------------------
-    // 1. Fetch Assigned Combinations & Pivot Records
+    // 1. Fetch All Available Subjects (For the Modal Dropdown)
+    // -------------------------------------------------------------
+    $allSubjects = Subject::query()
+        ->when(! empty($levels), function ($query) use ($levels) {
+            $query->where(function ($subQuery) use ($levels) {
+                foreach ($levels as $level) {
+                    $subQuery->orWhereJsonContains('school_level', $level);
+                }
+            });
+        })
+        ->orderBy('name')
+        ->get();
+
+    // -------------------------------------------------------------
+    // 2. Fetch Assigned Combinations & Pivot Records
     // -------------------------------------------------------------
     $combinations = Combination::whereIn('id', $schoolCombinationIds)->get();
 
-    // Pre-fetch all pivot records for assigned combinations in 1 query
     $assignedPivotRecords = DB::table('combination_subject')
         ->whereIn('combination_id', $combinations->pluck('id'))
         ->get()
         ->keyBy('combination_id');
 
-    // Collect all predefined subject IDs across the school's combinations
     $assignedPivotSubjectIds = [];
     foreach ($assignedPivotRecords as $rec) {
         $ids = is_array($rec->subject_id) ? $rec->subject_id : json_decode($rec->subject_id ?? '[]', true);
@@ -390,23 +403,27 @@ public function index(Request $request)
     $assignedPivotSubjectIds = array_unique(array_map('intval', $assignedPivotSubjectIds));
 
     // -------------------------------------------------------------
-    // 2. Fetch Subjects (Filtered strictly to combinations & direct school)
+    // 3. Filter Subjects for Display Grid (Only Active Combinations/School)
     // -------------------------------------------------------------
-    // Query subjects that belong to predefined combination IDs OR match combination_id JSON
-    $combinationSubjects = Subject::query()
-        ->whereIn('id', $assignedPivotSubjectIds)
-        ->orWhere(function ($query) use ($schoolCombinationIds) {
-            foreach ($schoolCombinationIds as $combId) {
-                $query->orWhereJsonContains('combination_id', (int) $combId);
-            }
-        })
-        ->get();
-
-    // Get direct school subjects if relationship exists
     $directSchoolSubjects = method_exists($school, 'subjects') ? $school->subjects()->get() : collect();
     $schoolSubjectIds = $directSchoolSubjects->pluck('id')->toArray();
 
-    // Combine, deduplicate, and sort alphabetically
+    // Subjects assigned to combinations (Predefined OR extra via JSON)
+    $combinationSubjects = $allSubjects->filter(function ($subject) use ($assignedPivotSubjectIds, $schoolCombinationIds) {
+        // Predefined pivot match
+        if (in_array($subject->id, $assignedPivotSubjectIds, true)) {
+            return true;
+        }
+
+        // Extra subject JSON match
+        $combIds = is_array($subject->combination_id) 
+            ? $subject->combination_id 
+            : json_decode($subject->combination_id ?? '[]', true);
+
+        return is_array($combIds) && count(array_intersect($schoolCombinationIds, $combIds)) > 0;
+    });
+
+    // Merge direct school subjects + combination subjects for the card display
     $subjects = $directSchoolSubjects
         ->merge($combinationSubjects)
         ->unique('id')
@@ -414,13 +431,12 @@ public function index(Request $request)
         ->values();
 
     // -------------------------------------------------------------
-    // 3. Fetch Unassigned Combinations for Modal Dropdown
+    // 4. Fetch Unassigned Combinations for Modal Dropdown
     // -------------------------------------------------------------
     $unassignedCombinations = Combination::whereIn('level', $levels)
         ->whereNotIn('id', $schoolCombinationIds)
         ->get();
 
-    // Build $predefinedSubjectsMap from combination_subject table
     $unassignedPivotRecords = DB::table('combination_subject')
         ->whereIn('combination_id', $unassignedCombinations->pluck('id'))
         ->get()
@@ -434,9 +450,9 @@ public function index(Request $request)
     }
 
     // -------------------------------------------------------------
-    // 4. Package Assigned Combinations for Display
+    // 5. Package Assigned Combinations for Display
     // -------------------------------------------------------------
-    $pivotSubjectsMap = Subject::whereIn('id', $assignedPivotSubjectIds)->pluck('name', 'id');
+    $pivotSubjectsMap = $allSubjects->pluck('name', 'id');
 
     $packagedCombinations = [];
     foreach ($combinations as $combination) {
@@ -450,7 +466,7 @@ public function index(Request $request)
             ->toArray();
 
         // Extra School-Specific Subject Names
-        $schoolSpecificSubjectNames = $subjects->filter(function ($subject) use ($combination) {
+        $schoolSpecificSubjectNames = $allSubjects->filter(function ($subject) use ($combination) {
             $combIds = is_array($subject->combination_id) ? $subject->combination_id : json_decode($subject->combination_id ?? '[]', true);
 
             return is_array($combIds) && in_array($combination->id, $combIds, true);
@@ -468,7 +484,8 @@ public function index(Request $request)
     }
 
     return view('subjects.list', compact(
-        'subjects',
+        'subjects',                // Displays only active school/combination subjects in the grid
+        'allSubjects',             // Passed to the Modal for selecting extra subjects
         'school',
         'combinations',
         'unassignedCombinations',
