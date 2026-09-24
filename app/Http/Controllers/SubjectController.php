@@ -361,7 +361,7 @@ public function index(Request $request)
         return back()->with('error', 'School not found.');
     }
 
-    // Safely retrieve array of assigned combination IDs
+    // 1. Retrieve array of assigned combination IDs for the school
     $schoolCombinationIds = is_array($school->combinations) 
         ? $school->combinations 
         : json_decode($school->combinations ?? '[]', true);
@@ -369,14 +369,11 @@ public function index(Request $request)
     $levels = Arr::wrap($school->school_type);
 
     // -------------------------------------------------------------
-    // 1. Fetch Direct School Subjects
+    // 2. Fetch Direct School Subjects & Level Subjects ($allSubjects)
     // -------------------------------------------------------------
     $directSchoolSubjects = method_exists($school, 'subjects') ? $school->subjects()->get() : collect();
     $schoolSubjectIds = $directSchoolSubjects->pluck('id')->toArray();
 
-    // -------------------------------------------------------------
-    // 2. Fetch Level-Based Subjects & Merge for $allSubjects
-    // -------------------------------------------------------------
     $levelSubjects = Subject::query()
         ->when(! empty($levels), function ($query) use ($levels) {
             $query->where(function ($subQuery) use ($levels) {
@@ -387,7 +384,7 @@ public function index(Request $request)
         })
         ->get();
 
-    // $allSubjects now includes BOTH level subjects AND school-specific subjects
+    // Master list of all available subjects for the school
     $allSubjects = $directSchoolSubjects
         ->merge($levelSubjects)
         ->unique('id')
@@ -404,38 +401,36 @@ public function index(Request $request)
         ->get()
         ->keyBy('combination_id');
 
-    $assignedPivotSubjectIds = [];
+    // Extract predefined pivot subject IDs
+    $predefinedSubjectIds = [];
     foreach ($assignedPivotRecords as $rec) {
         $ids = is_array($rec->subject_id) ? $rec->subject_id : json_decode($rec->subject_id ?? '[]', true);
         if (is_array($ids)) {
-            $assignedPivotSubjectIds = array_merge($assignedPivotSubjectIds, $ids);
+            $predefinedSubjectIds = array_merge($predefinedSubjectIds, $ids);
         }
     }
-    $assignedPivotSubjectIds = array_unique(array_map('intval', $assignedPivotSubjectIds));
+    $predefinedSubjectIds = array_unique(array_map('intval', $predefinedSubjectIds));
 
-    // -------------------------------------------------------------
-    // 4. Filter Subjects for Display Grid (Only Active Combination & School Subjects)
-    // -------------------------------------------------------------
-    $combinationSubjects = $allSubjects->filter(function ($subject) use ($assignedPivotSubjectIds, $schoolCombinationIds) {
-        // Predefined pivot match
-        if (in_array($subject->id, $assignedPivotSubjectIds, true)) {
-            return true;
-        }
-
-        // Extra subject JSON match
+    // Extract extra school-specific subject IDs linked via Subject's combination_id JSON
+    $extraSchoolSubjectIds = $allSubjects->filter(function ($subject) use ($schoolCombinationIds) {
         $combIds = is_array($subject->combination_id) 
             ? $subject->combination_id 
             : json_decode($subject->combination_id ?? '[]', true);
 
         return is_array($combIds) && count(array_intersect($schoolCombinationIds, $combIds)) > 0;
-    });
+    })->pluck('id')->toArray();
 
-    // Merge direct school subjects + active combination subjects for the card grid
-    $subjects = $directSchoolSubjects
-        ->merge($combinationSubjects)
-        ->unique('id')
-        ->sortBy('name')
-        ->values();
+    // Combined list of ALL combination subject IDs (Predefined + Extra Added)
+    $allCombinationSubjectIds = array_unique(array_merge($predefinedSubjectIds, $extraSchoolSubjectIds));
+
+    // -------------------------------------------------------------
+    // 4. Build Filtered $subjects for Display Grid
+    // -------------------------------------------------------------
+    // Includes direct school subjects AND all subjects attached to active combinations
+    $subjects = $allSubjects->filter(function ($subject) use ($allCombinationSubjectIds, $schoolSubjectIds) {
+        return in_array($subject->id, $allCombinationSubjectIds, true) 
+            || in_array($subject->id, $schoolSubjectIds, true);
+    })->sortBy('name')->values();
 
     // -------------------------------------------------------------
     // 5. Fetch Unassigned Combinations for Modal Dropdown
@@ -457,30 +452,32 @@ public function index(Request $request)
     }
 
     // -------------------------------------------------------------
-    // 6. Package Assigned Combinations for Display
+    // 6. Package Assigned Combinations (Predefined + Extra Added)
     // -------------------------------------------------------------
-    $pivotSubjectsMap = $allSubjects->pluck('name', 'id');
+    $subjectNamesMap = $allSubjects->pluck('name', 'id');
 
     $packagedCombinations = [];
     foreach ($combinations as $combination) {
-        // Predefined Subject Names
+        // Source A: Predefined subject names from pivot table
         $pivot = $assignedPivotRecords->get($combination->id);
         $pivotSubjectIds = $pivot ? (is_array($pivot->subject_id) ? $pivot->subject_id : json_decode($pivot->subject_id ?? '[]', true)) : [];
 
         $pivotSubjectNames = collect($pivotSubjectIds)
-            ->map(fn ($id) => $pivotSubjectsMap->get($id))
+            ->map(fn ($id) => $subjectNamesMap->get($id))
             ->filter()
             ->toArray();
 
-        // Extra School-Specific Subject Names
-        $schoolSpecificSubjectNames = $allSubjects->filter(function ($subject) use ($combination) {
-            $combIds = is_array($subject->combination_id) ? $subject->combination_id : json_decode($subject->combination_id ?? '[]', true);
+        // Source B: Added school-specific subject names from Subject's combination_id JSON
+        $extraSubjectNames = $allSubjects->filter(function ($subject) use ($combination) {
+            $combIds = is_array($subject->combination_id) 
+                ? $subject->combination_id 
+                : json_decode($subject->combination_id ?? '[]', true);
 
             return is_array($combIds) && in_array($combination->id, $combIds, true);
         })->pluck('name')->toArray();
 
-        // Merge, deduplicate, and sort
-        $mergedSubjectNames = array_values(array_unique(array_merge($pivotSubjectNames, $schoolSpecificSubjectNames)));
+        // Merge both sources, remove duplicates, and sort alphabetically
+        $mergedSubjectNames = array_values(array_unique(array_merge($pivotSubjectNames, $extraSubjectNames)));
         natcasesort($mergedSubjectNames);
 
         $packagedCombinations[] = [
@@ -491,12 +488,12 @@ public function index(Request $request)
     }
 
     return view('subjects.list', compact(
-        'subjects',                // Card display grid (Active combination + direct school subjects)
-        'allSubjects',             // Modal dropdown (Level subjects + direct school subjects)
+        'subjects',                // Display Grid (Active combination subjects + Direct school subjects)
+        'allSubjects',             // Modal Dropdown (All level subjects + Direct school subjects)
         'school',
         'combinations',
         'unassignedCombinations',
-        'packagedCombinations',
+        'packagedCombinations',    // Combination Cards (Contains predefined + added extra subjects)
         'predefinedSubjectsMap',
         'schoolSubjectIds'
     ));
