@@ -109,7 +109,11 @@
                 @endphp
                 <div class="col-md-3 col-sm-6 mb-2 d-flex align-items-center">
                     <i class="fas fa-circle mr-2 {{ $isSchoolSubject ? 'text-danger' : 'text-info' }}" style="font-size: 8px;"></i>
-                    <span>{{ $subject->name }}</span>
+						<label class="form-check-label text-truncate" 
+								title="{{ $subject->name }}"
+								style="max-width: 100%; cursor: pointer;">
+							{{ $subject->name }}
+						</label>
                 </div>
             @endforeach
         </div>
