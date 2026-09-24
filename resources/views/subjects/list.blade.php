@@ -410,3 +410,32 @@ $(document).ready(function() {
     });
 });
 </script>
+
+<script>
+    // Embedded map: { 1: [10, 11], 2: [12, 13] }
+    const predefinedSubjectsMap = @json($predefinedSubjectsMap ?? []);
+
+    $('#combination_id').on('change', function () {
+        const selectedCombinationId = parseInt($(this).val());
+        const predefinedIds = predefinedSubjectsMap[selectedCombinationId] || [];
+
+        // Reset current subjects selection
+        $('#subjects_list').val(null);
+
+        $('#subjects_list option').each(function () {
+            const subjectId = parseInt($(this).val());
+
+            if (predefinedIds.includes(subjectId)) {
+                // Predefined: Hide and disable
+                $(this).prop('disabled', true).prop('hidden', true).prop('selected', false);
+            } else {
+                // Additional: Show and enable
+                $(this).prop('disabled', false).prop('hidden', false);
+            }
+        });
+
+        if ($.fn.select2) {
+            $('#subjects_list').trigger('change');
+        }
+    });
+</script>
