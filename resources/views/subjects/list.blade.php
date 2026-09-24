@@ -37,6 +37,9 @@
 							</div>
 
 <div class="card-body p-3">
+	@php
+		$schoolSubjectNames = $school->subjects()->get()->pluck('name')->toArray();
+	@endphp
     @forelse($packagedCombinations as $combination)
         <fieldset class="mb-4 p-3" style="border: 1px solid #e4e6fc; border-radius: 8px;">
             <legend class="w-auto px-2 ml-3">
@@ -47,8 +50,11 @@
 
             <div class="row">
                 @forelse($combination['subjects'] as $subjectName)
+				    @php
+                        $isSchoolSubject = in_array($subjectName, $schoolSubjectNames);
+                    @endphp
                     <div class="col-md-3 col-sm-6 mb-2 d-flex align-items-center">
-                        <i class="fas fa-circle mr-2" style="font-size: 8px; color: #6777ef;"></i>
+						<i class="fas fa-circle mr-2 {{ $isSchoolSubject ? 'text-danger' : 'text-info' }}" style="font-size: 8px;"></i>
 							<label class="form-check-label text-truncate" 
                                    title="{{ $subjectName }}"
                                    style="max-width: 100%; cursor: pointer;">
