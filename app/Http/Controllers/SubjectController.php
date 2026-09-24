@@ -458,7 +458,7 @@ public function index(Request $request)
             'subjects' => array_values($mergedSubjectNames),
         ];
     }
-return $predefinedSubjectsMap;
+
     return view('subjects.list', compact(
         'subjects', 
         'school', 
