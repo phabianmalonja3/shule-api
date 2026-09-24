@@ -100,29 +100,25 @@
         @endrole
     </div>
 
-    <div class="card-body p-3">
-        @php
-            $schoolSubjectIds = $school->subjects()->get()->pluck('id')->toArray();
-        @endphp
-
-        @forelse($subjects->chunk(4) as $subjectRow)
-            <div class="row mb-3 pl-3">
-                @foreach($subjectRow as $subject)
-                    @php
-                        $isSchoolSubject = in_array($subject->id, $schoolSubjectIds);
-                    @endphp
-                    <div class="col-md-3 col-sm-6 mb-2 d-flex align-items-center">
-                        <i class="fas fa-circle mr-2 {{ $isSchoolSubject ? 'text-danger' : 'text-info' }}" style="font-size: 8px;"></i>
-                        <span>{{ $subject->name }}</span>
-                    </div>
-                @endforeach
-            </div>
-        @empty
-            <div class="text-center py-4 text-muted">
-                <p class="mb-0">No subjects found.</p>
-            </div>
-        @endforelse
-    </div>
+<div class="card-body p-3">
+    @forelse($subjects->chunk(4) as $subjectRow)
+        <div class="row mb-3 pl-3">
+            @foreach($subjectRow as $subject)
+                @php
+                    $isSchoolSubject = in_array($subject->id, $schoolSubjectIds ?? [], true);
+                @endphp
+                <div class="col-md-3 col-sm-6 mb-2 d-flex align-items-center">
+                    <i class="fas fa-circle mr-2 {{ $isSchoolSubject ? 'text-danger' : 'text-info' }}" style="font-size: 8px;"></i>
+                    <span>{{ $subject->name }}</span>
+                </div>
+            @endforeach
+        </div>
+    @empty
+        <div class="text-center py-4 text-muted">
+            <p class="mb-0">No subjects assigned to any combination for this school.</p>
+        </div>
+    @endforelse
+</div>
 </div>
 					</div>
 

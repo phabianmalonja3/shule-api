@@ -357,7 +357,7 @@ public function index(Request $request)
 {
     $school = Auth::user()->school;
 
-    if (!$school) {
+    if (! $school) {
         return back()->with('error', 'School not found.');
     }
 
@@ -369,28 +369,52 @@ public function index(Request $request)
     $levels = Arr::wrap($school->school_type);
 
     // -------------------------------------------------------------
-    // 1. Fetch Subjects Available to this School
+    // 1. Fetch Assigned Combinations & Pivot Records
     // -------------------------------------------------------------
-    $levelSubjects = Subject::query()
-        ->when(!empty($levels), function ($query) use ($levels) {
-            $query->where(function ($subQuery) use ($levels) {
-                foreach ($levels as $level) {
-                    $subQuery->orWhereJsonContains('school_level', $level);
-                }
-            });
+    $combinations = Combination::whereIn('id', $schoolCombinationIds)->get();
+
+    // Pre-fetch all pivot records for assigned combinations in 1 query
+    $assignedPivotRecords = DB::table('combination_subject')
+        ->whereIn('combination_id', $combinations->pluck('id'))
+        ->get()
+        ->keyBy('combination_id');
+
+    // Collect all predefined subject IDs across the school's combinations
+    $assignedPivotSubjectIds = [];
+    foreach ($assignedPivotRecords as $rec) {
+        $ids = is_array($rec->subject_id) ? $rec->subject_id : json_decode($rec->subject_id ?? '[]', true);
+        if (is_array($ids)) {
+            $assignedPivotSubjectIds = array_merge($assignedPivotSubjectIds, $ids);
+        }
+    }
+    $assignedPivotSubjectIds = array_unique(array_map('intval', $assignedPivotSubjectIds));
+
+    // -------------------------------------------------------------
+    // 2. Fetch Subjects (Filtered strictly to combinations & direct school)
+    // -------------------------------------------------------------
+    // Query subjects that belong to predefined combination IDs OR match combination_id JSON
+    $combinationSubjects = Subject::query()
+        ->whereIn('id', $assignedPivotSubjectIds)
+        ->orWhere(function ($query) use ($schoolCombinationIds) {
+            foreach ($schoolCombinationIds as $combId) {
+                $query->orWhereJsonContains('combination_id', (int) $combId);
+            }
         })
         ->get();
 
-    $schoolSubjects = method_exists($school, 'subjects') ? $school->subjects()->get() : collect();
+    // Get direct school subjects if relationship exists
+    $directSchoolSubjects = method_exists($school, 'subjects') ? $school->subjects()->get() : collect();
+    $schoolSubjectIds = $directSchoolSubjects->pluck('id')->toArray();
 
-    $subjects = $schoolSubjects
-        ->merge($levelSubjects)
+    // Combine, deduplicate, and sort alphabetically
+    $subjects = $directSchoolSubjects
+        ->merge($combinationSubjects)
         ->unique('id')
         ->sortBy('name')
         ->values();
 
     // -------------------------------------------------------------
-    // 2. Fetch Unassigned Combinations for the Modal Dropdown
+    // 3. Fetch Unassigned Combinations for Modal Dropdown
     // -------------------------------------------------------------
     $unassignedCombinations = Combination::whereIn('level', $levels)
         ->whereNotIn('id', $schoolCombinationIds)
@@ -410,42 +434,26 @@ public function index(Request $request)
     }
 
     // -------------------------------------------------------------
-    // 3. Package Assigned Combinations for Display
+    // 4. Package Assigned Combinations for Display
     // -------------------------------------------------------------
-    $combinations = Combination::whereIn('id', $schoolCombinationIds)->get();
-
-    // Pre-fetch all pivot records for assigned combinations in 1 query
-    $assignedPivotRecords = DB::table('combination_subject')
-        ->whereIn('combination_id', $combinations->pluck('id'))
-        ->get()
-        ->keyBy('combination_id');
-
-    // Collect all pivot subject IDs across assigned combinations
-    $allPivotSubjectIds = [];
-    foreach ($assignedPivotRecords as $rec) {
-        $ids = is_array($rec->subject_id) ? $rec->subject_id : json_decode($rec->subject_id ?? '[]', true);
-        if (is_array($ids)) {
-            $allPivotSubjectIds = array_merge($allPivotSubjectIds, $ids);
-        }
-    }
-
-    $pivotSubjectsMap = Subject::whereIn('id', array_unique($allPivotSubjectIds))->pluck('name', 'id');
+    $pivotSubjectsMap = Subject::whereIn('id', $assignedPivotSubjectIds)->pluck('name', 'id');
 
     $packagedCombinations = [];
     foreach ($combinations as $combination) {
         // Predefined Subject Names
         $pivot = $assignedPivotRecords->get($combination->id);
         $pivotSubjectIds = $pivot ? (is_array($pivot->subject_id) ? $pivot->subject_id : json_decode($pivot->subject_id ?? '[]', true)) : [];
-        
+
         $pivotSubjectNames = collect($pivotSubjectIds)
-            ->map(fn($id) => $pivotSubjectsMap->get($id))
+            ->map(fn ($id) => $pivotSubjectsMap->get($id))
             ->filter()
             ->toArray();
 
         // Extra School-Specific Subject Names
         $schoolSpecificSubjectNames = $subjects->filter(function ($subject) use ($combination) {
             $combIds = is_array($subject->combination_id) ? $subject->combination_id : json_decode($subject->combination_id ?? '[]', true);
-            return is_array($combIds) && in_array($combination->id, $combIds);
+
+            return is_array($combIds) && in_array($combination->id, $combIds, true);
         })->pluck('name')->toArray();
 
         // Merge, deduplicate, and sort
@@ -460,12 +468,13 @@ public function index(Request $request)
     }
 
     return view('subjects.list', compact(
-        'subjects', 
-        'school', 
-        'combinations', 
-        'unassignedCombinations', 
-        'packagedCombinations', 
-        'predefinedSubjectsMap'
+        'subjects',
+        'school',
+        'combinations',
+        'unassignedCombinations',
+        'packagedCombinations',
+        'predefinedSubjectsMap',
+        'schoolSubjectIds'
     ));
 }
     
