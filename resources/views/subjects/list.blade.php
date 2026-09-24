@@ -49,7 +49,12 @@
                 @forelse($combination['subjects'] as $subjectName)
                     <div class="col-md-3 col-sm-6 mb-2 d-flex align-items-center">
                         <i class="fas fa-circle mr-2" style="font-size: 8px; color: #6777ef;"></i>
-                        <span>{{ $subjectName }}</span>
+							<label class="form-check-label text-truncate" 
+                                   title="{{ $subjectName }}"
+                                   style="max-width: 100%; cursor: pointer;">
+                                {{ $subjectName }}
+                            </label>
+  
                     </div>
                 @empty
                     <div class="col-12 text-muted italic">
