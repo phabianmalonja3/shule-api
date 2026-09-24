@@ -155,8 +155,8 @@
 							<div class="form-group">
 								<label for="subjects_list">Select Subjects</label>
 								<select class="form-control ss-select-tags" id="subjects_list" name="subjects[]" multiple="multiple" style="width: 100%; height: 50%">
-									@isset($subjects)
-										@foreach($subjects as $subject)
+									@isset($allSubjects)
+										@foreach($allSubjects as $subject)
 											<option value="{{ $subject->id }}">{{ $subject->name }}</option>
 										@endforeach
 									@else
