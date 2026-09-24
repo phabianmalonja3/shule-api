@@ -133,27 +133,59 @@ class SubjectController extends Controller
         return back();
 	}
 
-	public function deleteCombination(Request $request)
-	{
-		$request->validate([
-			'combination_id' => 'required|exists:combinations,id'
-		]);
-		
-		$id = $request->combination_id;
-		$combination = Combination::findOrFail($id);
-		if ($combination->students()->exists()) {
-			return back()->with('error', 'Cannot delete because students are enrolled in this combination.');
-		}
-		$schoolId = Auth::user()->school_id;
-		$school = School::find($schoolId);
-		$combination->subjects()->detach();
+public function deleteCombination(Request $request)
+{
+    $request->validate([
+        'combination_id' => 'required|exists:combinations,id',
+    ]);
 
-		$school->combinations()->detach($id);
+    $combinationId = (int) $request->combination_id;
+    $user = Auth::user();
 
-        flash()->option('position', 'bottom-right')->success('Combination deleted successfully.');
+    if (! $user->school_id || ! $school = $user->school) {
+        return back()->with('error', 'Associated school not found.');
+    }
 
-        return back();
-	}
+    $combination = Combination::findOrFail($combinationId);
+
+    // Prevent deletion if students are associated
+    if ($combination->students()->exists()) {
+        return back()->with('error', 'Cannot delete because students are enrolled in this combination.');
+    }
+
+    DB::transaction(function () use ($school, $combinationId) {
+        // 1. Remove combination ID from School's JSON array
+        $schoolCombinations = is_array($school->combinations) 
+            ? $school->combinations 
+            : json_decode($school->combinations ?? '[]', true);
+
+        $updatedSchoolCombinations = array_values(
+            array_filter($schoolCombinations, fn($id) => (int)$id !== $combinationId)
+        );
+
+        $school->update(['combinations' => $updatedSchoolCombinations]);
+
+        // 2. Remove combination ID from JSON arrays in Subjects table
+        // Handles Laravel JSON array queries (e.g., JSON_CONTAINS)
+        $subjects = Subject::whereJsonContains('combination_id', $combinationId)->get();
+
+        foreach ($subjects as $subject) {
+            $subjectCombinations = is_array($subject->combination_id)
+                ? $subject->combination_id
+                : json_decode($subject->combination_id ?? '[]', true);
+
+            $updatedSubjectCombinations = array_values(
+                array_filter($subjectCombinations, fn($id) => (int)$id !== $combinationId)
+            );
+
+            $subject->update(['combination_id' => $updatedSubjectCombinations]);
+        }
+    });
+
+    flash()->option('position', 'bottom-right')->success('Combination deleted successfully.');
+
+    return back();
+}
 	
 
 
