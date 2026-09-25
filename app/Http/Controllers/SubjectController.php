@@ -493,7 +493,7 @@ public function index(Request $request)
 $extrasMap = DB::table('combination_extras')
     ->where('school_id', $school->id)
     ->pluck('subject_id', 'combination_id');
-dd($extrasMap);
+
 foreach ($combinations as $combination) {
     // Source A: Predefined subject names from pivot table
     $pivot = $assignedPivotRecords->get($combination->id);
@@ -515,6 +515,7 @@ foreach ($combinations as $combination) {
 
     // Source C: Extra general subject names from combination_extras table
     $extraGeneralRaw = $extrasMap->get($combination->id);
+    dd($extraGeneralRaw);
     $extraGeneralIds = is_array($extraGeneralRaw) 
         ? $extraGeneralRaw 
         : json_decode($extraGeneralRaw ?? '[]', true);
