@@ -54,7 +54,7 @@ public function addCombination(Request $request)
     $combinationId = (int) $request->combination_id;
     $user = Auth::user();
 
-    if (!$user->school_id || !$school = $user->school) {
+    if (!$user || !$user->school_id || !$school = $user->school) {
         return back()->with('error', 'Associated school not found.');
     }
 
@@ -64,40 +64,72 @@ public function addCombination(Request $request)
         ->first();
 
     $predefinedSubjectIds = [];
-    if ($pivotRecord) {
+    if ($pivotRecord && !empty($pivotRecord->subject_id)) {
         $predefinedSubjectIds = is_array($pivotRecord->subject_id) 
             ? $pivotRecord->subject_id 
-            : json_decode($pivotRecord->subject_id ?? '[]', true);
+            : (json_decode($pivotRecord->subject_id, true) ?? []);
     }
 
     // 2. Combine predefined IDs + Extra user-selected subject IDs
     $extraSubjectIds = array_map('intval', $request->input('subjects', []));
+    
     $allSubjectIdsToAttach = array_values(array_unique(array_merge(
         array_map('intval', $predefinedSubjectIds), 
         $extraSubjectIds
     )));
 
-    DB::transaction(function () use ($school, $combinationId, $extraSubjectIds) {
+    // Execute database modifications inside transaction
+    DB::transaction(function () use ($school, $combinationId, $extraSubjectIds, $user) {
+        
         // A. Update School combinations array
         $currentSchoolCombinations = is_array($school->combinations) 
             ? $school->combinations 
-            : json_decode($school->combinations ?? '[]', true);
+            : (json_decode($school->combinations ?? '[]', true) ?? []);
 
         if (!in_array($combinationId, $currentSchoolCombinations, true)) {
             $currentSchoolCombinations[] = $combinationId;
             $school->update(['combinations' => array_values($currentSchoolCombinations)]);
         }
 
-        // B. Update Subject combination_id arrays for all associated subjects
-        $subjects = Subject::whereIn('id', $extraSubjectIds)->get();
-        foreach ($subjects as $subject) {
-            $currentSubjectCombinations = is_array($subject->combination_id) 
-                ? $subject->combination_id 
-                : json_decode($subject->combination_id ?? '[]', true);
+        // B. Categorize IDs: Belonging to this school vs General/External subjects
+        $extraSchoolSubjectIds = Subject::whereIn('id', $extraSubjectIds)
+            ->where('school_id', $user->school_id)
+            ->pluck('id')
+            ->toArray();
 
-            if (!in_array($combinationId, $currentSubjectCombinations, true)) {
-                $currentSubjectCombinations[] = $combinationId;
-                $subject->update(['combination_id' => array_values($currentSubjectCombinations)]);
+        // Calculate general/external IDs by finding the difference
+        $extraGeneralSubjectIds = array_values(array_diff($extraSubjectIds, $extraSchoolSubjectIds));
+
+        // C. Record extra general subjects in combination_extras table (upsert to prevent duplicates)
+        if (!empty($extraGeneralSubjectIds)) {
+            DB::table('combination_extras')->updateOrInsert(
+                [
+                    'school_id'      => $user->school_id,
+                    'combination_id' => $combinationId,
+                ],
+                [
+                    'subject_id'     => json_encode($extraGeneralSubjectIds),
+                    'created_at'     => now(),
+                    'updated_at'     => now(),
+                ]
+            );
+        }
+
+        // D. Update Subject combination_id arrays for school-owned extra subjects
+        if (!empty($extraSchoolSubjectIds)) {
+            $subjects = Subject::whereIn('id', $extraSchoolSubjectIds)->get();
+
+            foreach ($subjects as $subject) {
+                $currentSubjectCombinations = is_array($subject->combination_id) 
+                    ? $subject->combination_id 
+                    : (json_decode($subject->combination_id ?? '[]', true) ?? []);
+
+                if (!in_array($combinationId, $currentSubjectCombinations, true)) {
+                    $currentSubjectCombinations[] = $combinationId;
+                    $subject->update([
+                        'combination_id' => array_values($currentSubjectCombinations),
+                    ]);
+                }
             }
         }
     });
