@@ -10,7 +10,8 @@ class Subject extends Model
         'teacher_id',
         'school_id',
         'created_by_system',
-		'school_level'
+		'school_level',
+		'combination_id'
 
     ];
 
