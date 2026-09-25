@@ -69,7 +69,7 @@ public function addCombination(Request $request)
             ? $pivotRecord->subject_id 
             : json_decode($pivotRecord->subject_id ?? '[]', true);
     }
-
+return $request->input('subjects', []);
     // 2. Combine predefined IDs + Extra user-selected subject IDs
     $extraSubjectIds = array_map('intval', $request->input('subjects', []));
     $allSubjectIdsToAttach = array_values(array_unique(array_merge(
