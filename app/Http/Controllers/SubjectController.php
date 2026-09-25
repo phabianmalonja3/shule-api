@@ -230,6 +230,7 @@ public function deleteCombination(Request $request)
 
             $subject->update(['combination_id' => $updatedSubjectCombinations]);
         }
+        DB::table('combination_extras')->where('school_id',$school->id)->where('combination_id',$combinationId)->delete();
     });
 
     flash()->option('position', 'bottom-right')->success('Combination deleted successfully.');
