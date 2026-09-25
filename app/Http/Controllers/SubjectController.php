@@ -76,7 +76,7 @@ public function addCombination(Request $request)
         array_map('intval', $predefinedSubjectIds), 
         $extraSubjectIds
     )));
-
+return $extraSubjectIds;
     DB::transaction(function () use ($school, $combinationId, $allSubjectIdsToAttach) {
         // A. Update School combinations array
         $currentSchoolCombinations = is_array($school->combinations) 
