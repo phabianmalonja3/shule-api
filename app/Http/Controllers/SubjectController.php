@@ -519,12 +519,12 @@ foreach ($combinations as $combination) {
     $extraGeneralIds = is_array($extraGeneralRaw) 
         ? $extraGeneralRaw 
         : json_decode($extraGeneralRaw ?? '[]', true);
-dd($extraGeneralIds);
+
     $extraGeneralSubjectNames = collect($extraGeneralIds)
         ->map(fn ($id) => $subjectNamesMap->get($id))
         ->filter()
         ->toArray();
-
+dd($extraGeneralSubjectNames);
     // Merge all three sources, remove duplicates, and sort alphabetically
     $mergedSubjectNames = array_values(array_unique(array_merge(
         $pivotSubjectNames, 
