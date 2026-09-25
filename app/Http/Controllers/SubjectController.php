@@ -90,7 +90,7 @@ public function addCombination(Request $request)
 
         // B. Update Subject combination_id arrays for all associated subjects
         $subjects = Subject::whereIn('id', $extraSubjectIds)->get();
-        return $subjects;
+        dd($subjects);
         foreach ($subjects as $subject) {
             $currentSubjectCombinations = is_array($subject->combination_id) 
                 ? $subject->combination_id 
