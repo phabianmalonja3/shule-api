@@ -539,7 +539,7 @@ foreach ($combinations as $combination) {
         'subjects' => array_values($mergedSubjectNames),
     ];
 }
-
+return $extraGeneralSubjectNames;
     return view('subjects.list', compact(
         'subjects',                // Display Grid (Active combination subjects + Direct school subjects)
         'allSubjects',             // Modal Dropdown (All level subjects + Direct school subjects)
