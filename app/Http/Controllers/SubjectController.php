@@ -76,7 +76,7 @@ public function addCombination(Request $request)
         array_map('intval', $predefinedSubjectIds), 
         $extraSubjectIds
     )));
-return $allSubjectIdsToAttach;
+
     DB::transaction(function () use ($school, $combinationId, $allSubjectIdsToAttach) {
         // A. Update School combinations array
         $currentSchoolCombinations = is_array($school->combinations) 
@@ -89,7 +89,8 @@ return $allSubjectIdsToAttach;
         }
 
         // B. Update Subject combination_id arrays for all associated subjects
-        $subjects = Subject::whereIn('id', $allSubjectIdsToAttach)->get();
+        $subjects = Subject::whereIn('id', $extraSubjectIds)->get();
+        return $subjects;
         foreach ($subjects as $subject) {
             $currentSubjectCombinations = is_array($subject->combination_id) 
                 ? $subject->combination_id 
