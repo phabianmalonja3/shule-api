@@ -532,13 +532,13 @@ foreach ($combinations as $combination) {
         $extraGeneralSubjectNames
     )));
     
-    natcasesort($mergedSubjectNames);
+    // natcasesort($mergedSubjectNames);
 
-    $packagedCombinations[] = [
-        'id' => $combination->id,
-        'name' => $combination->name,
-        'subjects' => array_values($mergedSubjectNames),
-    ];
+    // $packagedCombinations[] = [
+    //     'id' => $combination->id,
+    //     'name' => $combination->name,
+    //     'subjects' => array_values($mergedSubjectNames),
+    // ];
 
 }
     dd($extraGeneralSubjectNames);
@@ -548,7 +548,7 @@ foreach ($combinations as $combination) {
         'school',
         'combinations',
         'unassignedCombinations',
-        'packagedCombinations',    // Combination Cards (Contains predefined + added extra subjects)
+        //'packagedCombinations',    // Combination Cards (Contains predefined + added extra subjects)
         'predefinedSubjectsMap',
         'schoolSubjectIds',
         'extraGeneralSubjectNames'
