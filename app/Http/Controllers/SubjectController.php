@@ -487,6 +487,8 @@ public function index(Request $request)
     $subjectNamesMap = $allSubjects->pluck('name', 'id');
 
     $packagedCombinations = [];
+    $extraGeneralSubjectNames = [];
+
 // Step 0: Pre-fetch combination_extras records for the school to avoid N+1 queries in the loop
 $extrasMap = DB::table('combination_extras')
     ->where('school_id', $school->id)
@@ -546,7 +548,8 @@ foreach ($combinations as $combination) {
         'unassignedCombinations',
         'packagedCombinations',    // Combination Cards (Contains predefined + added extra subjects)
         'predefinedSubjectsMap',
-        'schoolSubjectIds'
+        'schoolSubjectIds',
+        'extraGeneralSubjectNames'
     ));
 }
     

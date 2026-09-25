@@ -39,6 +39,7 @@
 <div class="card-body p-3">
 	@php
 		$schoolSubjectNames = $school->subjects()->get()->pluck('name')->toArray();
+		$extraGeneralSubjectNames = DB::table(combination_extras)->where('school_id',$school->id)->get();
 	@endphp
     @forelse($packagedCombinations as $combination)
         <fieldset class="mb-4 p-3" style="border: 1px solid #e4e6fc; border-radius: 8px;">
@@ -50,16 +51,25 @@
 
             <div class="row">
                 @forelse($combination['subjects'] as $subjectName)
-				    @php
-                        $isSchoolSubject = in_array($subjectName, $schoolSubjectNames);
-                    @endphp
-                    <div class="col-md-3 col-sm-6 mb-2 d-flex align-items-center">
-						<i class="fas fa-circle mr-2 {{ $isSchoolSubject ? 'text-danger' : 'text-info' }}" style="font-size: 8px;"></i>
-							<label class="form-check-label text-truncate" 
-                                   title="{{ $subjectName }}"
-                                   style="max-width: 100%; cursor: pointer;">
-                                {{ $subjectName }}
-                            </label>
+@php
+    $isSchoolSubject = in_array($subjectName, $schoolSubjectNames);
+    $isGeneralSubject = in_array($subjectName, $extraGeneralSubjectNames);
+
+    // Determine bullet color
+    $bulletColor = match (true) {
+        $isSchoolSubject  => 'text-danger',  // Red for school subjects
+        $isGeneralSubject => 'text-success', // Green for extra general subjects
+        default           => 'text-muted',   // Muted gray for predefined/default subjects
+    };
+@endphp
+
+<div class="col-md-3 col-sm-6 mb-2 d-flex align-items-center">
+    <i class="fas fa-circle mr-2 {{ $bulletColor }}" style="font-size: 8px;"></i>
+    <label class="form-check-label text-truncate" 
+           title="{{ $subjectName }}"
+           style="max-width: 100%; cursor: pointer;">
+        {{ $subjectName }}
+    </label>
   
                     </div>
                 @empty
