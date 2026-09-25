@@ -524,7 +524,7 @@ foreach ($combinations as $combination) {
         ->map(fn ($id) => $subjectNamesMap->get($id))
         ->filter()
         ->toArray();
-dd($extraGeneralSubjectNames);
+
     // Merge all three sources, remove duplicates, and sort alphabetically
     $mergedSubjectNames = array_values(array_unique(array_merge(
         $pivotSubjectNames, 
