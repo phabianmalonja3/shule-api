@@ -515,11 +515,11 @@ foreach ($combinations as $combination) {
 
     // Source C: Extra general subject names from combination_extras table
     $extraGeneralRaw = $extrasMap->get($combination->id);
-    dd($extraGeneralRaw);
+
     $extraGeneralIds = is_array($extraGeneralRaw) 
         ? $extraGeneralRaw 
         : json_decode($extraGeneralRaw ?? '[]', true);
-
+dd($extraGeneralIds);
     $extraGeneralSubjectNames = collect($extraGeneralIds)
         ->map(fn ($id) => $subjectNamesMap->get($id))
         ->filter()
