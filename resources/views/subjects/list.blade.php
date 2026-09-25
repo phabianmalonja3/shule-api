@@ -39,7 +39,7 @@
 <div class="card-body p-3">
 	@php
 		$schoolSubjectNames = $school->subjects()->get()->pluck('name')->toArray();
-		$extraGeneralSubjectNames = DB::table(combination_extras)->where('school_id',$school->id)->get();
+		$extraGeneralSubjectNames = DB::table('combination_extras')->where('school_id',$school->id)->get();
 	@endphp
     @forelse($packagedCombinations as $combination)
         <fieldset class="mb-4 p-3" style="border: 1px solid #e4e6fc; border-radius: 8px;">
