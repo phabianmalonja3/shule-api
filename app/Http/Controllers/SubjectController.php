@@ -109,9 +109,6 @@ public function addCombination(Request $request)
                 ],
                 [
                     'subject_id'     => json_encode($extraGeneralSubjectIds),
-                    'created_at'     => now(),
-                    'updated_at'     => now(),
-                ]
             );
         }
 
