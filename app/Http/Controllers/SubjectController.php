@@ -532,23 +532,22 @@ foreach ($combinations as $combination) {
         $extraGeneralSubjectNames
     )));
     
-    // natcasesort($mergedSubjectNames);
+    natcasesort($mergedSubjectNames);
 
-    // $packagedCombinations[] = [
-    //     'id' => $combination->id,
-    //     'name' => $combination->name,
-    //     'subjects' => array_values($mergedSubjectNames),
-    // ];
+    $packagedCombinations[] = [
+        'id' => $combination->id,
+        'name' => $combination->name,
+        'subjects' => array_values($mergedSubjectNames),
+    ];
 
 }
-    dd($extraGeneralSubjectNames);
     return view('subjects.list', compact(
         'subjects',                // Display Grid (Active combination subjects + Direct school subjects)
         'allSubjects',             // Modal Dropdown (All level subjects + Direct school subjects)
         'school',
         'combinations',
         'unassignedCombinations',
-        //'packagedCombinations',    // Combination Cards (Contains predefined + added extra subjects)
+        'packagedCombinations',    // Combination Cards (Contains predefined + added extra subjects)
         'predefinedSubjectsMap',
         'schoolSubjectIds',
         'extraGeneralSubjectNames'

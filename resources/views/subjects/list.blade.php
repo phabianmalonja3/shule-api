@@ -58,7 +58,7 @@
     $bulletColor = match (true) {
         $isSchoolSubject  => 'text-danger',  // Red for school subjects
         $isGeneralSubject => 'text-success', // Green for extra general subjects
-        default           => 'text-muted',   // Muted gray for predefined/default subjects
+        default           => 'text-info',   // Muted gray for predefined/default subjects
     };
 @endphp
 
