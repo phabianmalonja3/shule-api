@@ -109,6 +109,7 @@ public function addCombination(Request $request)
                 ],
                 [
                     'subject_id'     => json_encode($extraGeneralSubjectIds),
+                ]
             );
         }
 
