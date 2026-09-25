@@ -67,7 +67,7 @@
     <label class="form-check-label text-truncate" 
            title="{{ $subjectName }}"
            style="max-width: 100%; cursor: pointer;">
-        {{ $subjectName }} {{ $extraGeneralSubjectNames }}
+        {{ $subjectName }} {{ count($extraGeneralSubjectNames) }}
     </label>
   
                     </div>
