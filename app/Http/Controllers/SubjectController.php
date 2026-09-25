@@ -542,6 +542,9 @@ foreach ($combinations as $combination) {
     ];
 
 }
+
+$x = array_values($extraGeneralSubjectNames);
+return $x;
     return view('subjects.list', compact(
         'subjects',                // Display Grid (Active combination subjects + Direct school subjects)
         'allSubjects',             // Modal Dropdown (All level subjects + Direct school subjects)
