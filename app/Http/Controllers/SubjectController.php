@@ -487,35 +487,56 @@ public function index(Request $request)
     $subjectNamesMap = $allSubjects->pluck('name', 'id');
 
     $packagedCombinations = [];
-    foreach ($combinations as $combination) {
-        // Source A: Predefined subject names from pivot table
-        $pivot = $assignedPivotRecords->get($combination->id);
-        $pivotSubjectIds = $pivot ? (is_array($pivot->subject_id) ? $pivot->subject_id : json_decode($pivot->subject_id ?? '[]', true)) : [];
+// Step 0: Pre-fetch combination_extras records for the school to avoid N+1 queries in the loop
+$extrasMap = DB::table('combination_extras')
+    ->where('school_id', $user->school_id)
+    ->pluck('subject_id', 'combination_id');
 
-        $pivotSubjectNames = collect($pivotSubjectIds)
-            ->map(fn ($id) => $subjectNamesMap->get($id))
-            ->filter()
-            ->toArray();
+foreach ($combinations as $combination) {
+    // Source A: Predefined subject names from pivot table
+    $pivot = $assignedPivotRecords->get($combination->id);
+    $pivotSubjectIds = $pivot ? (is_array($pivot->subject_id) ? $pivot->subject_id : json_decode($pivot->subject_id ?? '[]', true)) : [];
 
-        // Source B: Added school-specific subject names from Subject's combination_id JSON
-        $extraSubjectNames = $allSubjects->filter(function ($subject) use ($combination) {
-            $combIds = is_array($subject->combination_id) 
-                ? $subject->combination_id 
-                : json_decode($subject->combination_id ?? '[]', true);
+    $pivotSubjectNames = collect($pivotSubjectIds)
+        ->map(fn ($id) => $subjectNamesMap->get($id))
+        ->filter()
+        ->toArray();
 
-            return is_array($combIds) && in_array($combination->id, $combIds, true);
-        })->pluck('name')->toArray();
+    // Source B: Added school-specific subject names from Subject's combination_id JSON
+    $extraSchoolSubjectNames = $allSubjects->filter(function ($subject) use ($combination) {
+        $combIds = is_array($subject->combination_id) 
+            ? $subject->combination_id 
+            : json_decode($subject->combination_id ?? '[]', true);
 
-        // Merge both sources, remove duplicates, and sort alphabetically
-        $mergedSubjectNames = array_values(array_unique(array_merge($pivotSubjectNames, $extraSubjectNames)));
-        natcasesort($mergedSubjectNames);
+        return is_array($combIds) && in_array($combination->id, $combIds);
+    })->pluck('name')->toArray();
 
-        $packagedCombinations[] = [
-            'id' => $combination->id,
-            'name' => $combination->name,
-            'subjects' => array_values($mergedSubjectNames),
-        ];
-    }
+    // Source C: Extra general subject names from combination_extras table
+    $extraGeneralRaw = $extrasMap->get($combination->id);
+    $extraGeneralIds = is_array($extraGeneralRaw) 
+        ? $extraGeneralRaw 
+        : json_decode($extraGeneralRaw ?? '[]', true);
+
+    $extraGeneralSubjectNames = collect($extraGeneralIds)
+        ->map(fn ($id) => $subjectNamesMap->get($id))
+        ->filter()
+        ->toArray();
+
+    // Merge all three sources, remove duplicates, and sort alphabetically
+    $mergedSubjectNames = array_values(array_unique(array_merge(
+        $pivotSubjectNames, 
+        $extraSchoolSubjectNames, 
+        $extraGeneralSubjectNames
+    )));
+    
+    natcasesort($mergedSubjectNames);
+
+    $packagedCombinations[] = [
+        'id' => $combination->id,
+        'name' => $combination->name,
+        'subjects' => array_values($mergedSubjectNames),
+    ];
+}
 
     return view('subjects.list', compact(
         'subjects',                // Display Grid (Active combination subjects + Direct school subjects)
