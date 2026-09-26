@@ -515,22 +515,24 @@ foreach ($combinations as $combination) {
     })->pluck('name')->toArray();
 
     // Source C: Extra general subject names from combination_extras table
-    $extraGeneralRaw = $extrasMap->get($combination->id);
-
+$extraGeneralRaw = $extrasMap->get($combination->id);
     $extraGeneralIds = is_array($extraGeneralRaw) 
         ? $extraGeneralRaw 
         : json_decode($extraGeneralRaw ?? '[]', true);
 
-    $extraGeneralSubjectNames = collect($extraGeneralIds)
+    $currentCombGeneralNames = collect($extraGeneralIds)
         ->map(fn ($id) => $subjectNamesMap->get($id))
         ->filter()
         ->toArray();
+
+    // 2. APPEND current combination's general names to the outer master array
+    $extraGeneralSubjectNames = array_merge($extraGeneralSubjectNames, $currentCombGeneralNames);
 
     // Merge all three sources, remove duplicates, and sort alphabetically
     $mergedSubjectNames = array_values(array_unique(array_merge(
         $pivotSubjectNames, 
         $extraSchoolSubjectNames, 
-        $extraGeneralSubjectNames
+        $currentCombGeneralNames
     )));
     
     natcasesort($mergedSubjectNames);
@@ -543,6 +545,8 @@ foreach ($combinations as $combination) {
 
 }
 
+$extraGeneralSubjectNames = array_values(array_unique($extraGeneralSubjectNames));
+return $extraGeneralSubjectNames;
     return view('subjects.list', compact(
         'subjects',                // Display Grid (Active combination subjects + Direct school subjects)
         'allSubjects',             // Modal Dropdown (All level subjects + Direct school subjects)
