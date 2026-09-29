@@ -137,20 +137,26 @@ public function addCombination(Request $request)
     return back();
 }
 	
-	public function getSubjects($id)
-	{
-		$schoolId = Auth::user()->school_id;
-		$school = School::find($schoolId);
-		$combination = Combination::findOrFail($id);
-		$allSubjects = $school->subjects()->where('school_level',$school->level)->orWhere(
-            function($q) use($school){$q->where('school_level',$school->level)->where('school_id',$schoolId)};)->orderBy('name')->get();
-		$assignedIds = $combination->subjects->pluck('id')->toArray();
+public function getSubjects($id)
+{
+    $school = Auth::user()->school; // Uses Eloquent relationship instead of double lookup
+    $combination = Combination::findOrFail($id);
 
-		return response()->json([
-			'allSubjects' => $allSubjects,
-			'assignedIds' => $assignedIds
-		]);
-	}
+    // Retrieve subjects belonging to the school/level that ARE NOT linked to this combination
+    $unassignedSubjects = Subject::query()
+        ->where('school_id', $school->id)
+        ->where('school_level', $school->level)
+        ->whereDoesntHave('combinations', function ($query) use ($id) {
+            $query->where('combinations.id', $id);
+        })
+        ->orderBy('name')
+        ->get();
+
+    return response()->json([
+        'allSubjects' => $unassignedSubjects,
+        'assignedIds' => [] // Kept empty or removed to align with your updated frontend needs
+    ]);
+}
 
 	public function updateCombination(Request $request)
 	{
