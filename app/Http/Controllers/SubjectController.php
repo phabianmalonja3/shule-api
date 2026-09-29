@@ -145,7 +145,7 @@ public function addCombination(Request $request)
 
         $assignedPivotRecords = DB::table('combination_subject')
         ->where('combination_id', $id)->pluck('id')->toArray();
-dd($assignedPivotRecords);
+d
         $allSubjects = Subject::whereNotIn('id',$assignedPivotRecords)->where('level',$school->level)->orderBy('name')->get();
             $assignedIds = $combination->subjects->pluck('id')->toArray();
 
@@ -548,6 +548,12 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
 
 }
 
+        $assignedPivotRecords = DB::table('combination_subject')
+        ->where('combination_id', 2)->pluck('id')->toArray();
+d
+        $allSubjects = Subject::whereNotIn('id',$assignedPivotRecords)->where('level',$school->level)->orderBy('name')->get();
+            $assignedIds = $combination->subjects->pluck('id')->toArray();
+return $assignedPivotRecords;
     $extraGeneralSubjectNames = array_values(array_unique($extraGeneralSubjectNames));
 
     return view('subjects.list', compact(
