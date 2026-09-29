@@ -142,8 +142,16 @@ public function addCombination(Request $request)
 		$schoolId = Auth::user()->school_id;
 		$school = School::find($schoolId);
 		$combination = Combination::with('subjects')->findOrFail($id);
+
+        $assignedPivotRecords = DB::table('combination_subject')
+        ->where('combination_id', $id)->get('id');
+
+$extrasMap = DB::table('combination_extras')
+    ->where('school_id', $school->id)
+    ->pluck('subject_id', 'combination_id');
+
 		$generalSubjects    = ['English Language','Business Studies','Historia ya Tanzania na Maadili','Kiswahili','Basic Mathematics','Geography'];
-		$allSubjects = [];//$school->subjects()->whereNotIn('name',$generalSubjects)->orderBy('name')->get();
+		$allSubjects = Subject::whereNotIn('id',$assignedPivotRecords)->where('level',$school->level)->orderBy('name')->get();
 		$assignedIds = $combination->subjects->pluck('id')->toArray();
 
 		return response()->json([
