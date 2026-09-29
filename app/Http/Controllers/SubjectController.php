@@ -575,10 +575,38 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
 
 
 
+        $combinationSubjectIds = DB::table('combination_subject')
+        ->where('combination_id', $id)->pluck('subject_id')->toArray();
+
+        $combinationSubjectIds = json_decode($combinationSubjectIds[0], true);
+
+        $generalSubjectIds = DB::table('combination_extras')
+        ->where('school_id', $school->id)
+        ->where('combination_id',$id)
+        ->pluck('subject_id');
+
+        $generalSubjectIds = json_decode($generalSubjectIds[0], true);
+
+        $schoolTypes = is_array($school->school_type) 
+        ? $school->school_type 
+        : json_decode($school->school_type, true) ?? [];
+
+        $schoolSubjectIds = Subject::where('school_id',$school->id)
+        ->whereJsonContains('combination_id',$id)
+        ->pluck('id')->toArray();
+
+        $allSubjects = Subject::whereNotIn('id',$combinationSubjectIds)
+        ->where(function ($query) use ($schoolTypes) {
+            foreach ($schoolTypes as $type) {
+                $query->orWhereJsonContains('school_level', $type);
+            }
+        })->orWhereIn('id', $schoolSubjectIds)
+        ->orderBy('name')->get();
+    
+        $assignedIds = array_merge($schoolSubjectIds, $generalSubjectIds);
 
 
-
-
+return $schoolSubjectIds;
     return view('subjects.list', compact(
         'subjects',                // Display Grid (Active combination subjects + Direct school subjects)
         'allSubjects',             // Modal Dropdown (All level subjects + Direct school subjects)
