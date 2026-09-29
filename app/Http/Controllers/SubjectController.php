@@ -549,7 +549,7 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
 }
 
         $assignedPivotRecords = DB::table('combination_subject')
-        ->where('combination_id', 2)->pluck('subject_id')->toArray();
+        ->where('combination_id', 2)->pluck('subject_id');
 
              $assignedIds = $combination->subjects->pluck('id')->toArray();
     $extraGeneralSubjectNames = array_values(array_unique($extraGeneralSubjectNames));
