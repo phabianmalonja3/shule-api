@@ -576,13 +576,13 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
 
 
         $combinationSubjectIds = DB::table('combination_subject')
-        ->where('combination_id', $id)->pluck('subject_id')->toArray();
+        ->where('combination_id', 2)->pluck('subject_id')->toArray();
 
         $combinationSubjectIds = json_decode($combinationSubjectIds[0], true);
 
         $generalSubjectIds = DB::table('combination_extras')
         ->where('school_id', $school->id)
-        ->where('combination_id',$id)
+        ->where('combination_id',2)
         ->pluck('subject_id');
 
         $generalSubjectIds = json_decode($generalSubjectIds[0], true);
@@ -592,7 +592,7 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
         : json_decode($school->school_type, true) ?? [];
 
         $schoolSubjectIds = Subject::where('school_id',$school->id)
-        ->whereJsonContains('combination_id',$id)
+        ->whereJsonContains('combination_id',2)
         ->pluck('id')->toArray();
 
         $allSubjects = Subject::whereNotIn('id',$combinationSubjectIds)
