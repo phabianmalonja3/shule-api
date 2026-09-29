@@ -561,7 +561,13 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
         ? $school->school_type 
         : json_decode($school->school_type, true) ?? [];
 
-        $allSubjects = Subject::whereNotIn('id',$assignedPivotRecords)->whereIn('school_level',$schoolTypes)->orderBy('name')->get();
+        $allSubjects = Subject::whereNotIn('id',$assignedPivotRecords)
+        ->where(function ($query) use ($schoolTypes) {
+            foreach ($schoolTypes as $type) {
+                $query->orWhereJsonContains('school_level', $type);
+            }
+        })
+        ->orderBy('name')->get();
             $assignedIds = $combination->subjects->pluck('id')->toArray();
 
 return $schoolTypes;
