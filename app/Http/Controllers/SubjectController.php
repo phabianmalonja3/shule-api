@@ -170,8 +170,8 @@ public function addCombination(Request $request)
         $schoolSubjectIds = Subject::where('school_id',$school->id)->whereJsonContains('combination_id',$id)->pluck('id')->toArray();
 
         $allSubjects = is_array($schoolSubjectIds)
-        ? array_merge($combinationSubjectIds, $schoolSubjectIds)
-        : $combinationSubjectIds;
+        ? array_merge($allSubjects, $schoolSubjectIds)
+        : $allSubjects;
 
         $assignedIds = array_merge($schoolSubjectIds, $generalSubjectIds);
 
