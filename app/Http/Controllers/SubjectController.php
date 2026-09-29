@@ -563,9 +563,13 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
     $extraGeneralSubjectNames = array_values(array_unique($extraGeneralSubjectNames));
 
 
+    $assignedIds = DB::table('combination_extras')
+    ->where('school_id', $school->id)
+    ->where('combination_id',2)
+    ->pluck('subject_id');
 
-
-
+      //$assignedIds = $combination->subjects->pluck('id')->toArray();
+return $assignedIds;
     return view('subjects.list', compact(
         'subjects',                // Display Grid (Active combination subjects + Direct school subjects)
         'allSubjects',             // Modal Dropdown (All level subjects + Direct school subjects)
