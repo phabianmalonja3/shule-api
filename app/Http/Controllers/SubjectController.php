@@ -146,12 +146,21 @@ public function addCombination(Request $request)
         $assignedPivotRecords = DB::table('combination_subject')
         ->where('combination_id', $id)->pluck('subject_id')->toArray();
 
+        $assignedPivotRecords = json_decode($assignedPivotRecords[0], true);
+
         $schoolTypes = is_array($school->school_type) 
         ? $school->school_type 
         : json_decode($school->school_type, true) ?? [];
 
-        $allSubjects = Subject::whereNotIn('id',$assignedPivotRecords)->whereIn('school_level',$schoolTypes)->orderBy('name')->get();
-            $assignedIds = $combination->subjects->pluck('id')->toArray();
+        $allSubjects = Subject::whereNotIn('id',$assignedPivotRecords)
+        ->where(function ($query) use ($schoolTypes) {
+            foreach ($schoolTypes as $type) {
+                $query->orWhereJsonContains('school_level', $type);
+            }
+        })
+        ->orderBy('name')->get();
+            
+        $assignedIds = $combination->subjects->pluck('id')->toArray();
 
 		return response()->json([
 			'allSubjects' => $allSubjects,
@@ -554,25 +563,9 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
     $extraGeneralSubjectNames = array_values(array_unique($extraGeneralSubjectNames));
 
 
-            $assignedPivotRecords = DB::table('combination_subject')
-        ->where('combination_id', 2)->pluck('subject_id')->toArray();
 
-        $assignedPivotRecords = json_decode($assignedPivotRecords[0], true);
 
-        $schoolTypes = is_array($school->school_type) 
-        ? $school->school_type 
-        : json_decode($school->school_type, true) ?? [];
 
-        $allSubjects = Subject::whereNotIn('id',$assignedPivotRecords)
-        ->where(function ($query) use ($schoolTypes) {
-            foreach ($schoolTypes as $type) {
-                $query->orWhereJsonContains('school_level', $type);
-            }
-        })
-        ->orderBy('name')->get();
-            $assignedIds = $combination->subjects->pluck('id')->toArray();
-
-return $allSubjects;
     return view('subjects.list', compact(
         'subjects',                // Display Grid (Active combination subjects + Direct school subjects)
         'allSubjects',             // Modal Dropdown (All level subjects + Direct school subjects)
