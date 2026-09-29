@@ -555,7 +555,7 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
 
 
             $assignedPivotRecords = DB::table('combination_subject')
-        ->where('combination_id', 2)->pluck('subject_id')->toArray();
+        ->where('combination_id', 2)->toArray();
 
         $schoolTypes = is_array($school->school_type) 
         ? $school->school_type 
@@ -570,7 +570,7 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
         ->orderBy('name')->get();
             $assignedIds = $combination->subjects->pluck('id')->toArray();
 
-return $allSubjects;
+return $assignedPivotRecords;
     return view('subjects.list', compact(
         'subjects',                // Display Grid (Active combination subjects + Direct school subjects)
         'allSubjects',             // Modal Dropdown (All level subjects + Direct school subjects)
