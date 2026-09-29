@@ -602,7 +602,7 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
         })
         ->orderBy('name')->get();
         
-        $schoolSubjectIds = Subject::where('school_id',$school->id)->whereJsonContains('combination_id',$id)->pluck('id')->toArray();
+        $schoolSubjectIds = Subject::where('school_id',$school->id)->whereJsonContains('combination_id',2)->pluck('id')->toArray();
 
         $allSubjects = is_array($schoolSubjectIds)
         ? array_merge($allSubjects, $schoolSubjectIds)
