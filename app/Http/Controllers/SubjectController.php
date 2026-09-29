@@ -554,10 +554,10 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
     $extraGeneralSubjectNames = array_values(array_unique($extraGeneralSubjectNames));
 
 
-            $assignedPivotRecords = DB::table('combination_subject')
-        ->where('combination_id', 2)->pluck('subject_id')->toArray();
+            $assignedPivotRecords = Arr::flatten(DB::table('combination_subject')
+        ->where('combination_id', 2)->pluck('subject_id')->toArray());
 
-        $assignedPivotRecords = array_filter(array_unique(Arr::flatten($assignedPivotRecords ?? [])));
+       // $assignedPivotRecords = array_filter(array_unique(Arr::flatten($assignedPivotRecords ?? [])));
         $schoolTypes = is_array($school->school_type) 
         ? $school->school_type 
         : json_decode($school->school_type, true) ?? [];
