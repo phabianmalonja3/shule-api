@@ -568,6 +568,8 @@ $schoolSubjectIds = Subject::where('school_id',$school->id)->whereJsonContains('
     ->where('school_id', $school->id)
     ->where('combination_id',2)
     ->pluck('subject_id');
+
+    $generalSubjectIds = json_decode($generalSubjectIds[0], true);
 $assignedIds = array_merge($schoolSubjectIds, $generalSubjectIds);
       //$assignedIds = $combination->subjects->pluck('id')->toArray();
 return $assignedIds;
