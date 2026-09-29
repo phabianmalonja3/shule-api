@@ -550,12 +550,11 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
 
         $assignedPivotRecords = DB::table('combination_subject')
         ->where('combination_id', 2)->pluck('id')->toArray();
-d
+
         $allSubjects = Subject::whereNotIn('id',$assignedPivotRecords)->where('level',$school->level)->orderBy('name')->get();
             $assignedIds = $combination->subjects->pluck('id')->toArray();
-return $assignedPivotRecords;
     $extraGeneralSubjectNames = array_values(array_unique($extraGeneralSubjectNames));
-
+return $assignedPivotRecords;
     return view('subjects.list', compact(
         'subjects',                // Display Grid (Active combination subjects + Direct school subjects)
         'allSubjects',             // Modal Dropdown (All level subjects + Direct school subjects)
