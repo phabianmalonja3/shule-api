@@ -555,7 +555,7 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
 
 
             $assignedPivotRecords = DB::table('combination_subject')
-        ->where('combination_id', 2)->toArray();
+        ->where('combination_id', 2)->get()->toArray();
 
         $schoolTypes = is_array($school->school_type) 
         ? $school->school_type 
