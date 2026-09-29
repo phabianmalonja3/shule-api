@@ -594,20 +594,16 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
         ? $school->school_type 
         : json_decode($school->school_type, true) ?? [];
 
+                $schoolSubjectIds = Subject::where('school_id',$school->id)->whereJsonContains('combination_id',2)->pluck('id')->toArray();
+
         $allSubjects = Subject::whereNotIn('id',$combinationSubjectIds)
         ->where(function ($query) use ($schoolTypes) {
             foreach ($schoolTypes as $type) {
                 $query->orWhereJsonContains('school_level', $type);
             }
-        })
+        })->orWhereIn('id',$schoolSubjectIds)
         ->orderBy('name')->get();
         
-        $schoolSubjectIds = Subject::where('school_id',$school->id)->whereJsonContains('combination_id',2)->pluck('id')->toArray();
-
-        $allSubjects = is_array($schoolSubjectIds)
-        ? array_merge($allSubjects, $schoolSubjectIds)
-        : $allSubjects;
-
         $assignedIds = array_merge($schoolSubjectIds, $generalSubjectIds);
 
 
