@@ -155,10 +155,10 @@ public function addCombination(Request $request)
 
         $generalSubjectIds = json_decode($generalSubjectIds[0], true);
 
-        $combinationSubjectIds = is_array()
+        $combinationSubjectIds = is_array($generalSubjectIds)
         ? array_merge($combinationSubjectIds, $generalSubjectIds)
         : $combinationSubjectIds;
-        
+
         $schoolTypes = is_array($school->school_type) 
         ? $school->school_type 
         : json_decode($school->school_type, true) ?? [];
