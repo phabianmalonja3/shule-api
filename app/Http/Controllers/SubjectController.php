@@ -558,7 +558,7 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
         ->where('combination_id', 2)->pluck('subject_id')->toArray();
 
         $assignedPivotRecords = json_decode($assignedPivotRecords, true);
-}
+
         $schoolTypes = is_array($school->school_type) 
         ? $school->school_type 
         : json_decode($school->school_type, true) ?? [];
