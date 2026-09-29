@@ -144,7 +144,7 @@ public function addCombination(Request $request)
 		$combination = Combination::with('subjects')->findOrFail($id);
 
         $assignedPivotRecords = DB::table('combination_subject')
-        ->where('combination_id', $id)->pluck('subject_id')->toArray();
+        ->where('combination_id', $id)->pluck('id')->toArray();
 
         $allSubjects = Subject::whereNotIn('id',$assignedPivotRecords)->where('level',$school->level)->orderBy('name')->get();
             $assignedIds = $combination->subjects->pluck('id')->toArray();
@@ -549,11 +549,12 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
 }
 
         $assignedPivotRecords = DB::table('combination_subject')
-        ->where('combination_id', 2)->pluck('subject_id')->get();
+        ->where('combination_id', 2)->pluck('subject_id')->toArray();
 
-             $assignedIds = $combination->subjects->pluck('id')->toArray();
+        $allSubjects = Subject::whereNotIn('id',$assignedPivotRecords)->where('level',$school->level)->orderBy('name')->get();
+            $assignedIds = $combination->subjects->pluck('id')->toArray();
     $extraGeneralSubjectNames = array_values(array_unique($extraGeneralSubjectNames));
-return $assignedPivotRecords;
+return $allSubjects;
     return view('subjects.list', compact(
         'subjects',                // Display Grid (Active combination subjects + Direct school subjects)
         'allSubjects',             // Modal Dropdown (All level subjects + Direct school subjects)
