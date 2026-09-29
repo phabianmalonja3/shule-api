@@ -12,130 +12,128 @@
                 <div class="row">
 					<div class="col-12">
 						@if(in_array('O-Level', $school->school_type) || in_array('A-Level', $school->school_type))
-						<div class="card">
-							<div class="card-header">
-								<h4> Combinations</h4>
-								@role('academic teacher')
-								<div class="card-header-form d-flex justify-content-between align-items-center">
+							<div class="card">
+								<div class="card-header">
+									<h4> Combinations</h4>
+									@role('academic teacher')
+										<div class="card-header-form d-flex justify-content-between align-items-center">
 
-									<button type="button" class="mt-3 mr-3 btn btn-success" data-toggle="modal" data-target="#addCombinationModal">
-										<i class="fas fa-plus"></i> Add
-									</button>
+											<button type="button" class="mt-3 mr-3 btn btn-success" data-toggle="modal" data-target="#addCombinationModal">
+												<i class="fas fa-plus"></i> Add
+											</button>
 
-									@if(count($school->combinations) > 0)
-										<button type="button" class="mt-3 mr-3 btn btn-info" data-toggle="modal" data-target="#editCombinationModal">
-											<i class="fas fa-edit"></i> Edit
-										</button>
-								
-										<button type="button" class="mt-3 mr-3 btn btn-danger" data-toggle="modal" data-target="#deleteCombinationModal">
-											<i class="fas fa-trash-alt mr-1"></i> Delete
-										</button>	
-									@endif
-									
+											@if(count($school->combinations) > 0)
+												<button type="button" class="mt-3 mr-3 btn btn-info" data-toggle="modal" data-target="#editCombinationModal">
+													<i class="fas fa-edit"></i> Edit
+												</button>
+										
+												<button type="button" class="mt-3 mr-3 btn btn-danger" data-toggle="modal" data-target="#deleteCombinationModal">
+													<i class="fas fa-trash-alt mr-1"></i> Delete
+												</button>	
+											@endif
+											
+										</div>
+									@endrole
 								</div>
+
+								<div class="card-body p-3">
+									@php
+										$schoolSubjectNames = $school->subjects()->get()->pluck('name')->toArray();
+									@endphp
+									@forelse($packagedCombinations as $combination)
+										<fieldset class="mb-4 p-3" style="border: 1px solid #e4e6fc; border-radius: 8px;">
+											<legend class="w-auto px-2 ml-3">
+												<h6 class="font-weight-bold">
+													{{ ucfirst($combination['name']) }}
+												</h6>
+											</legend>
+
+											<div class="row">
+												@forelse($combination['subjects'] as $subjectName)
+													@php
+														$isSchoolSubject = in_array($subjectName, $schoolSubjectNames);
+														$isGeneralSubject = in_array($subjectName, $extraGeneralSubjectNames);
+
+														// Determine bullet color
+														$bulletColor = match (true) {
+															$isSchoolSubject  => 'text-danger',  // Red for school subjects
+															$isGeneralSubject => 'text-success', // Green for extra general subjects
+															default           => 'text-info',   // Muted gray for predefined/default subjects
+														};
+													@endphp
+
+													<div class="col-md-3 col-sm-6 mb-2 d-flex align-items-center">
+														<i class="fas fa-circle mr-2 {{ $bulletColor }}" style="font-size: 8px;"></i>
+														<label class="form-check-label text-truncate" 
+															title="{{ $subjectName }}"
+															style="max-width: 100%; cursor: pointer;">
+															{{ $subjectName }}
+														</label>
+													</div>
+													@empty
+														<div class="col-12 text-muted italic">
+															No subjects assigned to this combination.
+														</div>
+													@endforelse
+											</div>
+										</fieldset>
+											@empty
+												<div class="text-center py-4">
+													<p>No combinations found for this school.</p>
+												</div>
+									@endforelse
+								</div>
+							</div>					
+						@endif
+						<div class="card">
+							<div class="card-header d-flex justify-content-between align-items-center">
+								<h4 class="mb-0">All Subjects</h4>
+
+								@role('academic teacher')
+									<div class="card-header-action">
+										<a href="{{ route('subjects.create') }}" class="btn btn-success mr-1">
+											<i class="fas fa-plus"></i> Add
+										</a>
+
+										@if($school->subjects()->get()->isNotEmpty())
+											<button type="button" class="btn btn-info mr-1" data-toggle="modal" data-target="#editSubjectModal">
+												<i class="fas fa-edit"></i> Edit
+											</button>
+
+											<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteSubjectModal">
+												<i class="fas fa-trash-alt mr-1"></i> Delete
+											</button>   
+										@endif
+									</div>
 								@endrole
 							</div>
 
-<div class="card-body p-3">
-	@php
-		$schoolSubjectNames = $school->subjects()->get()->pluck('name')->toArray();
-	@endphp
-    @forelse($packagedCombinations as $combination)
-        <fieldset class="mb-4 p-3" style="border: 1px solid #e4e6fc; border-radius: 8px;">
-            <legend class="w-auto px-2 ml-3">
-                <h6 class="font-weight-bold">
-                    {{ ucfirst($combination['name']) }}
-                </h6>
-            </legend>
-
-            <div class="row">
-                @forelse($combination['subjects'] as $subjectName)
-@php
-    $isSchoolSubject = in_array($subjectName, $schoolSubjectNames);
-    $isGeneralSubject = in_array($subjectName, $extraGeneralSubjectNames);
-
-    // Determine bullet color
-    $bulletColor = match (true) {
-        $isSchoolSubject  => 'text-danger',  // Red for school subjects
-        $isGeneralSubject => 'text-success', // Green for extra general subjects
-        default           => 'text-info',   // Muted gray for predefined/default subjects
-    };
-@endphp
-
-<div class="col-md-3 col-sm-6 mb-2 d-flex align-items-center">
-    <i class="fas fa-circle mr-2 {{ $bulletColor }}" style="font-size: 8px;"></i>
-    <label class="form-check-label text-truncate" 
-           title="{{ $subjectName }}"
-           style="max-width: 100%; cursor: pointer;">
-        {{ $subjectName }}
-    </label>
-  
-                    </div>
-                @empty
-                    <div class="col-12 text-muted italic">
-                        No subjects assigned to this combination.
-                    </div>
-                @endforelse
-            </div>
-        </fieldset>
-    @empty
-        <div class="text-center py-4">
-            <p>No combinations found for this school.</p>
-        </div>
-    @endforelse
-</div>
+							<div class="card-body p-3">
+								@forelse($subjects->chunk(4) as $subjectRow)
+									<div class="row mb-3 pl-3">
+										@foreach($subjectRow as $subject)
+											@php
+												$isSchoolSubject = in_array($subject->id, $schoolSubjectIds ?? [], true);
+											@endphp
+											<div class="col-md-3 col-sm-6 mb-2 d-flex align-items-center">
+												<i class="fas fa-circle mr-2 {{ $isSchoolSubject ? 'text-danger' : 'text-info' }}" style="font-size: 8px;"></i>
+													<label class="form-check-label text-truncate" 
+															title="{{ $subject->name }}"
+															style="max-width: 100%; cursor: pointer;">
+														{{ $subject->name }}
+													</label>
+											</div>
+										@endforeach
+									</div>
+								@empty
+									<div class="text-center py-4 text-muted">
+										<p class="mb-0">No subjects assigned to any combination for this school.</p>
+									</div>
+								@endforelse
+							</div>
 						</div>
-						@endif
-<div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h4 class="mb-0">All Subjects</h4>
-
-        @role('academic teacher')
-            <div class="card-header-action">
-                <a href="{{ route('subjects.create') }}" class="btn btn-success mr-1">
-                    <i class="fas fa-plus"></i> Add
-                </a>
-
-                @if($school->subjects()->get()->isNotEmpty())
-                    <button type="button" class="btn btn-info mr-1" data-toggle="modal" data-target="#editSubjectModal">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteSubjectModal">
-                        <i class="fas fa-trash-alt mr-1"></i> Delete
-                    </button>   
-                @endif
-            </div>
-        @endrole
-    </div>
-
-<div class="card-body p-3">
-    @forelse($subjects->chunk(4) as $subjectRow)
-        <div class="row mb-3 pl-3">
-            @foreach($subjectRow as $subject)
-                @php
-                    $isSchoolSubject = in_array($subject->id, $schoolSubjectIds ?? [], true);
-                @endphp
-                <div class="col-md-3 col-sm-6 mb-2 d-flex align-items-center">
-                    <i class="fas fa-circle mr-2 {{ $isSchoolSubject ? 'text-danger' : 'text-info' }}" style="font-size: 8px;"></i>
-						<label class="form-check-label text-truncate" 
-								title="{{ $subject->name }}"
-								style="max-width: 100%; cursor: pointer;">
-							{{ $subject->name }}
-						</label>
-                </div>
-            @endforeach
-        </div>
-    @empty
-        <div class="text-center py-4 text-muted">
-            <p class="mb-0">No subjects assigned to any combination for this school.</p>
-        </div>
-    @endforelse
-</div>
-</div>
 					</div>
-
-                </div>
+				</div>
             </div>
         </section>
 		<div class="modal fade" id="addCombinationModal" tabindex="-1" role="dialog" aria-labelledby="addCombinationModalLabel" aria-hidden="true">
@@ -328,25 +326,23 @@
 								<span class="text-small"><strong>Warning:</strong> This will remove the selected subject(s) from the list.</span>
 							</div>
 							
-<div class="form-group">
-    <label class="font-weight-bold">Choose Subject(s)</label>
-    <div>
-        @foreach($school->subjects()->get() as $subject)
-            <div class="form-check form-check-inline mr-3 mb-2">
-                <input class="form-check-input" 
-                       type="checkbox" 
-                       name="subject_id[]" 
-                       id="subject_{{ $subject->id }}" 
-                       value="{{ $subject->id }}">
-                <label class="form-check-label" for="subject_{{ $subject->id }}">
-                    {{ $subject->name }}
-                </label>
-            </div>
-        @endforeach
-    </div>
-</div>
-
-
+							<div class="form-group">
+								<label class="font-weight-bold">Choose Subject(s)</label>
+								<div>
+									@foreach($school->subjects()->get() as $subject)
+										<div class="form-check form-check-inline mr-3 mb-2">
+											<input class="form-check-input" 
+												type="checkbox" 
+												name="subject_id[]" 
+												id="subject_{{ $subject->id }}" 
+												value="{{ $subject->id }}">
+											<label class="form-check-label" for="subject_{{ $subject->id }}">
+												{{ $subject->name }}
+											</label>
+										</div>
+									@endforeach
+								</div>
+							</div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
