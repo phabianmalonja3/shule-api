@@ -572,7 +572,7 @@ $schoolSubjectIds = Subject::where('school_id',$school->id)->whereJsonContains('
     $generalSubjectIds = json_decode($generalSubjectIds[0], true);
 $assignedIds = array_merge($schoolSubjectIds, $generalSubjectIds);
       //$assignedIds = $combination->subjects->pluck('id')->toArray();
-return $schoolSubjectIds;
+return $assignedIds;
     return view('subjects.list', compact(
         'subjects',                // Display Grid (Active combination subjects + Direct school subjects)
         'allSubjects',             // Modal Dropdown (All level subjects + Direct school subjects)
