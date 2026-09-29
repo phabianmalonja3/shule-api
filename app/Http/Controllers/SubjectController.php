@@ -606,7 +606,7 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
         $assignedIds = array_merge($schoolSubjectIds, $generalSubjectIds);
 
 
-return $assignedIds;
+return $allSubjects;
     return view('subjects.list', compact(
         'subjects',                // Display Grid (Active combination subjects + Direct school subjects)
         'allSubjects',             // Modal Dropdown (All level subjects + Direct school subjects)
