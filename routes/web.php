@@ -241,3 +241,6 @@ Route::post('/bright-future-schools/application', [SchoolCustomController::class
 Route::get('/regions', [SchoolApplicationController::class, 'getRegions'])->name('regions');
 Route::get('/get-districts', [SchoolApplicationController::class, 'getDistricts']);
 Route::get('/get-wards', [SchoolApplicationController::class, 'getWards']);
+
+Route::get('/combinations/{id}/subjects', [SubjectController::class, 'getSubjects'])
+     ->name('combinations.subjects');

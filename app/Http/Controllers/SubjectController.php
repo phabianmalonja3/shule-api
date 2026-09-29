@@ -141,9 +141,9 @@ public function addCombination(Request $request)
 	{
 		$schoolId = Auth::user()->school_id;
 		$school = School::find($schoolId);
-		$combination = Combination::with('subjects')->findOrFail($id);
-		$generalSubjects    = ['English Language','Business Studies','Historia ya Tanzania na Maadili','Kiswahili','Basic Mathematics','Geography'];
-		$allSubjects = $school->subjects()->whereNotIn('name',$generalSubjects)->orderBy('name')->get();
+		$combination = Combination::findOrFail($id);
+		$allSubjects = $school->subjects()->where('school_level',$school->level)->orWhere(
+            function($q) use($school){$q->where('school_level',$school->level)->where('school_id',$schoolId)};)->orderBy('name')->get();
 		$assignedIds = $combination->subjects->pluck('id')->toArray();
 
 		return response()->json([
