@@ -144,7 +144,7 @@ public function addCombination(Request $request)
 		$combination = Combination::with('subjects')->findOrFail($id);
 
         $assignedPivotRecords = DB::table('combination_subject')
-        ->where('combination_id', $id)->pluck('id')->toArray();
+        ->where('combination_id', $id)->pluck('subject_id')->toArray();
 
         $allSubjects = Subject::whereNotIn('id',$assignedPivotRecords)->where('level',$school->level)->orderBy('name')->get();
             $assignedIds = $combination->subjects->pluck('id')->toArray();
