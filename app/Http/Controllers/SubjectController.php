@@ -155,10 +155,6 @@ public function addCombination(Request $request)
 
         $generalSubjectIds = json_decode($generalSubjectIds[0], true);
 
-        $combinationSubjectIds = is_array($generalSubjectIds)
-        ? array_merge($combinationSubjectIds, $generalSubjectIds)
-        : $combinationSubjectIds;
-
         $schoolTypes = is_array($school->school_type) 
         ? $school->school_type 
         : json_decode($school->school_type, true) ?? [];
@@ -172,6 +168,10 @@ public function addCombination(Request $request)
         ->orderBy('name')->get();
         
         $schoolSubjectIds = Subject::where('school_id',$school->id)->whereJsonContains('combination_id',$id)->pluck('id')->toArray();
+
+        $allSubjects = is_array($schoolSubjectIds)
+        ? array_merge($combinationSubjectIds, $schoolSubjectIds)
+        : $combinationSubjectIds;
 
         $assignedIds = array_merge($schoolSubjectIds, $generalSubjectIds);
 
