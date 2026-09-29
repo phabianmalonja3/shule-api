@@ -143,7 +143,7 @@ public function addCombination(Request $request)
 		$school = School::find($schoolId);
 		$combination = Combination::with('subjects')->findOrFail($id);
 		$generalSubjects    = ['English Language','Business Studies','Historia ya Tanzania na Maadili','Kiswahili','Basic Mathematics','Geography'];
-		$allSubjects = $school->subjects()->whereNotIn('name',$generalSubjects)->orderBy('name')->get();
+		$allSubjects = [];//$school->subjects()->whereNotIn('name',$generalSubjects)->orderBy('name')->get();
 		$assignedIds = $combination->subjects->pluck('id')->toArray();
 
 		return response()->json([
