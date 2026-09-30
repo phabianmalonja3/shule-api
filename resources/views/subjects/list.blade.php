@@ -380,7 +380,44 @@ $.ajax({
         const assignedIds = (response.assignedIds || []).map(id => Number(id));
 
         response.allSubjects.forEach(subject => {
-            // Compare as numbers
+            // Compare as numbers        $combinationSubjectIds = DB::table('combination_subject')
+        ->where('combination_id', $id)->pluck('subject_id')->toArray();
+
+        $combinationSubjectIds = json_decode($combinationSubjectIds[0], true);
+
+        $generalSubjectIds = DB::table('combination_extras')
+        ->where('school_id', $school->id)
+        ->where('combination_id',$id)
+        ->pluck('subject_id');
+
+        $generalSubjectIds = json_decode($generalSubjectIds[0], true);
+
+        $schoolTypes = is_array($school->school_type) 
+        ? $school->school_type 
+        : json_decode($school->school_type, true) ?? [];
+
+        $schoolSubjectIds = Subject::where('school_id',$school->id)
+        ->whereJsonContains('combination_id',$id)
+        ->pluck('id')->toArray();
+		$schoolSubjectIds = json_decode($schoolSubjectIds[0], true);
+        $allSubjects = Subject::whereNotIn('id', $combinationSubjectIds)
+        ->where(function ($query) use ($schoolTypes, $schoolSubjectIds, $school) {
+            if (!empty($schoolTypes)) {
+                $query->where(function ($q) use ($schoolTypes) {
+                    foreach ($schoolTypes as $type) {
+                        $q->orWhereJsonContains('school_level', $type);
+                    }
+                });
+            }
+            $query->orWhere('school_id', $school->id);
+            if (!empty($schoolSubjectIds)) {
+                $query->orWhereIn('id', $schoolSubjectIds);
+            }
+        })
+        ->orderBy('name')
+        ->get();
+    
+        $assignedIds = array_merge($schoolSubjectIds, $generalSubjectIds);
             const isChecked = assignedIds.includes(Number(subject.id)) ? 'checked' : '';
 
             container.append(`
