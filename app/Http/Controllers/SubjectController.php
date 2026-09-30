@@ -625,8 +625,6 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
 
 
 
-
-
 // return($assignedIds);
     return view('subjects.list', compact(
         'subjects',                // Display Grid (Active combination subjects + Direct school subjects)
