@@ -365,81 +365,31 @@ $(document).ready(function() {
         container.html('<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading...</div>');
 
         // Fetch subjects for this combination
-$.ajax({
-    url: `/combinations/${combinationId}/subjects`,
-    method: 'GET',
-    success: function(response) {
-        container.empty();
-
-        if (!response.allSubjects || response.allSubjects.length === 0) {
-            container.html('<span class="text-muted">No subjects found.</span>');
-            return;
-        }
-
-        // Convert assigned IDs to integers to ensure strict type matching
-        const assignedIds = (response.assignedIds || []).map(id => Number(id));
-
-        response.allSubjects.forEach(subject => {
-            // Compare as numbers        $combinationSubjectIds = DB::table('combination_subject')
-        ->where('combination_id', $id)->pluck('subject_id')->toArray();
-
-        $combinationSubjectIds = json_decode($combinationSubjectIds[0], true);
-
-        $generalSubjectIds = DB::table('combination_extras')
-        ->where('school_id', $school->id)
-        ->where('combination_id',$id)
-        ->pluck('subject_id');
-
-        $generalSubjectIds = json_decode($generalSubjectIds[0], true);
-
-        $schoolTypes = is_array($school->school_type) 
-        ? $school->school_type 
-        : json_decode($school->school_type, true) ?? [];
-
-        $schoolSubjectIds = Subject::where('school_id',$school->id)
-        ->whereJsonContains('combination_id',$id)
-        ->pluck('id')->toArray();
-
-        $allSubjects = Subject::whereNotIn('id', $combinationSubjectIds)
-        ->where(function ($query) use ($schoolTypes, $schoolSubjectIds, $school) {
-            if (!empty($schoolTypes)) {
-                $query->where(function ($q) use ($schoolTypes) {
-                    foreach ($schoolTypes as $type) {
-                        $q->orWhereJsonContains('school_level', $type);
-                    }
+        $.ajax({
+            url: `/combinations/${combinationId}/subjects`, // You will need to create this route
+            method: 'GET',
+            success: function(response) {
+                container.empty();
+                
+                // Response should contain ALL subjects and an array of ASSIGNED subject IDs
+                response.allSubjects.forEach(subject => {
+                    let isChecked = response.assignedIds.includes(subject.id) ? 'checked' : '';
+                    
+                    container.append(`
+                        <div class="custom-control custom-checkbox mb-2">
+                            <input type="checkbox" name="subjects[]" value="${subject.id}" 
+                                   class="custom-control-input" id="sub_${subject.id}" ${isChecked}>
+                            <label class="custom-control-label" for="sub_${subject.id}">
+                                ${subject.name}
+                            </label>
+                        </div>
+                    `);
                 });
+            },
+            error: function() {
+                container.html('<span class="text-danger">Error loading subjects.</span>');
             }
-            $query->orWhere('school_id', $school->id);
-            if (!empty($schoolSubjectIds)) {
-                $query->orWhereIn('id', $schoolSubjectIds);
-            }
-        })
-        ->orderBy('name')
-        ->get();
-    
-        $assignedIds = array_merge($schoolSubjectIds, $generalSubjectIds);
-            const isChecked = assignedIds.includes(Number(subject.id)) ? 'checked' : '';
-
-            container.append(`
-                <div class="custom-control custom-checkbox mb-2">
-                    <input type="checkbox" 
-                           name="subjects[]" 
-                           value="${subject.id}" 
-                           class="custom-control-input" 
-                           id="sub_${subject.id}" 
-                           ${isChecked}>
-                    <label class="custom-control-label" for="sub_${subject.id}">
-                        ${subject.name}
-                    </label>
-                </div>
-            `);
         });
-    },
-    error: function(xhr, status, error) {
-        console.error('AJAX Error:', error);
-        container.html('<span class="text-danger">Error loading subjects.</span>');
-    }
-});
     });
 });
 
