@@ -137,37 +137,32 @@ public function addCombination(Request $request)
     return back();
 }
 	
-public function getSubjects($id)
-{
-    $schoolId = Auth::user()->school_id;
-    $school = School::where('id', $schoolId)->firstOrFail();
+	public function getSubjects($id)
+	{
+		$schoolId = Auth::user()->school_id;
+		$school = School::find($schoolId);
 
-    // Ensure school_type is an array
-    $schoolTypes = is_array($school->school_type) 
-        ? $school->school_type 
-        : (json_decode($school->school_type, true) ?? []);
+        $combinationSubjectIds = DB::table('combination_subject')
+        ->where('combination_id', $id)->pluck('subject_id')->toArray();
 
-    // 1. Get subject IDs assigned to the core combination
-    $combinationSubjectIds = DB::table('combination_subject')
-        ->where('combination_id', $id)
-        ->pluck('subject_id')
-        ->toArray();
+        $combinationSubjectIds = json_decode($combinationSubjectIds[0], true);
 
-    // 2. Get additional/extra subject IDs assigned by the school
-    $generalSubjectIds = DB::table('combination_extras')
+        $generalSubjectIds = DB::table('combination_extras')
         ->where('school_id', $school->id)
-        ->where('combination_id', $id)
-        ->pluck('subject_id')
-        ->toArray();
+        ->where('combination_id',$id)
+        ->pluck('subject_id');
 
-    // 3. Get school-specific subjects for this combination
-    $schoolSubjectIds = Subject::where('school_id', $school->id)
-        ->whereJsonContains('combination_id', (string) $id)
-        ->pluck('id')
-        ->toArray();
+        $generalSubjectIds = json_decode($generalSubjectIds[0], true);
 
-    // 4. Query subjects while excluding core combination subjects
-    $allSubjects = Subject::whereNotIn('id', $combinationSubjectIds)
+        $schoolTypes = is_array($school->school_type) 
+        ? $school->school_type 
+        : json_decode($school->school_type, true) ?? [];
+
+        $schoolSubjectIds = Subject::where('school_id',$school->id)
+        ->whereJsonContains('combination_id',$id)
+        ->pluck('id')->toArray();
+
+$allSubjects = Subject::whereNotIn('id', $combinationSubjectIds)
         ->where(function ($query) use ($schoolTypes, $schoolSubjectIds) {
             // Include subjects matching school level types
             if (!empty($schoolTypes)) {
@@ -185,15 +180,14 @@ public function getSubjects($id)
         })
         ->orderBy('name')
         ->get();
+    
+        $assignedIds = array_merge($schoolSubjectIds, $generalSubjectIds);
 
-    // Merge and deduplicate assigned IDs
-    $assignedIds = array_values(array_unique(array_merge($schoolSubjectIds, $generalSubjectIds)));
-
-    return response()->json([
-        'allSubjects' => $allSubjects,
-        'assignedIds' => $assignedIds,
-    ]);
-}
+		return response()->json([
+			'allSubjects' => $allSubjects,
+			'assignedIds' => $assignedIds
+		]);
+	}
 
 	public function updateCombination(Request $request)
 	{
