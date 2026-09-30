@@ -162,9 +162,8 @@ public function addCombination(Request $request)
         ->whereJsonContains('combination_id',$id)
         ->pluck('id')->toArray();
 
-$allSubjects = Subject::whereNotIn('id', $combinationSubjectIds)
+        $allSubjects = Subject::whereNotIn('id', $combinationSubjectIds)
         ->where(function ($query) use ($schoolTypes, $schoolSubjectIds) {
-            // Include subjects matching school level types
             if (!empty($schoolTypes)) {
                 $query->where(function ($q) use ($schoolTypes) {
                     foreach ($schoolTypes as $type) {
@@ -173,7 +172,6 @@ $allSubjects = Subject::whereNotIn('id', $combinationSubjectIds)
                 });
             }
 
-            // Or include explicitly matched school subjects
             if (!empty($schoolSubjectIds)) {
                 $query->orWhereIn('id', $schoolSubjectIds);
             }
@@ -586,9 +584,47 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
 
 
 
+        $combinationSubjectIds = DB::table('combination_subject')
+        ->where('combination_id', 2)->pluck('subject_id')->toArray();
+
+        $combinationSubjectIds = json_decode($combinationSubjectIds[0], true);
+
+        $generalSubjectIds = DB::table('combination_extras')
+        ->where('school_id', $school->id)
+        ->where('combination_id',2)
+        ->pluck('subject_id');
+
+        $generalSubjectIds = json_decode($generalSubjectIds[0], true);
+
+        $schoolTypes = is_array($school->school_type) 
+        ? $school->school_type 
+        : json_decode($school->school_type, true) ?? [];
+
+        $schoolSubjectIds = Subject::where('school_id',$school->id)
+        ->whereJsonContains('combination_id',2)
+        ->pluck('id')->toArray();
+
+        $allSubjects = Subject::whereNotIn('id', $combinationSubjectIds)
+        ->where(function ($query) use ($schoolTypes, $schoolSubjectIds) {
+            if (!empty($schoolTypes)) {
+                $query->where(function ($q) use ($schoolTypes) {
+                    foreach ($schoolTypes as $type) {
+                        $q->orWhereJsonContains('school_level', $type);
+                    }
+                });
+            }
+
+            if (!empty($schoolSubjectIds)) {
+                $query->orWhereIn('id', $schoolSubjectIds);
+            }
+        })
+        ->orderBy('name')
+        ->get();
+    
+        $assignedIds = array_merge($schoolSubjectIds, $generalSubjectIds);
 
 
-
+return($allSubjects);
     return view('subjects.list', compact(
         'subjects',                // Display Grid (Active combination subjects + Direct school subjects)
         'allSubjects',             // Modal Dropdown (All level subjects + Direct school subjects)
