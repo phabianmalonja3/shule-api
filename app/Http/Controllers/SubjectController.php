@@ -162,8 +162,8 @@ public function addCombination(Request $request)
         ->whereJsonContains('combination_id',$id)
         ->pluck('id')->toArray();
 
-        $allSubjects = Subject::whereNotIn('id', $combinationSubjectIds, $school)
-        ->where(function ($query) use ($schoolTypes, $schoolSubjectIds) {
+        $allSubjects = Subject::whereNotIn('id', $combinationSubjectIds)
+        ->where(function ($query) use ($schoolTypes, $schoolSubjectIds, $school) {
             if (!empty($schoolTypes)) {
                 $query->where(function ($q) use ($schoolTypes) {
                     foreach ($schoolTypes as $type) {
