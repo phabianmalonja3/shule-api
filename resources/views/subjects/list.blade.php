@@ -399,7 +399,7 @@ $.ajax({
         $schoolSubjectIds = Subject::where('school_id',$school->id)
         ->whereJsonContains('combination_id',$id)
         ->pluck('id')->toArray();
-		$schoolSubjectIds = json_decode($schoolSubjectIds[0], true);
+		$schoolSubjectIds = json_decode($schoolSubjectIds[1], true);
         $allSubjects = Subject::whereNotIn('id', $combinationSubjectIds)
         ->where(function ($query) use ($schoolTypes, $schoolSubjectIds, $school) {
             if (!empty($schoolTypes)) {
