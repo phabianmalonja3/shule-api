@@ -146,7 +146,7 @@ public function getSubjects($id)
         return response()->json(['error' => 'School not found'], 404);
     }
 
-    // 1. Fetch combination core subject IDs safely (handles integer or JSON values)
+    // 1. Fetch combination core subject IDs safely
     $combinationSubjectIds = DB::table('combination_subject')
         ->where('combination_id', $id)
         ->pluck('subject_id')
@@ -161,7 +161,7 @@ public function getSubjects($id)
         ->values()
         ->toArray();
 
-    // 2. Fetch extra subject IDs assigned to the school safely
+    // 2. Fetch extra general subject IDs assigned to this school for this combination
     $generalSubjectIds = DB::table('combination_extras')
         ->where('school_id', $school->id)
         ->where('combination_id', $id)
@@ -182,7 +182,7 @@ public function getSubjects($id)
         ? $school->school_type 
         : (json_decode($school->school_type, true) ?? []);
 
-    // 4. Fetch school-specific subject IDs matching this combination ID (supports string & int in JSON)
+    // 4. Fetch school-specific subject IDs attached to this combination ID
     $schoolSubjectIds = Subject::where('school_id', $school->id)
         ->where(function ($q) use ($id) {
             $q->whereJsonContains('combination_id', (int)$id)
@@ -192,21 +192,22 @@ public function getSubjects($id)
         ->map(fn($itemId) => (int)$itemId)
         ->toArray();
 
-    // 5. Query eligible subjects (Excluding core combination subjects)
+    // 5. Query eligible subjects (excluding core combination subjects)
     $allSubjects = Subject::whereNotIn('id', $combinationSubjectIds)
-        ->where(function ($query) use ($schoolTypes, $schoolSubjectIds, $school) {
+        ->where(function ($query) use ($schoolTypes, $school) {
+            // Option A: Custom subjects belonging specifically to this school
+            $query->where('school_id', $school->id);
+
+            // Option B: Global general subjects (school_id is null) matching school types
             if (!empty($schoolTypes)) {
-                $query->where(function ($q) use ($schoolTypes) {
-                    foreach ($schoolTypes as $type) {
-                        $q->orWhereJsonContains('school_level', $type);
-                    }
+                $query->orWhere(function ($generalQ) use ($schoolTypes) {
+                    $generalQ->whereNull('school_id')
+                        ->where(function ($levelQ) use ($schoolTypes) {
+                            foreach ($schoolTypes as $type) {
+                                $levelQ->orWhereJsonContains('school_level', $type);
+                            }
+                        });
                 });
-            }
-
-            $query->orWhere('school_id', $school->id);
-
-            if (!empty($schoolSubjectIds)) {
-                $query->orWhereIn('id', $schoolSubjectIds);
             }
         })
         ->orderBy('name')
@@ -221,7 +222,7 @@ public function getSubjects($id)
 
     return response()->json([
         'allSubjects' => $allSubjects,
-        'assignedIds' => $assignedIds
+        'assignedIds' => $assignedIds,
     ]);
 }
 
@@ -322,7 +323,8 @@ public function updateCombination(Request $request)
         ->toArray();
 
     // 4. Combine currently assigned IDs and compute what needs to be removed
-    $currentAssignedIds = array_values(array_unique(array_merge($generalSubjectIds, $schoolSubjectIds)));$toRemoveIds = array_diff($currentAssignedIds,$newSelectedIds);
+    $currentAssignedIds = array_values(array_unique(array_merge($generalSubjectIds, $schoolSubjectIds)));
+    $toRemoveIds = array_diff($currentAssignedIds,$newSelectedIds);
 
     // 5. Fetch ALL subject IDs belonging to this school to distinguish categories correctly
     $schoolOwnedSubjectIds = Subject::where('school_id',$schoolId)
@@ -335,7 +337,8 @@ public function updateCombination(Request $request)
 
     // Categorize NEW selections correctly:
     // Any newly selected ID belonging to this school is a school subject; all others are general subjects.
-    $newSchoolSubjectIds = array_values(array_intersect($newSelectedIds, $schoolOwnedSubjectIds));$newGeneralSubjectIds = array_values(array_diff($newSelectedIds,$schoolOwnedSubjectIds));
+    $newSchoolSubjectIds = array_values(array_intersect($newSelectedIds, $schoolOwnedSubjectIds));
+    $newGeneralSubjectIds = array_values(array_diff($newSelectedIds,$schoolOwnedSubjectIds));
 
     // -------------------------------------------------------------
     // A. UPDATE SCHOOL-SPECIFIC SUBJECTS (`Subject` table)
