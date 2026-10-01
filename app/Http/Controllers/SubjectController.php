@@ -225,36 +225,186 @@ public function getSubjects($id)
     ]);
 }
 
-	public function updateCombination(Request $request)
-	{
-		$request->validate([
-			'combination_id' => 'required|exists:combinations,id',
-			'subjects' => 'nullable|array',
-		]);
+	// public function updateCombination(Request $request)
+	// {
+    //     $request->validate([
+    //             'combination_id' => 'required|exists:combinations,id',
+    //             'subjects'       => 'nullable|array',
+    //             'subjects.*'     => 'integer|exists:subjects,id',
+    //         ]);
 
-		$combination = Combination::findOrFail($request->combination_id);
+    //     $user = Auth::user();
+    //     $schoolId =$user->school_id;
+    //     $combinationId = (int)$request->combination_id;
 
-		$generalSubjectNames = [
-			'English Language', 'Business Studies', 'Historia ya Tanzania na Maadili', 
-			'Kiswahili', 'Basic Mathematics', 'Geography'
-		];
+	// 	$newSelectedIds = array_map('intval',$request->subjects ?? []);
+
+    //     $generalSubjectIds = DB::table('combination_extras')
+    //     ->where('school_id', $schoolId)
+    //     ->where('combination_id', $combinationId)
+    //     ->pluck('subject_id')
+    //     ->flatMap(function ($item) {
+    //         if (is_string($item) && str_starts_with(trim($item), '[')) {
+    //             return json_decode($item, true) ?? [];
+    //         }
+    //         return [$item];
+    //     })
+    //     ->map(fn($itemId) => (int)$itemId)
+    //     ->filter()
+    //     ->values()
+    //     ->toArray();
+        
+    //     $schoolSubjectIds = Subject::where('school_id', $schoolId)
+    //     ->where(function ($q) use ($id) {
+    //         $q->whereJsonContains('combination_id', (int)$combinationId)
+    //           ->orWhereJsonContains('combination_id', (string)$combinationId);
+    //     })
+    //     ->pluck('id')
+    //     ->map(fn($itemId) => (int)$itemId)
+    //     ->toArray();
+
+    //     $currentAssignedIds = array_merge($generalSubjectIds,$schoolSubjectIds);
+
+	// 	$toRemoveIds = array_diff($currentAssignedIds, $newSelectedIds);
+	// 	$filteredRemovalIds = array_diff($toRemoveIds, $generalSubjectIds);
+
+	// 	if (!empty($filteredRemovalIds)) {
+	// 		$combination->subjects()->detach($filteredRemovalIds);
+	// 	}
+
+	// 	$combination->subjects()->syncWithoutDetaching($newSelectedIds);
 		
-		$generalSubjectIds = Subject::whereIn('name', $generalSubjectNames)->pluck('id')->toArray();
-		$currentAssignedIds = $combination->subjects->pluck('id')->toArray();
-		$newSelectedIds = $request->subjects ?? [];
-		$toRemoveIds = array_diff($currentAssignedIds, $newSelectedIds);
-		$filteredRemovalIds = array_diff($toRemoveIds, $generalSubjectIds);
+    //     flash()->option('position', 'bottom-right')->success('Combination updated successfully.');
 
-		if (!empty($filteredRemovalIds)) {
-			$combination->subjects()->detach($filteredRemovalIds);
-		}
+    //     return back();
+	// }
 
-		$combination->subjects()->syncWithoutDetaching($newSelectedIds);
-		
-        flash()->option('position', 'bottom-right')->success('Combination updated successfully.');
 
-        return back();
-	}
+    public function updateCombination(Request $request)
+{
+    $request->validate([
+        'combination_id' => 'required|exists:combinations,id',
+        'subjects'       => 'nullable|array',
+        'subjects.*'     => 'integer|exists:subjects,id',
+    ]);
+
+    $user = Auth::user();
+    $schoolId =$user->school_id;
+    $combinationId = (int)$request->combination_id;
+
+    // 1. Array of newly selected subject IDs from the form submission
+    $newSelectedIds = array_map('intval',$request->subjects ?? []);
+
+    // 2. Fetch current General Subject IDs from `combination_extras`
+    $generalSubjectIds = DB::table('combination_extras')
+        ->where('school_id', $schoolId)
+        ->where('combination_id', $combinationId)
+        ->pluck('subject_id')
+        ->flatMap(function ($item) {
+            if (is_string($item) && str_starts_with(trim($item), '[')) {
+                return json_decode($item, true) ?? [];
+            }
+            return [$item];
+        })
+        ->map(fn($itemId) => (int)$itemId)
+        ->filter()
+        ->values()
+        ->toArray();
+
+    // 3. Fetch current School-Specific Subject IDs (`Subject` table where school_id matches)
+    $schoolSubjectIds = Subject::where('school_id',$schoolId)
+        ->where(function ($q) use ($combinationId) {
+            $q->whereJsonContains('combination_id', (int)$combinationId)
+              ->orWhereJsonContains('combination_id', (string)$combinationId);
+        })
+        ->pluck('id')
+        ->map(fn($itemId) => (int)$itemId)
+        ->toArray();
+
+    // 4. Combine currently assigned IDs and compute what needs to be removed
+    $currentAssignedIds = array_values(array_unique(array_merge($generalSubjectIds, $schoolSubjectIds)));
+    $toRemoveIds = array_diff($currentAssignedIds,$newSelectedIds);
+
+    // 5. Fetch all school-owned subject IDs to distinguish between school-specific and general subjects
+
+    // Categorize selections and removals
+    $schoolRemovals = array_intersect($toRemoveIds, $schoolSubjectIds);
+    $generalRemovals = array_diff($toRemoveIds,$generalSubjectIds);
+
+    $newSchoolSubjectIds = array_intersect($newSelectedIds, $schoolSubjectIds);
+    $newGeneralSubjectIds = array_values(array_diff($newSelectedIds,$generalSubjectIds));
+
+    // -------------------------------------------------------------
+    // A. UPDATE SCHOOL-SPECIFIC SUBJECTS (`Subject` table)
+    // -------------------------------------------------------------
+    
+    // Remove combination_id for unchecked school subjects
+    if (!empty($schoolRemovals)) {
+        $schoolSubjectsToRemove = Subject::where('school_id',$schoolId)
+            ->whereIn('id', $schoolRemovals)
+            ->get();
+
+        foreach ($schoolSubjectsToRemove as $subject) {
+            $existingCombinations = is_array($subject->combination_id)
+                ? $subject->combination_id
+                : (json_decode($subject->combination_id, true) ?? []);
+
+            $updatedCombinations = array_values(array_diff(
+                array_map('intval', $existingCombinations), 
+                [$combinationId]
+            ));
+
+            $subject->combination_id = $updatedCombinations;
+            $subject->save();
+        }
+    }
+
+    // Add combination_id for newly checked school subjects
+    if (!empty($newSchoolSubjectIds)) {
+        $schoolSubjectsToAdd = Subject::where('school_id',$schoolId)
+            ->whereIn('id', $newSchoolSubjectIds)
+            ->get();
+
+        foreach ($schoolSubjectsToAdd as $subject) {
+            $existingCombinations = is_array($subject->combination_id)
+                ? $subject->combination_id
+                : (json_decode($subject->combination_id, true) ?? []);
+
+            $existingCombinations = array_map('intval',$existingCombinations);
+
+            if (!in_array($combinationId,$existingCombinations, true)) {
+                $existingCombinations[] =$combinationId;
+                $subject->combination_id = array_values(array_unique($existingCombinations));$subject->save();
+            }
+        }
+    }
+
+    // -------------------------------------------------------------
+    // B. UPDATE GENERAL SUBJECTS (`combination_extras` table)
+    // -------------------------------------------------------------
+
+    if (empty($newGeneralSubjectIds)) {
+        // If no general subjects are selected or all were unchecked, delete the entire record
+        DB::table('combination_extras')
+            ->where('school_id', $schoolId)
+            ->where('combination_id', $combinationId)
+            ->delete();
+    } else {
+        // Update or insert the updated list of general subject IDs
+        DB::table('combination_extras')->updateOrInsert(
+            [
+                'school_id'      => $schoolId,
+                'combination_id' => $combinationId,
+                'subject_id' => json_encode($newGeneralSubjectIds),
+            ]
+        );
+    }
+
+    flash()->option('position', 'bottom-right')->success('Combination subjects updated successfully.');
+
+    return back();
+}
+
 
 public function deleteCombination(Request $request)
 {
