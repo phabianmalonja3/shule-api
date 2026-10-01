@@ -280,7 +280,7 @@ public function getSubjects($id)
 	// }
 
 
-    public function updateCombination(Request $request)
+public function updateCombination(Request $request)
 {
     $request->validate([
         'combination_id' => 'required|exists:combinations,id',
@@ -322,17 +322,20 @@ public function getSubjects($id)
         ->toArray();
 
     // 4. Combine currently assigned IDs and compute what needs to be removed
-    $currentAssignedIds = array_values(array_unique(array_merge($generalSubjectIds, $schoolSubjectIds)));
-    $toRemoveIds = array_diff($currentAssignedIds,$newSelectedIds);
+    $currentAssignedIds = array_values(array_unique(array_merge($generalSubjectIds, $schoolSubjectIds)));$toRemoveIds = array_diff($currentAssignedIds,$newSelectedIds);
 
-    // 5. Fetch all school-owned subject IDs to distinguish between school-specific and general subjects
+    // 5. Fetch ALL subject IDs belonging to this school to distinguish categories correctly
+    $schoolOwnedSubjectIds = Subject::where('school_id',$schoolId)
+        ->pluck('id')
+        ->map(fn($itemId) => (int)$itemId)
+        ->toArray();
 
-    // Categorize selections and removals
-    $schoolRemovals = array_intersect($toRemoveIds, $schoolSubjectIds);
-    $generalRemovals = array_diff($toRemoveIds,$generalSubjectIds);
+    // Categorize removals
+    $schoolRemovals = array_intersect($toRemoveIds,$schoolOwnedSubjectIds);
 
-    $newSchoolSubjectIds = array_intersect($newSelectedIds, $schoolSubjectIds);
-    $newGeneralSubjectIds = array_values(array_diff($newSelectedIds,$generalSubjectIds));
+    // Categorize NEW selections correctly:
+    // Any newly selected ID belonging to this school is a school subject; all others are general subjects.
+    $newSchoolSubjectIds = array_values(array_intersect($newSelectedIds, $schoolOwnedSubjectIds));$newGeneralSubjectIds = array_values(array_diff($newSelectedIds,$schoolOwnedSubjectIds));
 
     // -------------------------------------------------------------
     // A. UPDATE SCHOOL-SPECIFIC SUBJECTS (`Subject` table)
@@ -344,7 +347,7 @@ public function getSubjects($id)
             ->whereIn('id', $schoolRemovals)
             ->get();
 
-        foreach ($schoolSubjectsToRemove as $subject) {
+        foreach ($schoolSubjectsToRemove as$subject) {
             $existingCombinations = is_array($subject->combination_id)
                 ? $subject->combination_id
                 : (json_decode($subject->combination_id, true) ?? []);
@@ -354,7 +357,7 @@ public function getSubjects($id)
                 [$combinationId]
             ));
 
-            $subject->combination_id = $updatedCombinations;
+            $subject->combination_id =$updatedCombinations;
             $subject->save();
         }
     }
@@ -365,7 +368,7 @@ public function getSubjects($id)
             ->whereIn('id', $newSchoolSubjectIds)
             ->get();
 
-        foreach ($schoolSubjectsToAdd as $subject) {
+        foreach ($schoolSubjectsToAdd as$subject) {
             $existingCombinations = is_array($subject->combination_id)
                 ? $subject->combination_id
                 : (json_decode($subject->combination_id, true) ?? []);
@@ -384,18 +387,21 @@ public function getSubjects($id)
     // -------------------------------------------------------------
 
     if (empty($newGeneralSubjectIds)) {
-        // If no general subjects are selected or all were unchecked, delete the entire record
+        // If no general subjects remain selected, delete the record completely
         DB::table('combination_extras')
             ->where('school_id', $schoolId)
             ->where('combination_id', $combinationId)
             ->delete();
     } else {
-        // Update or insert the updated list of general subject IDs
+        // Update or insert the list of selected general subject IDs
         DB::table('combination_extras')->updateOrInsert(
             [
                 'school_id'      => $schoolId,
                 'combination_id' => $combinationId,
-                'subject_id' => json_encode($newGeneralSubjectIds),
+            ],
+            [
+                'subject_id'     => json_encode($newGeneralSubjectIds),
+                'updated_at'     => now(),
             ]
         );
     }
