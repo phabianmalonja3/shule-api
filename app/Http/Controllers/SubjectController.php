@@ -645,6 +645,8 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
         ->whereJsonContains('combination_id',2)
         ->pluck('id')->toArray();
 
+        $schoolSubjectIds = json_decode($schoolSubjectIds[0], true);
+
         $allSubjects = Subject::whereNotIn('id', $combinationSubjectIds)
         ->where(function ($query) use ($schoolTypes, $schoolSubjectIds, $school) {
             if (!empty($schoolTypes)) {
@@ -664,7 +666,7 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
     
         $assignedIds = array_merge($schoolSubjectIds, $generalSubjectIds);
 
- return($generalSubjectIds);
+ return($schoolSubjectIds);
     return view('subjects.list', compact(
         'subjects',                // Display Grid (Active combination subjects + Direct school subjects)
         'allSubjects',             // Modal Dropdown (All level subjects + Direct school subjects)
