@@ -636,7 +636,7 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
         ->pluck('subject_id');
 
         $generalSubjectIds = json_decode($generalSubjectIds[0], true);
-return $generalSubjectIds;
+
         $schoolTypes = is_array($school->school_type) 
         ? $school->school_type 
         : json_decode($school->school_type, true) ?? [];
@@ -663,8 +663,12 @@ return $generalSubjectIds;
         ->get();
     
         $assignedIds = array_merge($schoolSubjectIds, $generalSubjectIds);
-
- return($generalSubjectIds);
+        foreach($assignedIds as $x){
+            if($x === 276){
+                return "OK";
+            }
+        };
+ return($assignedIds);
     return view('subjects.list', compact(
         'subjects',                // Display Grid (Active combination subjects + Direct school subjects)
         'allSubjects',             // Modal Dropdown (All level subjects + Direct school subjects)
