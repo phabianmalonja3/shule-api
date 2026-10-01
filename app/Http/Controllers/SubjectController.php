@@ -663,7 +663,7 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
         ->get();
     
         $assignedIds = array_merge($schoolSubjectIds, $generalSubjectIds);
-$generalSubjectIds = json_decode($generalSubjectIds[0], true);
+
  return($generalSubjectIds);
     return view('subjects.list', compact(
         'subjects',                // Display Grid (Active combination subjects + Direct school subjects)
