@@ -398,10 +398,7 @@ public function updateCombination(Request $request)
             [
                 'school_id'      => $schoolId,
                 'combination_id' => $combinationId,
-            ],
-            [
                 'subject_id'     => json_encode($newGeneralSubjectIds),
-                'updated_at'     => now(),
             ]
         );
     }
