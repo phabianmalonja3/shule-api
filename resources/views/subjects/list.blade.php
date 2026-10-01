@@ -354,93 +354,105 @@
 		</div>		
     </div>
 </x-layout>
-
 <script>
 $(document).ready(function() {
+
+    // 1. DYNAMIC SUBJECTS LOADER (For Edit Combination Modal)
     $('#edit_combination_id').on('change', function() {
         let combinationId = $(this).val();
         let container = $('#assigned-subjects-container');
 
-        // Show loading state
-        container.html('<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading...</div>');
+        if (!combinationId) {
+            container.empty();
+            return;
+        }
 
-        // Fetch subjects for this combination
+        // Show loading spinner
+        container.html('<div class="text-center py-2"><i class="fas fa-spinner fa-spin"></i> Loading subjects...</div>');
+
         $.ajax({
-            url: `/combinations/${combinationId}/subjects`, // You will need to create this route
+            url: `/combinations/${combinationId}/subjects`,
             method: 'GET',
             success: function(response) {
                 container.empty();
-                
-                // Response should contain ALL subjects and an array of ASSIGNED subject IDs
+
+                if (!response.allSubjects || response.allSubjects.length === 0) {
+                    container.html('<span class="text-muted">No additional subjects available.</span>');
+                    return;
+                }
+
+                // Force assigned IDs into a flat array of integers for strict matching
+                const assignedIds = (response.assignedIds || [])
+                    .flat()
+                    .map(id => parseInt(id, 10));
+
                 response.allSubjects.forEach(subject => {
-                    let isChecked = response.assignedIds.includes(subject.id) ? 'checked' : '';
-                    
+                    const subjectId = parseInt(subject.id, 10);
+                    const isChecked = assignedIds.includes(subjectId) ? 'checked' : '';
+
                     container.append(`
                         <div class="custom-control custom-checkbox mb-2">
-                            <input type="checkbox" name="subjects[]" value="${subject.id}" 
-                                   class="custom-control-input" id="sub_${subject.id}" ${isChecked}>
-                            <label class="custom-control-label" for="sub_${subject.id}">
+                            <input type="checkbox" 
+                                   name="subjects[]" 
+                                   value="${subjectId}" 
+                                   class="custom-control-input" 
+                                   id="sub_${subjectId}" 
+                                   ${isChecked}>
+                            <label class="custom-control-label" for="sub_${subjectId}">
                                 ${subject.name}
                             </label>
                         </div>
                     `);
                 });
             },
-            error: function() {
-                container.html('<span class="text-danger">Error loading subjects.</span>');
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', error);
+                container.html('<span class="text-danger">Error loading subjects. Please try again.</span>');
             }
         });
     });
-});
 
-</script>
 
-<script>
-$(document).ready(function() {
-    // Listen for changes on the select dropdown
+    // 2. SUBJECT NAME DISPLAY PREVIEW
     $('#edit_subject_id').on('change', function() {
-        // Get the selected option element
         var selectedOption = $(this).find('option:selected');
         var subjectName = selectedOption.data('name');
 
-        if ($(this).val()) {
-            // Populate the text box with the subject name
-            $('#edit_subject_name').val(subjectName);
-            // Reveal the text field container by removing Bootstrap's 'd-none' class
+        if ($(this).val()) {$('#edit_subject_name').val(subjectName);
             $('#subject_name_edit_container').removeClass('d-none');
         } else {
-            // Hide it if no valid subject is chosen
             $('#subject_name_edit_container').addClass('d-none');
         }
     });
-});
-</script>
 
-<script>
-    // Embedded map: { 1: [10, 11], 2: [12, 13] }
+
+    // 3. PREDEFINED COMBINATION SUBJECT FILTER (Create / Multi-select)
     const predefinedSubjectsMap = @json($predefinedSubjectsMap ?? []);
 
     $('#combination_id').on('change', function () {
-        const selectedCombinationId = parseInt($(this).val());
+        const selectedCombinationId = parseInt($(this).val(), 10);
         const predefinedIds = predefinedSubjectsMap[selectedCombinationId] || [];
 
-        // Reset current subjects selection
+        // Clear existing choices
         $('#subjects_list').val(null);
 
         $('#subjects_list option').each(function () {
-            const subjectId = parseInt($(this).val());
+            const subjectId = parseInt($(this).val(), 10);
 
             if (predefinedIds.includes(subjectId)) {
-                // Predefined: Hide and disable
+                // Predefined core subject: disable and hide from options
                 $(this).prop('disabled', true).prop('hidden', true).prop('selected', false);
             } else {
-                // Additional: Show and enable
+                // Extra optional subject: enable and display
                 $(this).prop('disabled', false).prop('hidden', false);
             }
         });
 
+        // Trigger Select2 update if applied
         if ($.fn.select2) {
             $('#subjects_list').trigger('change');
         }
     });
+
+});
 </script>

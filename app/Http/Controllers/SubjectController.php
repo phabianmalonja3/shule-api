@@ -137,32 +137,63 @@ public function addCombination(Request $request)
     return back();
 }
 	
-	public function getSubjects($id)
-	{
-		$schoolId = Auth::user()->school_id;
-		$school = School::find($schoolId);
+public function getSubjects($id)
+{
+    $user = Auth::user();
+    $school = $user ? School::find($user->school_id) : null;
 
-        $combinationSubjectIds = DB::table('combination_subject')
-        ->where('combination_id', $id)->pluck('subject_id')->toArray();
+    if (!$school) {
+        return response()->json(['error' => 'School not found'], 404);
+    }
 
-        $combinationSubjectIds = json_decode($combinationSubjectIds[0], true);
+    // 1. Fetch combination core subject IDs safely (handles integer or JSON values)
+    $combinationSubjectIds = DB::table('combination_subject')
+        ->where('combination_id', $id)
+        ->pluck('subject_id')
+        ->flatMap(function ($item) {
+            if (is_string($item) && str_starts_with(trim($item), '[')) {
+                return json_decode($item, true) ?? [];
+            }
+            return [$item];
+        })
+        ->map(fn($itemId) => (int)$itemId)
+        ->filter()
+        ->values()
+        ->toArray();
 
-        $generalSubjectIds = DB::table('combination_extras')
+    // 2. Fetch extra subject IDs assigned to the school safely
+    $generalSubjectIds = DB::table('combination_extras')
         ->where('school_id', $school->id)
-        ->where('combination_id',$id)
-        ->pluck('subject_id');
+        ->where('combination_id', $id)
+        ->pluck('subject_id')
+        ->flatMap(function ($item) {
+            if (is_string($item) && str_starts_with(trim($item), '[')) {
+                return json_decode($item, true) ?? [];
+            }
+            return [$item];
+        })
+        ->map(fn($itemId) => (int)$itemId)
+        ->filter()
+        ->values()
+        ->toArray();
 
-        $generalSubjectIds = json_decode($generalSubjectIds[0], true);
-
-        $schoolTypes = is_array($school->school_type) 
+    // 3. Decode school types safely
+    $schoolTypes = is_array($school->school_type) 
         ? $school->school_type 
-        : json_decode($school->school_type, true) ?? [];
+        : (json_decode($school->school_type, true) ?? []);
 
-        $schoolSubjectIds = Subject::where('school_id',$school->id)
-        ->whereJsonContains('combination_id',$id)
-        ->pluck('id')->toArray();
+    // 4. Fetch school-specific subject IDs matching this combination ID (supports string & int in JSON)
+    $schoolSubjectIds = Subject::where('school_id', $school->id)
+        ->where(function ($q) use ($id) {
+            $q->whereJsonContains('combination_id', (int)$id)
+              ->orWhereJsonContains('combination_id', (string)$id);
+        })
+        ->pluck('id')
+        ->map(fn($itemId) => (int)$itemId)
+        ->toArray();
 
-        $allSubjects = Subject::whereNotIn('id', $combinationSubjectIds)
+    // 5. Query eligible subjects (Excluding core combination subjects)
+    $allSubjects = Subject::whereNotIn('id', $combinationSubjectIds)
         ->where(function ($query) use ($schoolTypes, $schoolSubjectIds, $school) {
             if (!empty($schoolTypes)) {
                 $query->where(function ($q) use ($schoolTypes) {
@@ -171,21 +202,28 @@ public function addCombination(Request $request)
                     }
                 });
             }
+
             $query->orWhere('school_id', $school->id);
+
             if (!empty($schoolSubjectIds)) {
                 $query->orWhereIn('id', $schoolSubjectIds);
             }
         })
         ->orderBy('name')
         ->get();
-    
-        $assignedIds = array_merge($schoolSubjectIds, $generalSubjectIds);
 
-		return response()->json([
-			'allSubjects' => $allSubjects,
-			'assignedIds' => $assignedIds
-		]);
-	}
+    // 6. Merge assigned IDs into a flat, unique array of integers
+    $assignedIds = collect(array_merge($schoolSubjectIds, $generalSubjectIds))
+        ->map(fn($itemId) => (int)$itemId)
+        ->unique()
+        ->values()
+        ->toArray();
+
+    return response()->json([
+        'allSubjects' => $allSubjects,
+        'assignedIds' => $assignedIds
+    ]);
+}
 
 	public function updateCombination(Request $request)
 	{
@@ -623,52 +661,6 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
     
 //         $assignedIds = array_merge($schoolSubjectIds, $generalSubjectIds);
 
-
-
-        $combinationSubjectIds = DB::table('combination_subject')
-        ->where('combination_id', 2)->pluck('subject_id')->toArray();
-
-        $combinationSubjectIds = json_decode($combinationSubjectIds[0], true);
-
-        $generalSubjectIds = DB::table('combination_extras')
-        ->where('school_id', $school->id)
-        ->where('combination_id',2)
-        ->pluck('subject_id');
-
-        $generalSubjectIds = json_decode($generalSubjectIds[0], true);
-
-        $schoolTypes = is_array($school->school_type) 
-        ? $school->school_type 
-        : json_decode($school->school_type, true) ?? [];
-
-        $schoolSubjectIds = Subject::where('school_id',$school->id)
-        ->whereJsonContains('combination_id',2)
-        ->pluck('id')->toArray();
-
-        $allSubjects = Subject::whereNotIn('id', $combinationSubjectIds)
-        ->where(function ($query) use ($schoolTypes, $schoolSubjectIds, $school) {
-            if (!empty($schoolTypes)) {
-                $query->where(function ($q) use ($schoolTypes) {
-                    foreach ($schoolTypes as $type) {
-                        $q->orWhereJsonContains('school_level', $type);
-                    }
-                });
-            }
-            $query->orWhere('school_id', $school->id);
-            if (!empty($schoolSubjectIds)) {
-                $query->orWhereIn('id', $schoolSubjectIds);
-            }
-        })
-        ->orderBy('name')
-        ->get();
-    
-        $assignedIds = array_merge($schoolSubjectIds, $generalSubjectIds);
-        foreach($assignedIds as $x){
-            if($x === 248){
-                return "OK";
-            }
-        };
- return($assignedIds);
     return view('subjects.list', compact(
         'subjects',                // Display Grid (Active combination subjects + Direct school subjects)
         'allSubjects',             // Modal Dropdown (All level subjects + Direct school subjects)
