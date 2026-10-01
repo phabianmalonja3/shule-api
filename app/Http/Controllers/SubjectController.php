@@ -634,9 +634,9 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
         ->where('school_id', $school->id)
         ->where('combination_id',2)
         ->pluck('subject_id');
-return $generalSubjectIds;
-        $generalSubjectIds = json_decode($generalSubjectIds[0], true);
 
+        $generalSubjectIds = json_decode($generalSubjectIds[0], true);
+return $generalSubjectIds;
         $schoolTypes = is_array($school->school_type) 
         ? $school->school_type 
         : json_decode($school->school_type, true) ?? [];
