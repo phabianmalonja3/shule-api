@@ -664,7 +664,7 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
     
         $assignedIds = array_merge($schoolSubjectIds, $generalSubjectIds);
         foreach($assignedIds as $x){
-            if($x === 276){
+            if($x === 248){
                 return "OK";
             }
         };
