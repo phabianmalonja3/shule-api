@@ -397,12 +397,13 @@ public function updateCombination(Request $request)
             ->delete();
     } else {
         // Update or insert the list of selected general subject IDs
-        DB::table('combination_extras')->update
+        DB::table('combination_extras')->update(
             [
                 'school_id'      => $schoolId,
                 'combination_id' => $combinationId,
                 'subject_id'     => json_encode($newGeneralSubjectIds),
-            ];
+            ]
+        );
     }
 
     flash()->option('position', 'bottom-right')->success('Combination subjects updated successfully.');
