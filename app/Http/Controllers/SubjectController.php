@@ -689,8 +689,8 @@ public function index(Request $request)
     $generalSubjectIds = DB::table('combination_extras')
     ->where('school_id', $school->id)
     ->pluck('subject_id')
-    ->toArray();
-
+    ->get();
+return $generalSubjectIds;
     $generalSubjectIds = json_decode($generalSubjectIds[0], true);
     // -------------------------------------------------------------
     // 4. Build Filtered $subjects for Display Grid
