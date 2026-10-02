@@ -701,7 +701,7 @@ public function index(Request $request)
             || in_array($subject->id, $schoolSubjectIds, true)
             || in_array($subject->id, $generalSubjectIds, true);
     })->sortBy('name')->values();
-
+return $generalSubjectIds;
     // -------------------------------------------------------------
     // 5. Fetch Unassigned Combinations for Modal Dropdown
     // -------------------------------------------------------------
