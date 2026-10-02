@@ -691,7 +691,7 @@ public function index(Request $request)
     ->pluck('subject_id')
     ->toArray();
 
-    $generalSubjectIds = json_decode($generalSubjectIds[1], true);
+    $generalSubjectIds = json_decode($generalSubjectIds[2], true);
     // -------------------------------------------------------------
     // 4. Build Filtered $subjects for Display Grid
     // -------------------------------------------------------------
