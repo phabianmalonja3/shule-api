@@ -690,7 +690,7 @@ public function index(Request $request)
     ->where('school_id', $school->id)
     ->pluck('subject_id')
     ->toArray();
-return $generalSubjectIds;
+
     $generalSubjectIds = json_decode($generalSubjectIds[0], true);
     // -------------------------------------------------------------
     // 4. Build Filtered $subjects for Display Grid
@@ -701,7 +701,7 @@ return $generalSubjectIds;
             || in_array($subject->id, $schoolSubjectIds, true)
             || in_array($subject->id, $generalSubjectIds, true);
     })->sortBy('name')->values();
-//return $generalSubjectIds;
+return $generalSubjectIds;
     // -------------------------------------------------------------
     // 5. Fetch Unassigned Combinations for Modal Dropdown
     // -------------------------------------------------------------
