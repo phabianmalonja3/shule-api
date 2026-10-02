@@ -690,7 +690,7 @@ public function index(Request $request)
     ->where('school_id', $school->id)
     ->pluck('subject_id')
     ->toArray();
-
+return $generalSubjectIds;
     $generalSubjectIds = json_decode($generalSubjectIds[0], true);
     // -------------------------------------------------------------
     // 4. Build Filtered $subjects for Display Grid
