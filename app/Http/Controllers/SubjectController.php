@@ -696,7 +696,7 @@ public function index(Request $request)
     // 4. Build Filtered $subjects for Display Grid
     // -------------------------------------------------------------
     // Includes direct school subjects AND all subjects attached to active combinations
-    $subjects = $allSubjects->filter(function ($subject) use ($allCombinationSubjectIds, $schoolSubjectIds) {
+    $subjects = $allSubjects->filter(function ($subject) use ($allCombinationSubjectIds, $schoolSubjectIds, $generalSubjectIds) {
         return in_array($subject->id, $allCombinationSubjectIds, true) 
             || in_array($subject->id, $schoolSubjectIds, true)
             || in_array($subject->id, $generalSubjectIds, true);
