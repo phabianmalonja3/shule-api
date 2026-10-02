@@ -41,7 +41,7 @@
 										$schoolSubjectNames = $school->subjects()->get()->pluck('name')->toArray();
 									@endphp
 									@forelse($packagedCombinations as $combination)
-										<fieldset class="mb-4 p-3" style="border: 1px solid #e4e6fc; border-radius: 8px;">
+										<fieldset class="p-3" style="border: 1px solid #e4e6fc; border-radius: 8px;">
 											<legend class="w-auto px-2 ml-3">
 												<h6 class="font-weight-bold">
 													{{ ucfirst($combination['name']) }}
