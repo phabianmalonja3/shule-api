@@ -686,11 +686,22 @@ public function index(Request $request)
     $allCombinationSubjectIds = array_unique(array_merge($predefinedSubjectIds, $extraSchoolSubjectIds));
 
     // Step 0: Pre-fetch combination_extras records for the school to avoid N+1 queries in the loop
-    $generalSubjectIds = DB::table('combination_extras')
+ $generalSubjectIds = DB::table('combination_extras')
     ->where('school_id', $school->id)
     ->pluck('subject_id')
+    ->flatMap(function ($item) {
+        if (is_string($item) && str_starts_with(trim($item), '[')) {
+            return json_decode($item, true) ?? [];
+        }
+        return [$item];
+    })
+    ->map(fn($itemId) => (int)$itemId)
+    ->filter()
+    ->unique()
+    ->values()
     ->toArray();
-return $generalSubjectIds;
+    
+    return $generalSubjectIds;
     $generalSubjectIds = json_decode($generalSubjectIds[0], true);
     // -------------------------------------------------------------
     // 4. Build Filtered $subjects for Display Grid
