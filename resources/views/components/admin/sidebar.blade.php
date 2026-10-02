@@ -316,6 +316,23 @@
                             
                         </ul>
                     </li>
+                    <li class="dropdown">
+                        <a href="#" class="menu-toggle nav-link has-dropdown">
+                            <i class="fas fa-book-open"></i> <span>Application</span> 
+                        </a>
+
+                        <ul class="dropdown-menu">
+                            <li><a class="nav-link" href="{{ route('marks.upload.setup') }}" > 
+                                Application Status</a></li>
+                            
+                        </ul>
+
+                        <ul class="dropdown-menu">
+                            <li><a class="nav-link" href="{{ route('marks.upload.setup') }}" > 
+                                Application Results</a></li>
+                            
+                        </ul>
+                    </li>
                 @endrole
             @endif
            
