@@ -701,8 +701,6 @@ public function index(Request $request)
     ->values()
     ->toArray();
     
-    return $generalSubjectIds;
-    $generalSubjectIds = json_decode($generalSubjectIds[0], true);
     // -------------------------------------------------------------
     // 4. Build Filtered $subjects for Display Grid
     // -------------------------------------------------------------
