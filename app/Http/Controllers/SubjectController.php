@@ -685,13 +685,21 @@ public function index(Request $request)
     // Combined list of ALL combination subject IDs (Predefined + Extra Added)
     $allCombinationSubjectIds = array_unique(array_merge($predefinedSubjectIds, $extraSchoolSubjectIds));
 
+    // Step 0: Pre-fetch combination_extras records for the school to avoid N+1 queries in the loop
+    $extrasMap = DB::table('combination_extras')
+    ->where('school_id', $school->id)
+    ->pluck('subject_id')
+    ->toArray();
+
+    $generalSubjectIds = json_decode($extrasMap[0], true);
     // -------------------------------------------------------------
     // 4. Build Filtered $subjects for Display Grid
     // -------------------------------------------------------------
     // Includes direct school subjects AND all subjects attached to active combinations
     $subjects = $allSubjects->filter(function ($subject) use ($allCombinationSubjectIds, $schoolSubjectIds) {
         return in_array($subject->id, $allCombinationSubjectIds, true) 
-            || in_array($subject->id, $schoolSubjectIds, true);
+            || in_array($subject->id, $schoolSubjectIds, true)
+            || in_array($subject->id, $generalSubjectIds, true);
     })->sortBy('name')->values();
 
     // -------------------------------------------------------------
@@ -720,11 +728,6 @@ public function index(Request $request)
 
     $packagedCombinations = [];
     $extraGeneralSubjectNames = [];
-
-// Step 0: Pre-fetch combination_extras records for the school to avoid N+1 queries in the loop
-$extrasMap = DB::table('combination_extras')
-    ->where('school_id', $school->id)
-    ->pluck('subject_id', 'combination_id');
 
 foreach ($combinations as $combination) {
     // Source A: Predefined subject names from pivot table
@@ -818,12 +821,7 @@ $extraGeneralRaw = $extrasMap->get($combination->id);
 //         ->get();
     
 //         $assignedIds = array_merge($schoolSubjectIds, $generalSubjectIds);
-$extrasMap = DB::table('combination_extras')
-    ->where('school_id', $school->id)
-    ->pluck('subject_id')
-    ->toArray();
-    $extrasMap = json_decode($extrasMap[0], true);
-return $extrasMap;
+
     return view('subjects.list', compact(
         'subjects',                // Display Grid (Active combination subjects + Direct school subjects)
         'allSubjects',             // Modal Dropdown (All level subjects + Direct school subjects)
