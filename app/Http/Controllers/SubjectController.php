@@ -822,6 +822,7 @@ $extrasMap = DB::table('combination_extras')
     ->where('school_id', $school->id)
     ->pluck('subject_id')
     ->toArray();
+    $extrasMap = json_decode($extrasMap[0], true);
 return $extrasMap;
     return view('subjects.list', compact(
         'subjects',                // Display Grid (Active combination subjects + Direct school subjects)
