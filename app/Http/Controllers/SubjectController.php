@@ -686,12 +686,12 @@ public function index(Request $request)
     $allCombinationSubjectIds = array_unique(array_merge($predefinedSubjectIds, $extraSchoolSubjectIds));
 
     // Step 0: Pre-fetch combination_extras records for the school to avoid N+1 queries in the loop
-    $extrasMap = DB::table('combination_extras')
+    $generalSubjectIds = DB::table('combination_extras')
     ->where('school_id', $school->id)
     ->pluck('subject_id')
     ->toArray();
 
-    $generalSubjectIds = json_decode($extrasMap[0], true);
+    $generalSubjectIds = json_decode($generalSubjectIds[0], true);
     // -------------------------------------------------------------
     // 4. Build Filtered $subjects for Display Grid
     // -------------------------------------------------------------
@@ -748,6 +748,10 @@ foreach ($combinations as $combination) {
         return is_array($combIds) && in_array($combination->id, $combIds);
     })->pluck('name')->toArray();
 
+        // Step 0: Pre-fetch combination_extras records for the school to avoid N+1 queries in the loop
+    $extrasMap = DB::table('combination_extras')
+    ->where('school_id', $school->id)
+    ->pluck('subject_id','combination_id');
     // Source C: Extra general subject names from combination_extras table
 $extraGeneralRaw = $extrasMap->get($combination->id);
     $extraGeneralIds = is_array($extraGeneralRaw) 
