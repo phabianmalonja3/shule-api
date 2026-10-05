@@ -244,3 +244,5 @@ Route::get('/get-wards', [SchoolApplicationController::class, 'getWards']);
 
 Route::get('/combinations/{id}/subjects', [SubjectController::class, 'getSubjects'])
      ->name('combinations.subjects');
+
+Route::view('/application', 'application')->name('application');
