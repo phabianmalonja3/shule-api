@@ -1,3 +1,3 @@
-<x-app-layout>
+<x-layout>
     <livewire:student-application-form />
-</x-app-layout>
+</x-layout>
