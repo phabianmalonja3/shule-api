@@ -30,7 +30,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Illuminate\Support\Facades\Http;
 
 
-class TeacherController extends Controller
+class AdmissionController extends Controller
 {
 
     public function toggleStatus(User $teacher)
