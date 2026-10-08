@@ -105,7 +105,12 @@ public function updateTeacher(Teacher $teacher)
                                                       {$q->where('schools.id',$schoolId);
                                                       }
                                             );
-                                            return $applications->get();
+                                            
+        $applicationCount = $applications->count();
+        $inprogressCount  = $applications->where('status', 'in progress')->count();
+        $completedCount  = $applications->where('status', 'completed')->count();
+        $submittedCount  = $applications->where('status', 'submitted')->count();
+
         $roles = ['teacher', 'class teacher', 'academic teacher','header teacher','assistant headteacher'];
         $announcementsQuery = Announcement::where('school_id', $schoolId)->latest();
 
@@ -148,7 +153,7 @@ public function updateTeacher(Teacher $teacher)
 
         $classCount = SchoolClass::where('school_id', $user->school_id)->count();
 
-        return view('admission.dashboard', compact('teachersCount','studentsCount','classCount','announcementCount',
+        return view('admission.dashboard', compact('applicationCount','inprogressCount','completedCount','submittedCount',
 
         ));
 

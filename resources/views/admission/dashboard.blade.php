@@ -19,7 +19,7 @@
                                 <div class="pt-3 pr-0 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                     <div class="card-content">
                                         <h5 class="font-15">Total Applications</h5>
-                                        <h2 class="mb-3 font-18">{{ $classCount }}</h2>
+                                        <h2 class="mb-3 font-18">{{ $applicationCount }}</h2>
                                     </div>
                                 </div>
                                 <div class="pl-0 text-right col-lg-6 col-md-6 col-sm-6 col-xs-6"> {{-- Added text-right --}}
@@ -43,7 +43,7 @@
                                 <div class="pt-3 pr-0 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                     <div class="card-content">
                                         <h5 class="font-15">In progress</h5>
-                                        <h2 class="mb-3 font-18">{{ $teachersCount }}</h2>
+                                        <h2 class="mb-3 font-18">{{ $inprogrssCount }}</h2>
                                     </div>
                                 </div>
                                 <div class="pl-0 text-right col-lg-6 col-md-6 col-sm-6 col-xs-6"> {{-- Added text-right --}}
@@ -69,7 +69,7 @@
                                   <div class="pt-3 pr-0 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                       <div class="card-content">
                                           <h5 class="font-15">Completed</h5>
-                                          <h2 class="mb-3 font-18">{{ $studentsCount }}</h2>
+                                          <h2 class="mb-3 font-18">{{ $completedtedCount }}</h2>
                                       </div>
                                   </div>
                                   <div class="pl-0 text-right col-lg-6 col-md-6 col-sm-6 col-xs-6"> {{-- Added text-right --}}
@@ -92,7 +92,7 @@
                                 <div class="pt-3 pr-0 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                     <div class="card-content">
                                         <h5 class="font-15">Submitted</h5>
-                                        <h2 class="mb-3 font-18">{{ $announcementCount }}</h2>
+                                        <h2 class="mb-3 font-18">{{ $submittedCount }}</h2>
                                     </div>
                                 </div>
                                 <div class="pl-0 text-right col-lg-6 col-md-6 col-sm-6 col-xs-6"> {{-- Added text-right --}}
