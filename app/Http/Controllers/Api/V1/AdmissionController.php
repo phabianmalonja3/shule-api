@@ -102,7 +102,7 @@ public function updateTeacher(Teacher $teacher)
         $schoolId = $user->school_id; // Get the school ID
 
         $applications = Admission::whereHas('school', function($q) use($schoolId)
-                                                      {$q->where('id',$schoolId);
+                                                      {$q->where('schools.id',$schoolId);
                                                       }
                                             );
                                             return $applications->get();
