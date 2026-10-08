@@ -104,12 +104,12 @@ public function updateTeacher(Teacher $teacher)
         $applications = Admission::with(['applicant','school'])->whereHas('school', function($q) use($schoolId)
                                                       {$q->where('schools.id',$schoolId);
                                                       }
-                                            );
+                                            )->get(());
                                             
         $applicationCount = $applications->count();
         $inprogressCount  = $applications->where('status', 'in progress')->count();
         $completedCount  = $applications->where('status', 'completed')->count();
-        $submittedCount  = $applications->where('status', 'submitted')->get();
+        $submittedCount  = $applications->where('status', 'submitted')->count();
 return $submittedCount;
         $roles = ['teacher', 'class teacher', 'academic teacher','header teacher','assistant headteacher'];
         $announcementsQuery = Announcement::where('school_id', $schoolId)->latest();
