@@ -104,7 +104,7 @@ public function updateTeacher(Teacher $teacher)
         $applications = Admission::with(['applicant','school'])->whereHas('school', function($q) use($schoolId)
                                                       {$q->where('schools.id',$schoolId);
                                                       }
-                                            )->get(());
+                                            )->get();
                                             
         $applicationCount = $applications->count();
         $inprogressCount  = $applications->where('status', 'in progress')->count();
