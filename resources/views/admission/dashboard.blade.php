@@ -108,7 +108,7 @@
             </div>
           </div>
 
-          <livewire:teacher.teacher-list />
+          <livewire:admission.application-list />
 
         </section>
       </div>
