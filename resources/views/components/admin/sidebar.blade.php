@@ -322,9 +322,9 @@
                         </a>
 
                         <ul class="dropdown-menu">
-                            <ul class="dropdown-menu">
+                            
                                 <li><a class="nav-link" href="{{ route('admissions.index') }}" >Admission Status </a></li>
-                            </ul>
+                            
                             
                         </ul>
 
