@@ -101,7 +101,7 @@ public function updateTeacher(Teacher $teacher)
         $user = Auth::user(); // Get the authenticated user
         $schoolId = $user->school_id; // Get the school ID
 
-        $applications = Admission::with('applicant')->whereHas('school', function($q) use($schoolId)
+        $applications = Admission::with(['applicant','school'])->whereHas('school', function($q) use($schoolId)
                                                       {$q->where('schools.id',$schoolId);
                                                       }
                                             );
