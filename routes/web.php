@@ -39,6 +39,7 @@ use App\Http\Controllers\Api\V1\SchoolCustomController;
 use App\Http\Controllers\Api\V1\OnlineApplicationController;
 use App\Http\Controllers\Api\V1\SchoolApplicationController;
 use App\Http\Controllers\AdminPanel as ControllersAdminPanel;
+use App\Http\Controllers\Api\V1\AdmissionController;
 
 
 
