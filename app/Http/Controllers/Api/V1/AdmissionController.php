@@ -11,6 +11,7 @@ use App\Models\Subject;
 use App\Models\Homework;
 use App\Models\Attendance;
 use App\Models\SchoolClass;
+use App\Models\Admission;
 use Illuminate\Support\Str;
 use App\Imports\UsersImport;
 use App\Models\Announcement;
