@@ -100,6 +100,11 @@ public function updateTeacher(Teacher $teacher)
         $user = Auth::user(); // Get the authenticated user
         $schoolId = $user->school_id; // Get the school ID
 
+        $applications = Admission::whereHas('school', function($q) use($schoolId)
+                                                      {$q->where('id',$schoolId);
+                                                      }
+                                            );
+                                            return $applications->get();
         $roles = ['teacher', 'class teacher', 'academic teacher','header teacher','assistant headteacher'];
         $announcementsQuery = Announcement::where('school_id', $schoolId)->latest();
 
