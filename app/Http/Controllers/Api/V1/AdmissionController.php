@@ -142,7 +142,7 @@ public function updateTeacher(Teacher $teacher)
 
         $classCount = SchoolClass::where('school_id', $user->school_id)->count();
 
-        return view('components.teacher.home', compact('teachersCount','studentsCount','classCount','announcementCount',
+        return view('admission.dashboard', compact('teachersCount','studentsCount','classCount','announcementCount',
 
         ));
 
