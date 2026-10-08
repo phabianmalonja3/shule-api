@@ -153,7 +153,7 @@ public function updateTeacher(Teacher $teacher)
 
         $classCount = SchoolClass::where('school_id', $user->school_id)->count();
 
-        return view('components.admission.dashboard', compact('applicationCount','inprogressCount','completedCount','submittedCount',
+        return view('components.admission.application-list', compact('applicationCount','inprogressCount','completedCount','submittedCount',
 
         ));
 
