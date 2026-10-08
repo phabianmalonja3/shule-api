@@ -193,6 +193,8 @@ Route::delete('schoolSubjects/delete', [SubjectController::class, 'deleteSchoolS
     Route::put('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
     Route::put('/profile/change-password', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
     Route::resource('academic-years', AcademicYearController::class);
+
+    Route::resource('admissions',  AdmissionController::class);
 });
 
 Route::resource('subjects', SubjectController::class);

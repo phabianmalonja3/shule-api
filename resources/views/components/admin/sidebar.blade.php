@@ -322,8 +322,9 @@
                         </a>
 
                         <ul class="dropdown-menu">
-                            <li><a class="nav-link" href="{{ route('marks.upload.setup') }}" > 
-                                Application Status</a></li>
+                            <ul class="dropdown-menu">
+                                <li><a class="nav-link" href="{{ route('admission.index') }}" >Admission Status </a></li>
+                            </ul>
                             
                         </ul>
 
