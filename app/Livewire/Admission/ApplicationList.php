@@ -3,6 +3,7 @@
 namespace App\Livewire\Admission;
 
 use App\Models\User;
+use App\Models\Admission;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
