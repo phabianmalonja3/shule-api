@@ -50,43 +50,33 @@ protected $rules=[
 
         $this->validate();
 
+        $user = Auth::user(); // Get the authenticated user
+        $schoolId = $user->school_id; // Get the school ID
 
-        $headTeacher = Auth::user(); // Get the authenticated user
+        $applications = Admission::with(['applicant','school'])->whereHas('school', function($q) use($schoolId)
+                                                      {$q->where('schools.id',$schoolId);
+                                                      }
+                                            )->get();
 
-        // ... (rest of your code for getting counts)
+        // if (!empty($this->search)) {
+        //     $search = $this->search;
+        //     $teachersQuery->where(function ($query) use ($search) {
+        //         $query->where('name', 'like', "%{$this->search}%")
+        //             ->orWhere('phone', 'like', "%{$this->search}%");
+        //     });
+        // }
 
-        $schoolId = $headTeacher->school_id; // Get the school ID
+        // // Paginate the teachers list
+        // $teachers = $teachersQuery->paginate(10);
 
-        // Roles to filter teachers
-        $roles = ['teacher', 'class teacher', 'academic teacher','header teacher','head teacher','assistant headteacher'];
-    
-
-        
-        
-        $teachersQuery = User::take($this->amount)->latest()->where('school_id', $schoolId)
-            ->whereHas('roles', function ($query) use ($roles) {
-                $query->whereIn('name', $roles);
-            });
-
-        if (!empty($this->search)) {
-            $search = $this->search;
-            $teachersQuery->where(function ($query) use ($search) {
-                $query->where('name', 'like', "%{$this->search}%")
-                    ->orWhere('phone', 'like', "%{$this->search}%");
-            });
-        }
-
-        // Paginate the teachers list
-        $teachers = $teachersQuery->paginate(10);
-
-        if(auth()->user()->hasAnyRole(['class teacher','teacher'])){
-            $teachers = $teachersQuery->where('is_verified',true)->get();
-        }
+        // if(auth()->user()->hasAnyRole(['class teacher','teacher'])){
+        //     $teachers = $teachersQuery->where('is_verified',true)->get();
+        // }
 
         // dd($teachers);
 
         return view('livewire.admission.application-list',[
-            'teachers'=>$teachers
+            'applications'=>$applications
         ]);
     }
 }

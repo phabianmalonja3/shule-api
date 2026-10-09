@@ -1,157 +1,168 @@
-<div>
-    <div class="row">
-        <div class="col-12">
-            <div class="p-3 card">
-                <div class="card-header">
-                    <h4>{{ \Str::title('List of Teachers') }}</h4>
-                    <div class="card-header-form d-flex justify-content-between align-items-center">
-                        <!-- Button to add a new teacher -->
-                      @role(['header teacher','academic teacher'])
-                       <a href="{{ route('teachers.create') }}" class="mr-2 btn btn-success">
-                        <i class="fas fa-plus"></i> Add New Teacher
-                    </a>
-                       @endrole
-                        <!-- Search form -->
-                        <form class="py-4 ml-auto">
+<div class="card shadow-sm border-0 rounded-lg">
+    <div class="card-body">
+        
+        <!-- Search and Filters Bar -->
+        <div class="d-flex flex-wrap align-items-center justify-content-between mb-4" style="gap: 15px;">
+            <!-- Search Input -->
+            <div class="position-relative flex-grow-1" style="min-width: 280px; max-width: 500px;">
+                <span class="position-absolute" style="top: 12px; left: 15px; color: #9ca3af;">
+                    <i class="fas fa-search"></i>
+                </span>
+                <input 
+                    type="text" 
+                    wire:model.live.debounce.300ms="search" 
+                    placeholder="Search by applicant name or phone..." 
+                    class="form-control pl-5 pr-5 rounded-pill border-light bg-light"
+                    style="height: 45px;"
+                >
+                <span class="position-absolute badge bg-white border text-muted shadow-sm" style="top: 10px; right: 12px; font-size: 11px; padding: 4px 6px; border-radius: 6px;">
+                    ⌘ K
+                </span>
+            </div>
 
-                            <div class="input-group">
-                                <input type="text" wire:model.debounce.200ms.live="search" class="form-control" placeholder="Search teachers..." value="{{ request('search') }}">
-                                <span wire:loading>
-                                    <i class="fa fa-spinner fa-spin"></i>
-            
-                                </span>
-                            </div>
-                            
-                        </form>
+            <!-- Filter Dropdowns -->
+            <div class="d-flex align-items-center" style="gap: 10px;">
+                <!-- Status Filter -->
+                <div class="dropdown">
+                    <button class="btn btn-white border dropdown-toggle px-3 py-2 rounded-pill bg-white shadow-sm font-14" type="button" data-toggle="dropdown">
+                        Status <span class="badge badge-primary rounded-circle ml-1">5</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#" wire:click.prevent="$set('status', '')">All Statuses</a>
+                        <a class="dropdown-item" href="#" wire:click.prevent="$set('status', 'in progress')">In Progress</a>
+                        <a class="dropdown-item" href="#" wire:click.prevent="$set('status', 'completed')">Completed</a>
+                        <a class="dropdown-item" href="#" wire:click.prevent="$set('status', 'submitted')">Submitted</a>
+                        <a class="dropdown-item" href="#" wire:click.prevent="$set('status', 'selected')">Selected</a>
+                        <a class="dropdown-item" href="#" wire:click.prevent="$set('status', 'not selected')">Not Selected</a>
                     </div>
                 </div>
-    
-                <div class="p-0 card-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>#</th> <!-- Serial Number -->
-                                    <th>Full Name</th>
-                                    <th>Phone Number</th>
-                                    <th>Role</th>
 
-                                    @if(auth()->user()->hasAnyRole(['header teacher','academic teacher' ,'assistant headteacher']))
-                                    
-                                    <th>Status</th>
-                                    @endif
-                                    <th >Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($teachers as $index => $teacher)
-                                    <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $teacher->name }}</td>
-                                        <td>{{ $teacher->phone }}</td>
-                                        @php
-                                            $role = \Str::title($teacher->getRoleNames()->first());
-                                            $role = $role == 'Header Teacher'? "Headteacher" : $role;
-                                            if(Str::contains(strtolower(auth()->user()->school->name),'secondary') && Str::contains(strtolower($role), 'head')){
-                                                if($role == "Header Teacher"){
-                                                    $role = "Head of School";
-                                                }elseif($role == "Assistant Headerteacher"){
-                                                    $role = "Assistant Head of School";
-                                                }
-                                            }
-                                            
-                                            $created_by = \App\Models\User::select('name')->where('id',$teacher->created_by)->first();
-                                        @endphp
-                                        <td>{{  $role ?? 'N/A' }}</td>
-    
-                                        @if(auth()->user()->hasAnyRole(['header teacher','academic teacher']))
-                                        
-                                        <td>
-                                            <span class="badge {{ $teacher->is_verified ? 'badge-success' : 'badge-danger' }}" style="min-width: 70px;">
-                                                {{ $teacher->is_verified ? 'Active' : 'Inactive' }}
-                                            </span>
-                                        </td>
-                                        @endif
-    
-                                        <td class="">
-                                            <div class="btn-group" role="group">
-                                                <a href="{{ route('teachers.show', $teacher->id) }}" class="btn btn-info btn-sm">
-                                                    <i class="fas fa-info-circle "></i> Details
-                                                </a>
-
-                                                @if(auth()->user()->hasAnyRole(['header teacher','assistant headteacher','academic teacher']))
-                                                
-                                                    <a href="{{ route('teachers.edit', $teacher->id) }}" class="mx-1 btn btn-warning btn-sm" 
-                                                         @if (!auth()->user()->hasRole('academic teacher') && auth()->user()->id != $teacher->created_by) 
-                                                         style="pointer-events: none; opacity: 0.65;" title="Can only be edited by {{ $created_by->name?? '' }}" @endif>
-                                                        <i class="fas fa-edit"></i> Edit
-                                                    </a>
-                                                    
-                                                    <form action="{{ route('teachers.destroy', $teacher->id) }}" method="POST" class="d-inline">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm" 
-                                                            @if($teacher->roles->first()->name =='header teacher') 
-                                                                disabled style="opacity: 0.65;" title="Can only be deleted by an Administrator."
-                                                            @elseif(auth()->user()->id != $teacher->created_by)
-                                                                disabled style="opacity: 0.65;" title="Can only be deleted by {{ $created_by->name?? '' }}."
-                                                            @endif 
-                                                            onclick="return confirm('Are you sure you want to delete the teacher?')">
-                                                            <i class="fas fa-trash"></i> Delete
-                                                        </button>
-                                                    </form>
-
-                                                    @if(auth()->user()->hasRole('academic teacher'))
-                                                        @php
-                                                            if($teacher->is_verified){
-                                                                $message = "deactivate";
-                                                            }else{
-                                                                $message = "activate";
-                                                            } 
-                                                        @endphp
-                                                        <button wire:click="toggleVerification({{ $teacher->id }}, {{ $teacher->is_verified?? '' }})"
-                                                            class="mx-1 btn btn-primary btn-sm" style="min-width: 100px;"
-                                                            @if ($teacher->roles->first()->name =='header teacher') 
-                                                                disabled 
-                                                                style="opacity: 0.65;" 
-                                                                title="Can only be changed by an Administrator." 
-                                                            @endif
-                                                            onclick="return confirm('Are you sure you want to {{ $message }} the teacher?')">
-                                                            @if($teacher->is_verified) 
-                                                                <i class="fas fa-check-circle"></i> {{ ucfirst($message) }} 
-                                                            @else 
-                                                                <i class="fas fa-ban"></i> {{ ucfirst($message) }} 
-                                                            @endif
-                                                        </button> 
-                                                    @endif                                                    
-                                                @endif
-                                               
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="6" class="text-center">No teachers found.</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-
-                        {{-- <div class="px-2">
-                            {{ $teachers->links() }}
-                        </div> --}}
-    
-                        {{-- <div x-intersect.full="$wire.loadMore()" class="p-2 text-center">
-                            <div wire:loading wire:target="loadMore" class="text-center">
-                                <div class="lds">
-                                    <div></div><div></div><div></div><div></div>
-                                </div>
-                            </div>
-                        </div> --}}
-                    </div>
-                </div>
+                <!-- Cycles Filter -->
+                <button class="btn btn-white border px-3 py-2 rounded-pill bg-white shadow-sm font-14" type="button">
+                    All cycles <i class="fas fa-chevron-down ml-1 text-muted font-11"></i>
+                </button>
             </div>
         </div>
+
+        <!-- Table View -->
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light text-uppercase font-11 text-muted" style="letter-spacing: 0.5px;">
+                    <tr>
+                        <th class="border-0 py-3">Applicant</th>
+                        <th class="border-0 py-3">Status</th>
+                        <th class="border-0 py-3">Progress</th>
+                        <th class="border-0 py-3 text-center">Confirmed</th>
+                        <th class="border-0 py-3 text-center">Notified</th>
+                        <th class="border-0 py-3">Updated</th>
+                        <th class="border-0 py-3 text-right"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($applications as $application)
+                        <tr>
+                            <!-- Applicant Name & Parent Phone -->
+                            <td class="py-3">
+                                <div class="d-flex align-items-center" style="gap: 12px;">
+                                    <div class="rounded-circle bg-light text-primary font-weight-bold d-flex align-items-center justify-content-center border" style="width: 40px; height: 40px; font-size: 13px;">
+                                        {{ strtoupper(substr($application->applicant->first_name ?? 'A', 0, 1)) }}{{ strtoupper(substr($application->applicant->last_name ?? '', 0, 1)) }}
+                                    </div>
+                                    <div>
+                                        <h6 class="font-weight-bold text-dark mb-0 font-14">
+                                            {{ $application->applicant->first_name ?? 'Unknown' }} {{ $application->applicant->last_name ?? 'Applicant' }}
+                                        </h6>
+                                        <small class="text-muted">
+                                            <i class="fas fa-phone-alt font-10 mr-1"></i> {{ $application->applicant->parent_phone ?? $application->applicant->phone ?? 'N/A' }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <!-- Status Badge with Hover Last Step -->
+                            <td class="py-3 align-middle">
+                                @if($application->status === 'in progress')
+                                    <span class="badge badge-pill px-3 py-2 font-12" style="background-color: #f3e8ff; color: #6b21a8;" title="Last step: {{ $application->last_step ?? 'Document Upload' }}" data-toggle="tooltip">
+                                        <i class="fas fa-circle font-8 mr-1 text-purple"></i> In progress
+                                    </span>
+                                @elseif($application->status === 'completed')
+                                    <span class="badge badge-pill px-3 py-2 font-12" style="background-color: #e0f2fe; color: #0369a1;">
+                                        <i class="fas fa-circle font-8 mr-1 text-info"></i> Completed
+                                    </span>
+                                @elseif($application->status === 'submitted')
+                                    <span class="badge badge-pill px-3 py-2 font-12" style="background-color: #d1fae5; color: #065f46;">
+                                        <i class="fas fa-circle font-8 mr-1 text-success"></i> Submitted
+                                    </span>
+                                @elseif($application->status === 'selected')
+                                    <span class="badge badge-pill px-3 py-2 font-12" style="background-color: #dcfce7; color: #166534;">
+                                        <i class="fas fa-check-circle font-10 mr-1 text-success"></i> Selected
+                                    </span>
+                                @elseif($application->status === 'not selected')
+                                    <span class="badge badge-pill px-3 py-2 font-12" style="background-color: #fee2e2; color: #991b1b;">
+                                        <i class="fas fa-times-circle font-10 mr-1 text-danger"></i> Not selected
+                                    </span>
+                                @else
+                                    <span class="badge badge-pill px-3 py-2 font-12 bg-light text-muted">
+                                        {{ ucfirst($application->status) }}
+                                    </span>
+                                @endif
+                            </td>
+
+                            <!-- Progress Bar -->
+                            <td class="py-3 align-middle" style="width: 200px;">
+                                <div class="d-flex justify-content-between font-12 text-muted mb-1">
+                                    <span>Tasks complete</span>
+                                    <span class="font-weight-bold text-dark"> 92% </span>
+                                </div>
+                                <div class="progress" style="height: 6px; background-color: #f3f4f6;">
+                                    <div class="progress-bar rounded-pill bg-primary" role="progressbar" style="width: {{ $application->progress_percentage ?? '82%' }};"></div>
+                                </div>
+                            </td>
+
+                            <!-- Selection Confirmed -->
+                            <td class="py-3 align-middle text-center">
+                                @if($application->is_confirmed)
+                                    <span class="badge badge-success px-2 py-1 font-11">Yes</span>
+                                @else
+                                    <span class="badge badge-light text-muted border px-2 py-1 font-11">No</span>
+                                @endif
+                            </td>
+
+                            <!-- Notified Status -->
+                            <td class="py-3 align-middle text-center">
+                                @if($application->is_notified)
+                                    <span class="text-success font-13" title="Notified"><i class="fas fa-paper-plane"></i></span>
+                                @else
+                                    <span class="text-muted font-13" title="Not Notified"><i class="far fa-paper-plane"></i></span>
+                                @endif
+                            </td>
+
+                            <!-- Updated Time -->
+                            <td class="py-3 align-middle text-muted font-13">
+                                {{ $application->updated_at->diffForHumans() }}
+                            </td>
+
+                            <!-- Actions -->
+                            <td class="py-3 align-middle text-right">
+                                <button class="btn btn-sm btn-light text-muted border-0 bg-transparent">
+                                    <i class="fas fa-ellipsis-h"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-muted">
+                                No applications found matching your criteria.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination Links -->
+        <div class="mt-4 d-flex justify-content-center">
+            {{ $applications->links() }}
+        </div>
+
     </div>
-    
 </div>
