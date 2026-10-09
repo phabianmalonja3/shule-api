@@ -136,10 +136,6 @@
                                 @endif
                             </td>
 
-                            <!-- Updated Time -->
-                            <td class="py-3 align-middle text-muted font-13">
-                                {{ $application->updated_at->diffForHumans() }}
-                            </td>
 
                             <!-- Actions -->
                             <td class="py-3 align-middle text-right">
