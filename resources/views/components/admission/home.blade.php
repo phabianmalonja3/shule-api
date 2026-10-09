@@ -133,7 +133,7 @@
       </div>
     </div>
 
-    <livewire:admission.application-list />
+    <livewire:teacher.teacher-list />
 
 </section>
           
