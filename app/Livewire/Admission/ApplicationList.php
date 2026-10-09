@@ -54,10 +54,10 @@ protected $rules=[
         $user = Auth::user(); // Get the authenticated user
         $schoolId = $user->school_id; // Get the school ID
 
-        $applications = Admission::with(['applicant','school'])->whereHas('school', function($q) use($schoolId)
+        $applicationsQuery = Admission::with(['applicant','school'])->whereHas('school', function($q) use($schoolId)
                                                       {$q->where('schools.id',$schoolId);
                                                       }
-                                            )->get();
+                                            );
 
         // if (!empty($this->search)) {
         //     $search = $this->search;
@@ -75,7 +75,7 @@ protected $rules=[
         // }
 
         // dd($teachers);
-
+$applications = $applicationsQuery->paginate(10);
         return view('livewire.admission.application-list',[
             'applications'=>$applications
         ]);
