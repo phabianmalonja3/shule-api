@@ -10,11 +10,8 @@
         <div class="main-content">
           <section class="section">
                             <!-- Workspace Header Bar -->
-                <div class="d-flex align-items-center justify-content-between mb-4">
+                <div class="d-flex align-items-center">
                     <div class="d-flex align-items-center" style="gap: 10px;">
-                        <button class="btn btn-outline-light text-dark bg-white border shadow-sm">
-                            <i class="far fa-bell"></i>
-                        </button>
                         <button class="btn btn-primary font-weight-bold shadow-sm">
                             <i class="fas fa-plus mr-1"></i> Upload applications
                         </button>
