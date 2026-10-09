@@ -119,7 +119,7 @@
 
                 <!-- Applications Table / Component -->
                 <div class="mt-4">
-                    <livewire:admission.application-list />
+                    @livewire(\App\Livewire\Admission\ApplicationList::class)
                 </div>
 
             </section>
