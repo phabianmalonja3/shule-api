@@ -19,7 +19,7 @@
                     <!-- Right Side: Upload & Download Buttons -->
                     <div class="d-flex align-items-center" style="gap: 10px;">
                         <button class="btn btn-primary font-weight-bold shadow-sm">
-                            <i class="fas fa-plus mr-1"></i> Upload applications
+                            <i class="fas fa-plus mr-1"></i> Add applications
                         </button>
                         <button class="btn btn-outline-light text-dark bg-white border shadow-sm">
                             <i class="fas fa-download mr-1"></i> Download applications
