@@ -11,7 +11,10 @@
 <section class="section">
     <!-- Workspace Header Bar -->
     <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <span class="text-uppercase text-muted font-weight-bold font-12" style="letter-spacing: 1px;">Application Workspace</span>
 
+        </div>
 
         <!-- Right Side: Upload & Download Buttons -->
         <div class="d-flex align-items-center" style="gap: 10px;">
