@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Livewire\Teacher;
+namespace App\Livewire\Admission;
 
 use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
 
-class TeacherList extends Component
+class ApplicationList extends Component
 {
 
 use WithPagination;
