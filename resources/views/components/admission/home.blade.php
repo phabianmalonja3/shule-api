@@ -9,6 +9,37 @@
         <x-admin.sidebar />
         <div class="main-content">
           <section class="section">
+                            <!-- Workspace Header Bar -->
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div>
+                        <span class="text-uppercase text-muted font-weight-bold font-12" style="letter-spacing: 1px;">Application Workspace</span>
+                        <h2 class="font-24 font-weight-bold text-dark mb-0">All applications</h2>
+                    </div>
+                    <div class="d-flex align-items-center" style="gap: 10px;">
+                        <button class="btn btn-outline-light text-dark bg-white border shadow-sm">
+                            <i class="far fa-bell"></i>
+                        </button>
+                        <button class="btn btn-outline-light text-dark bg-white border shadow-sm">
+                            <i class="fas fa-download mr-1"></i> Import application
+                        </button>
+                        <button class="btn btn-primary font-weight-bold shadow-sm">
+                            <i class="fas fa-plus mr-1"></i> New application
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Greeting & Timestamp -->
+                <div class="mb-4">
+                    <h3 class="font-28 font-weight-bold text-dark mb-1">
+                        Good {{ now()->hour < 12 ? 'morning' : (now()->hour < 18 ? 'afternoon' : 'evening') }}, {{ Auth::user()->name ?? 'Maya' }}
+                    </h3>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <p class="text-muted mb-0">Here's what's happening across your applications.</p>
+                        <span class="text-muted font-12">
+                            <i class="fas fa-sync-alt mr-1"></i> Updated just now
+                        </span>
+                    </div>
+                </div>
             <div class="row">
               <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <div class="card">
