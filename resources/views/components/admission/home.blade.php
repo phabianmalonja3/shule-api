@@ -10,108 +10,140 @@
         <div class="main-content">
           <section class="section">
             <div class="row">
-                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    <div class="card">
-                        <div class="card-statistic-4">
-                            <div class="align-items-center justify-content-between">
-                                <a href="{{ route('classes.index') }}" style="text-decoration: none; color: black;">
+              <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="card">
+                    <div class="card-statistic-4">
+                        <div class="align-items-center justify-content-between">
+                            <a href="{{ route('classes.index') }}" style="text-decoration: none; color: black;">
+                              <div class="row">
+                                  <div class="pt-3 pr-0 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                      <div class="card-content">
+                                          <h5 class="font-15">Classes</h5>
+                                          <h2 class="mb-3 font-18">{{ $classCount }}</h2>
+                                      </div>
+                                  </div>
+                                  <div class="pl-0 text-right col-lg-6 col-md-6 col-sm-6 col-xs-6"> {{-- Added text-right --}}
+                                    <div class="banner-img " height='20px'>
+                                        <img src= "{{ asset('assets/img/banner/classroom.png') }}" alt="student image"/>
+                                    </div>
+                                  </div>
+                              </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+              </div>
+        
+              <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <div class="card">
+                      <div class="card-statistic-4">
+                          <div class="align-items-center justify-content-between">
+                            <a href="{{ route('teachers.index') }}" style="text-decoration: none; color: black;">
+                              <div class="row">
+                                  <div class="pt-3 pr-0 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                      <div class="card-content">
+                                          <h5 class="font-15">Teachers</h5>
+                                          <h2 class="mb-3 font-18">{{ $teachersCount }}</h2>
+                                      </div>
+                                  </div>
+                                  <div class="pl-0 text-right col-lg-6 col-md-6 col-sm-6 col-xs-6"> {{-- Added text-right --}}
+                                      
+                                          <div class="banner-img py-2">
+                                              <img src= "{{ asset('assets/img/banner/teacher-banner.png') }}" alt="student image"/>
+                                          </div>
+                                      
+                                  </div>
+                              </div>
+                            </a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <div class="card">
+                      <div class="card-statistic-4">
+                          <div class="align-items-center justify-content-between">
+                            @if(\App\Models\Student::where('school_id', auth()->user()->school_id)->where('is_active',1)->count() > 1)
+                              <a href="{{ route('students.index') }}" style="text-decoration: none; color: black;">
                                 <div class="row">
                                     <div class="pt-3 pr-0 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                         <div class="card-content">
-                                            <h5 class="font-15">Applications</h5>
-                                            <h2 class="mb-3 font-18">{{ $applicationCount }}</h2>
+                                            <h5 class="font-15">Students</h5>
+                                            <h2 class="mb-3 font-18">{{ $studentsCount }}</h2>
                                         </div>
                                     </div>
                                     <div class="pl-0 text-right col-lg-6 col-md-6 col-sm-6 col-xs-6"> {{-- Added text-right --}}
-                                        <div class="banner-img " height='20px'>
-                                            <img src= "{{ asset('assets/img/banner/classroom.png') }}" alt="student image"/>
+                                        <div class="banner-img py-2">
+                                            <img src= "{{ asset('assets/img/banner/student-Dykl0cqs.png') }}" alt="student image"/>
                                         </div>
                                     </div>
                                 </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            
-                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    <div class="card">
-                        <div class="card-statistic-4">
-                            <div class="align-items-center justify-content-between">
-                                <a href="{{ route('teachers.index') }}" style="text-decoration: none; color: black;">
+                              </a>
+                            @else
+                              <div class="row">
+                                  <div class="pt-3 pr-0 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                      <div class="card-content">
+                                          <h5 class="font-15">Students</h5>
+                                          <h2 class="mb-3 font-18">{{ $studentsCount }}</h2>
+                                      </div>
+                                  </div>
+                                  <div class="pl-0 text-right col-lg-6 col-md-6 col-sm-6 col-xs-6"> {{-- Added text-right --}}
+                                      <div class="banner-img py-2">
+                                          <img src= "{{ asset('assets/img/banner/student-Dykl0cqs.png') }}" alt="student image"/>
+                                      </div>
+                                  </div>
+                              </div>
+                            @endif
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <div class="card">
+                      <div class="card-statistic-4">
+                          <div class="align-items-center justify-content-between">
+                            @if (auth()->user()->hasAnyRole(['header teacher', 'assistant headteacher']) && \App\Models\User::where('school_id', auth()->user()->school_id)->count() == 1)
                                 <div class="row">
                                     <div class="pt-3 pr-0 col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                         <div class="card-content">
-                                            <h5 class="font-15">In progress</h5>
-                                            <h2 class="mb-3 font-18">{{ $inprogressCount }}</h2>
+                                            <h5 class="font-15">Announcements</h5>
+                                            <h2 class="mb-3 font-18">{{ $announcementCount }}</h2>
                                         </div>
                                     </div>
                                     <div class="pl-0 text-right col-lg-6 col-md-6 col-sm-6 col-xs-6"> {{-- Added text-right --}}
-                                        
-                                            <div class="banner-img py-2">
-                                                <img src= "{{ asset('assets/img/banner/teacher-banner.png') }}" alt="student image"/>
-                                            </div>
-                                        
-                                    </div>
-                                </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    <div class="card">
-                        <div class="card-statistic-4">
-                            <div class="align-items-center justify-content-between">
-                                <a href="{{ route('announcements.index') }}" style="text-decoration: none; color: black;">
-                                    <div class="row">
-                                        <div class="pt-3 pr-0 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                            <div class="card-content">
-                                                <h5 class="font-15">Completed</h5>
-                                                <h2 class="mb-3 font-18">{{ $completedCount }}</h2>
-                                            </div>
-                                        </div>
-                                        <div class="pl-0 text-right col-lg-6 col-md-6 col-sm-6 col-xs-6"> {{-- Added text-right --}}
-                                            <div class="banner-img py-2" >
-                                                <img src= "{{ asset('assets/img/banner/announcement.png') }}" alt="student image" height="80px"/>
-                                                
-                                            </div>
+                                        <div class="banner-img py-2" >
+                                            <img src= "{{ asset('assets/img/banner/announcement.png') }}" alt="student image" height="80px"/>
+                                            
                                         </div>
                                     </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                        <div class="card">
-                            <div class="card-statistic-4">
-                                <div class="align-items-center justify-content-between">
-                                    <a href="{{ route('announcements.index') }}" style="text-decoration: none; color: black;">
-                                        <div class="row">
-                                            <div class="pt-3 pr-0 col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                                <div class="card-content">
-                                                    <h5 class="font-15">Submitted</h5>
-                                                    <h2 class="mb-3 font-18">{{ $submittedCount }}</h2>
-                                                </div>
-                                            </div>
-                                            <div class="pl-0 text-right col-lg-6 col-md-6 col-sm-6 col-xs-6"> {{-- Added text-right --}}
-                                                <div class="banner-img py-2" >
-                                                    <img src= "{{ asset('assets/img/banner/announcement.png') }}" alt="student image" height="80px"/>
-                                                    
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
                                 </div>
-                            </div>
-                        </div>
-                </div>
+                            @else
+                              <a href="{{ route('announcements.index') }}" style="text-decoration: none; color: black;">
+                                <div class="row">
+                                    <div class="pt-3 pr-0 col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                        <div class="card-content">
+                                            <h5 class="font-15">Announcements</h5>
+                                            <h2 class="mb-3 font-18">{{ $announcementCount }}</h2>
+                                        </div>
+                                    </div>
+                                    <div class="pl-0 text-right col-lg-6 col-md-6 col-sm-6 col-xs-6"> {{-- Added text-right --}}
+                                        <div class="banner-img py-2" >
+                                            <img src= "{{ asset('assets/img/banner/announcement.png') }}" alt="student image" height="80px"/>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                              </a>
+                            @endif
+                          </div>
+                      </div>
+                  </div>
+              </div>
             </div>
 
-            <livewire:admission.application-list />
+            <livewire:teacher.teacher-list />
 
           </section>
           <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="formModal"
