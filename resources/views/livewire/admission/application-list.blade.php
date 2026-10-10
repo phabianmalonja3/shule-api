@@ -81,7 +81,7 @@
                                             {{ $application->applicant->first_name ?? 'Unknown' }} {{ $application->applicant->surname ?? 'Applicant' }}
                                         </h6>
                                         <small class="text-muted">
-                                            <i class="fas fa-phone-alt font-10 mr-1"></i> {{ $application->applicant->parents()->phone ?? 'N/A' }}
+                                            <i class="fas fa-phone-alt font-10 mr-1"></i> {{ $application->applicant->parents->phone ?? 'N/A' }}
                                         </small>
                                     </div>
                                 </div>
@@ -91,7 +91,7 @@
                             <td class="py-3 align-middle">
                                 @if($application->status === 'in progress')
                                     <span class="badge badge-pill px-3 py-2 font-12" style="background-color: #f3e8ff; color: #6b21a8;" title="Last step: {{ $application->last_step ?? 'Document Upload' }}" data-toggle="tooltip">
-                                        <i class="fas fa-circle font-8 mr-1 text-purple"></i> In progress {{ $application->applicant->parents()->phone }}
+                                        <i class="fas fa-circle font-8 mr-1 text-purple"></i> In progress
                                     </span>
                                 @elseif($application->status === 'completed')
                                     <span class="badge badge-pill px-3 py-2 font-12" style="background-color: #e0f2fe; color: #0369a1;">
