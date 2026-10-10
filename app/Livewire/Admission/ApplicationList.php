@@ -77,8 +77,8 @@ public function render()
         $applicationsQuery->where('status', $this->status);
     }
 
-    $applications = $applicationsQuery->latest()->paginate(10);
-
+    // $applications = $applicationsQuery->latest()->paginate(10);
+    $applications = $applicationsQuery->paginate(10);
     return view('livewire.admission.application-list', [
         'applications' => $applications,
         'statuses'     => $statuses, // Distinct statuses passed to view
