@@ -23,19 +23,20 @@
             <!-- Filter Dropdowns -->
             <div class="d-flex align-items-center" style="gap: 10px;">
                 <!-- Status Filter -->
-                <div class="dropdown">
-                    <button class="btn btn-white border dropdown-toggle px-3 py-2 rounded-pill bg-white shadow-sm font-14" type="button" data-toggle="dropdown">
-                        Status <span class="badge badge-primary rounded-circle ml-1">5</span>
-                    </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#" wire:click.prevent="$set('status', '')">All Statuses</a>
-                        <a class="dropdown-item" href="#" wire:click.prevent="$set('status', 'in progress')">In Progress</a>
-                        <a class="dropdown-item" href="#" wire:click.prevent="$set('status', 'completed')">Completed</a>
-                        <a class="dropdown-item" href="#" wire:click.prevent="$set('status', 'submitted')">Submitted</a>
-                        <a class="dropdown-item" href="#" wire:click.prevent="$set('status', 'selected')">Selected</a>
-                        <a class="dropdown-item" href="#" wire:click.prevent="$set('status', 'not selected')">Not Selected</a>
-                    </div>
-                </div>
+<div class="dropdown">
+    <button class="btn btn-white border dropdown-toggle px-3 py-2 rounded-pill bg-white shadow-sm font-14" type="button" data-toggle="dropdown">
+        Status {{ $status ? '('.ucfirst($status).')' : '' }}
+    </button>
+    <div class="dropdown-menu">
+        <a class="dropdown-item" href="#" wire:click.prevent="$set('status', '')">All Statuses</a>
+        <div class="dropdown-divider"></div>
+        @foreach($statuses as $availableStatus)
+            <a class="dropdown-item" href="#" wire:click.prevent="$set('status', '{{ $availableStatus }}')">
+                {{ ucfirst($availableStatus) }}
+            </a>
+        @endforeach
+    </div>
+</div>
 
                 <!-- Cycles Filter -->
                 <button class="btn btn-white border px-3 py-2 rounded-pill bg-white shadow-sm font-14" type="button">

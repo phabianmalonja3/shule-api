@@ -46,38 +46,42 @@ protected $rules=[
         session()->flash('message', 'Teacher status updated successfully.');
     }
 
-    public function render()
-    {
+public function render()
+{
+    $user = Auth::user();
+    $schoolId = $user->school_id;
 
-        $this->validate();
+    // Base query for applications scoped to the user's school
+    $baseQuery = Admission::whereHas('examCenter.school', function ($q) use ($schoolId) {
+        $q->where('schools.id', $schoolId);
+    });
 
-        $user = Auth::user(); // Get the authenticated user
-        $schoolId = $user->school_id; // Get the school ID
+    // Get distinct application statuses for the filter dropdown
+    $statuses = (clone $baseQuery)->select('status')->distinct()->pluck('status');
 
-        $applicationsQuery = Admission::with(['applicant','school'])->whereHas('school', function($q) use($schoolId)
-                                                      {$q->where('schools.id',$schoolId);
-                                                      }
-                                            );
+    // Eager load relationships for list display
+    $applicationsQuery = (clone $baseQuery)->with(['applicant', 'examCenter.school']);
 
-        // if (!empty($this->search)) {
-        //     $search = $this->search;
-        //     $teachersQuery->where(function ($query) use ($search) {
-        //         $query->where('name', 'like', "%{$this->search}%")
-        //             ->orWhere('phone', 'like', "%{$this->search}%");
-        //     });
-        // }
-
-        // // Paginate the teachers list
-        // $teachers = $teachersQuery->paginate(10);
-
-        // if(auth()->user()->hasAnyRole(['class teacher','teacher'])){
-        //     $teachers = $teachersQuery->where('is_verified',true)->get();
-        // }
-
-        // dd($teachers);
-$applications = $applicationsQuery->paginate(10);
-        return view('livewire.admission.application-list',[
-            'applications'=>$applications
-        ]);
+    // Apply Search Filter
+    if (!empty($this->search)) {
+        $applicationsQuery->whereHas('applicant', function ($q) {
+            $q->where('first_name', 'like', '%' . $this->search . '%')
+              ->orWhere('last_name', 'like', '%' . $this->search . '%')
+              ->orWhere('phone', 'like', '%' . $this->search . '%')
+              ->orWhere('parent_phone', 'like', '%' . $this->search . '%');
+        });
     }
+
+    // Apply Status Filter
+    if (!empty($this->status)) {
+        $applicationsQuery->where('status', $this->status);
+    }
+
+    $applications = $applicationsQuery->latest()->paginate(10);
+
+    return view('livewire.admission.application-list', [
+        'applications' => $applications,
+        'statuses'     => $statuses, // Distinct statuses passed to view
+    ]);
+}
 }
