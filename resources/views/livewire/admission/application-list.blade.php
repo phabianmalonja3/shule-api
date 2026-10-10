@@ -73,6 +73,9 @@
                             <!-- Applicant Name & Parent Phone -->
                             <td class="py-3">
                                 <div class="d-flex align-items-center" style="gap: 12px;">
+                                    @php
+                                        $parentPhones = $application->applicant->parents()->pluck('phone')->filter()->implode(', ');
+                                    @endphp
                                     <div class="rounded-circle bg-light text-primary font-weight-bold d-flex align-items-center justify-content-center border" style="width: 40px; height: 40px; font-size: 13px;">
                                         {{ strtoupper(substr($application->applicant->first_name ?? 'A', 0, 1)) }}{{ strtoupper(substr($application->applicant->surname ?? '', 0, 1)) }}
                                     </div>
@@ -81,7 +84,7 @@
                                             {{ $application->applicant->first_name ?? 'Unknown' }} {{ $application->applicant->surname ?? 'Applicant' }}
                                         </h6>
                                         <small class="text-muted">
-                                            <i class="fas fa-phone-alt font-10 mr-1"></i> {{ $application->applicant->parents->phone ?? 'N/A' }}
+                                            <i class="fas fa-phone-alt font-10 mr-1"></i> {{ $parentPhones ?? 'N/A' }}
                                         </small>
                                     </div>
                                 </div>
