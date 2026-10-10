@@ -52,7 +52,7 @@
         <!-- Table View -->
         <div class="table-responsive">
             <table class="table table-striped mb-0">
-                <thead class="text-muted" style="letter-spacing: 0.5px;">
+                <thead>
                     <tr>
                         <th class="border-0 py-3">Applicant</th>
                         <th class="border-0 py-3">Status</th>
