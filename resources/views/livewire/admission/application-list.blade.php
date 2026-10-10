@@ -22,31 +22,31 @@
 
     <!-- Filter Dropdowns -->
     <div class="d-flex align-items-center" style="gap: 10px;">
-        @if(count($statuses) > 1)
-            <div class="dropdown">
-                <button class="btn btn-white border dropdown-toggle px-3 py-2 bg-white shadow-sm font-14 d-inline-flex align-items-center" type="button" data-toggle="dropdown" style="border-radius: 8px; gap: 8px;">
-                    <span>Status</span> 
-                    <span class="badge badge-primary rounded-circle px-2 py-1">
-                        {{ count($statuses) }}
-                    </span>
-                    <i class="fas fa-chevron-down text-muted font-11 ml-1"></i>
-                </button>
-                <div class="dropdown-menu shadow-sm border-0 mt-1">
-                    <!-- Reset filter option -->
-                    <a class="dropdown-item" href="#" wire:click.prevent="$set('status', '')">
-                        All Statuses
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    
-                    <!-- Loop through array of status names -->
-                    @foreach($statuses as $statusName)
-                        <a class="dropdown-item" href="#" wire:click.prevent="$set('status', '{{ $statusName }}')">
-                            {{ ucfirst($statusName) }}
-                        </a>
-                    @endforeach
-                </div>
-            </div>
-        @endif
+@if(count($statuses) > 1)
+    <div class="dropdown">
+        <button class="btn btn-white border px-3 py-2 bg-white shadow-sm font-14 d-flex align-items-center text-dark" type="button" data-toggle="dropdown" style="border-radius: 8px; gap: 8px;">
+            <span class="text-dark font-weight-normal" style="opacity: 1 !important; visibility: visible !important; display: inline-block !important;">Status</span> 
+            <span class="badge badge-primary rounded-circle px-2 py-1">
+                {{ count($statuses) }}
+            </span>
+            <i class="fas fa-chevron-down text-muted font-11 ml-1"></i>
+        </button>
+        <div class="dropdown-menu shadow-sm border-0 mt-1">
+            <!-- Reset filter option -->
+            <a class="dropdown-item" href="#" wire:click.prevent="$set('status', '')">
+                All Statuses
+            </a>
+            <div class="dropdown-divider"></div>
+            
+            <!-- Loop through array of status names -->
+            @foreach($statuses as $statusName)
+                <a class="dropdown-item" href="#" wire:click.prevent="$set('status', '{{ $statusName }}')">
+                    {{ ucfirst($statusName) }}
+                </a>
+            @endforeach
+        </div>
+    </div>
+@endif
     </div>
 </div>
 
