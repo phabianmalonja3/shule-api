@@ -12,7 +12,7 @@
             type="text" 
             wire:model.live.debounce.300ms="search" 
             placeholder="Search by applicant name or phone..." 
-            class="form-control pl-5 pr-5 border-light bg-light"
+            class="form-control pl-5 pr-5 border-light"
             style="height: 42px; border-radius: 8px;"
         >
         <span class="position-absolute badge bg-white border text-muted shadow-sm" style="top: 10px; right: 12px; font-size: 11px; padding: 4px 6px; border-radius: 6px;">
@@ -46,18 +46,13 @@
                 </div>
             </div>
         @endif
-
-        <!-- Cycles Filter -->
-        <button class="btn btn-white border px-3 py-2 bg-white shadow-sm font-14" type="button" style="border-radius: 8px;">
-            All cycles <i class="fas fa-chevron-down ml-1 text-muted font-11"></i>
-        </button>
     </div>
 </div>
 
         <!-- Table View -->
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
-                <thead class="bg-light text-uppercase font-11 text-muted" style="letter-spacing: 0.5px;">
+                <thead class="bg-light font-11 text-muted" style="letter-spacing: 0.5px;">
                     <tr>
                         <th class="border-0 py-3">Applicant</th>
                         <th class="border-0 py-3">Status</th>
