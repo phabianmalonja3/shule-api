@@ -15,6 +15,7 @@ use WithPagination;
 
 public $search;
 public $amount;
+public $status;
 
 protected $rules=[
    

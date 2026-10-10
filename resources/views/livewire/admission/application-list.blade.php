@@ -25,7 +25,7 @@
                 <!-- Status Filter -->
 <div class="dropdown">
     <button class="btn btn-white border dropdown-toggle px-3 py-2 rounded-pill bg-white shadow-sm font-14" type="button" data-toggle="dropdown">
-        Status {{ $status ? '('.ucfirst($status).')' : '' }}
+        Status {{ !empty($status) ? '('.ucfirst($status).')' : '' }}
     </button>
     <div class="dropdown-menu">
         <a class="dropdown-item" href="#" wire:click.prevent="$set('status', '')">All Statuses</a>
