@@ -25,7 +25,7 @@
                 <!-- Status Filter -->
                 @if(count($statuses) > 1)
                     <div class="dropdown">
-                        <button class="btn btn-white border dropdown-toggle px-3 py-2 rounded bg-white font-14" type="button" data-toggle="dropdown">
+                        <button class="btn btn-white border dropdown-toggle px-3 py-2 rounded bg-white shadow-sm font-14" type="button" data-toggle="dropdown">
                             Status 
                             <span class="badge badge-primary rounded-circle ml-1">
                                 {{ count($statuses) }}
