@@ -57,10 +57,13 @@ public function render()
         $q->where('schools.id', $schoolId);
     });
 
-    // Get distinct application statuses for the filter dropdown
-    $statuses = (clone $baseQuery)->select('status')->distinct()->pluck('status');
+    // Get a plain array of distinct status names
+    $statuses = (clone $baseQuery)
+        ->distinct()
+        ->pluck('status')
+        ->toArray(); // e.g., ['in progress', 'submitted', 'completed']
 
-    // Eager load relationships for list display
+    // Filtered Applications Query
     $applicationsQuery = (clone $baseQuery)->with(['applicant', 'examCenter.school']);
 
     // Apply Search Filter
@@ -78,11 +81,11 @@ public function render()
         $applicationsQuery->where('status', $this->status);
     }
 
-    // $applications = $applicationsQuery->latest()->paginate(10);
-    $applications = $applicationsQuery->paginate(10);
+    $applications = $applicationsQuery->latest()->paginate(10);
+
     return view('livewire.admission.application-list', [
         'applications' => $applications,
-        'statuses'     => $statuses, // Distinct statuses passed to view
+        'statuses' => $statuses,
     ]);
 }
 }
