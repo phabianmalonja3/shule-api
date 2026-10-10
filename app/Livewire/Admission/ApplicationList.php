@@ -65,7 +65,7 @@ public function render()
 
     // Filtered Applications Query
     $applicationsQuery = (clone $baseQuery)->with(['applicant', 'examCenter.school']);
-dd($applicationsQuery[0]->applicant->parents());
+
     // Apply Search Filter
     if (!empty($this->search)) {
         $applicationsQuery->whereHas('applicant', function ($q) {

@@ -36,7 +36,7 @@ class Applicant extends Model
  
     public function parents(): BelongsTo
     {
-        return $this->belongsTo(ParentModel::class, 'parent_id');
+        return $this->belongsTo(Parent::class, 'parent_id');
     }    
     /**
      * Get the latest admission for this applicant (useful if applicants re-apply).
