@@ -1,57 +1,57 @@
 <div class="card shadow-sm border-0 rounded-lg">
     <div class="card-body">
         
-<!-- Search and Filters Bar -->
-<div class="d-flex flex-wrap align-items-center justify-content-between mb-4" style="gap: 15px;">
-    <!-- Search Input -->
-    <div class="position-relative flex-grow-1" style="min-width: 280px; max-width: 500px;">
-        <span class="position-absolute" style="top: 12px; left: 15px; color: #9ca3af;">
-            <i class="fas fa-search"></i>
-        </span>
-        <input 
-            type="text" 
-            wire:model.live.debounce.300ms="search" 
-            placeholder="Search by applicant name or phone..." 
-            class="form-control pl-5 pr-5 border-dark-subtle"
-            style="height: 38px; border-radius: 8px;"
-        >
-        <span class="position-absolute badge bg-white border text-muted shadow-sm" style="top: 10px; right: 12px; font-size: 11px; padding: 4px 6px; border-radius: 6px;">
-            ⌘ K
-        </span>
-    </div>
+        <!-- Search and Filters Bar -->
+        <div class="d-flex flex-wrap align-items-center justify-content-between mb-4" style="gap: 15px;">
+            <!-- Search Input -->
+            <div class="position-relative flex-grow-1" style="min-width: 280px; max-width: 500px;">
+                <span class="position-absolute" style="top: 12px; left: 15px; color: #9ca3af;">
+                    <i class="fas fa-search"></i>
+                </span>
+                <input 
+                    type="text" 
+                    wire:model.live.debounce.300ms="search" 
+                    placeholder="Search by applicant name or phone..." 
+                    class="form-control pl-5 pr-5 border-dark-subtle"
+                    style="height: 38px; border-radius: 8px;"
+                >
+                <span class="position-absolute badge bg-white border text-muted shadow-sm" style="top: 10px; right: 12px; font-size: 11px; padding: 4px 6px; border-radius: 6px;">
+                    ⌘ K
+                </span>
+            </div>
 
-    <!-- Filter Dropdowns -->
-    <div class="d-flex align-items-center" style="gap: 10px;">
-@if(count($statuses) > 1)
-    <div class="dropdown">
-        <button class="btn btn-white border px-3 py-2 bg-white shadow-sm font-14 d-flex align-items-center text-dark" type="button" data-toggle="dropdown" style="border-radius: 8px; gap: 8px;">
-            <span class="text-dark font-weight-normal" style="opacity: 1 !important; visibility: visible !important; display: inline-block !important;">Status</span> 
-            
-            <!-- Badge with matching text color and lower-opacity background enclosure -->
-            <span class="badge px-2 py-1 font-weight-bold" style="background-color: rgba(67, 94, 190, 0.12); color: #435ebe; border-radius: 6px;">
-                {{ count($statuses) }}
-            </span>
-            
-            <i class="fas fa-chevron-down text-muted font-11 ml-1"></i>
-        </button>
-        <div class="dropdown-menu shadow-sm border-0 mt-1">
-            <!-- Reset filter option -->
-            <a class="dropdown-item" href="#" wire:click.prevent="$set('status', '')">
-                All Statuses
-            </a>
-            <div class="dropdown-divider"></div>
-            
-            <!-- Loop through array of status names -->
-            @foreach($statuses as $statusName)
-                <a class="dropdown-item" href="#" wire:click.prevent="$set('status', '{{ $statusName }}')">
-                    {{ ucfirst($statusName) }}
-                </a>
-            @endforeach
+            <!-- Filter Dropdowns -->
+            <div class="d-flex align-items-center" style="gap: 10px;">
+                @if(count($statuses) > 1)
+                    <div class="dropdown">
+                        <button class="btn btn-white border px-3 py-2 bg-white shadow-sm font-14 d-flex align-items-center text-dark" type="button" data-toggle="dropdown" style="border-radius: 8px; gap: 8px;">
+                            <span class="text-dark font-weight-normal" style="opacity: 1 !important; visibility: visible !important; display: inline-block !important;">Status</span> 
+                            
+                            <!-- Badge with matching text color and lower-opacity background enclosure -->
+                            <span class="badge px-2 py-1 font-weight-bold" style="background-color: rgba(67, 94, 190, 0.12); color: #435ebe; border-radius: 6px;">
+                                {{ count($statuses) }}
+                            </span>
+                            
+                            <i class="fas fa-chevron-down text-muted font-11 ml-1"></i>
+                        </button>
+                        <div class="dropdown-menu shadow-sm border-0 mt-1">
+                            <!-- Reset filter option -->
+                            <a class="dropdown-item" href="#" wire:click.prevent="$set('status', '')">
+                                All Statuses
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            
+                            <!-- Loop through array of status names -->
+                            @foreach($statuses as $statusName)
+                                <a class="dropdown-item" href="#" wire:click.prevent="$set('status', '{{ $statusName }}')">
+                                    {{ ucfirst($statusName) }}
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+            </div>
         </div>
-    </div>
-@endif
-    </div>
-</div>
 
         <!-- Table View -->
         <div class="table-responsive">
@@ -74,14 +74,14 @@
                             <td class="py-3">
                                 <div class="d-flex align-items-center" style="gap: 12px;">
                                     <div class="rounded-circle bg-light text-primary font-weight-bold d-flex align-items-center justify-content-center border" style="width: 40px; height: 40px; font-size: 13px;">
-                                        {{ strtoupper(substr($application->applicant->first_name ?? 'A', 0, 1)) }}{{ strtoupper(substr($application->applicant->last_name ?? '', 0, 1)) }}
+                                        {{ strtoupper(substr($application->applicant->first_name ?? 'A', 0, 1)) }}{{ strtoupper(substr($application->applicant->surname ?? '', 0, 1)) }}
                                     </div>
                                     <div>
                                         <h6 class="font-weight-bold text-dark mb-0 font-14">
-                                            {{ $application->applicant->first_name ?? 'Unknown' }} {{ $application->applicant->last_name ?? 'Applicant' }}
+                                            {{ $application->applicant->first_name ?? 'Unknown' }} {{ $application->applicant->surname ?? 'Applicant' }}
                                         </h6>
                                         <small class="text-muted">
-                                            <i class="fas fa-phone-alt font-10 mr-1"></i> {{ $application->applicant->parent_phone ?? $application->applicant->phone ?? 'N/A' }}
+                                            <i class="fas fa-phone-alt font-10 mr-1"></i> {{ $application->applicant->parents()->phone ?? 'N/A' }}
                                         </small>
                                     </div>
                                 </div>

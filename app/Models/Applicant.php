@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Applicant extends Model
 {
@@ -27,11 +28,16 @@ class Applicant extends Model
     /**
      * Get all admissions/applications submitted by this applicant.
      */
+
     public function admissions(): HasMany
     {
         return $this->hasMany(Admission::class, 'applicant_id');
     }
-
+ 
+    public function parents(): BelongsTo
+    {
+        return $this->belongsTo(ParentModel::class, 'parent_id');
+    }    
     /**
      * Get the latest admission for this applicant (useful if applicants re-apply).
      */
