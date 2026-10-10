@@ -25,6 +25,11 @@ class Applicant extends Model
         'date_of_birth',
     ];
 
+     
+protected $casts = [
+        'parent_id' => 'array',
+    ];
+
     /**
      * Get all admissions/applications submitted by this applicant.
      */
@@ -33,11 +38,20 @@ class Applicant extends Model
     {
         return $this->hasMany(Admission::class, 'applicant_id');
     }
- 
-    public function parents(): BelongsTo
+
+
+    /**
+     * Get multiple parents/guardians based on the JSON array of IDs.
+     */
+    public function parents()
     {
-        return $this->belongsTo(ParentModel::class, 'parent_id');
-    }    
+        if (empty($this->parent_id) || !is_array($this->parent_id)) {
+            return ParentModel::whereRaw('0 = 1'); // Return an empty query builder if no parents exist
+        }
+
+        // Replace ParentModel with your actual parent model name (e.g., Guardian::class)
+        return ParentModel::whereIn('id', $this->parent_id);
+    }   
     /**
      * Get the latest admission for this applicant (useful if applicants re-apply).
      */
