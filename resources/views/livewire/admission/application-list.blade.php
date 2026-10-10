@@ -24,11 +24,14 @@
     <div class="d-flex align-items-center" style="gap: 10px;">
 @if(count($statuses) > 1)
     <div class="dropdown">
-        <button class="btn btn-white border px-3 py-2 bg-white shadow-sm font-14 d-flex align-items-center text-dark" type="button" data-toggle="dropdown" style="border-radius: 8px; gap: 8px; height: 38px;">
+        <button class="btn btn-white border px-3 py-2 bg-white shadow-sm font-14 d-flex align-items-center text-dark" type="button" data-toggle="dropdown" style="border-radius: 8px; gap: 8px;">
             <span class="text-dark font-weight-normal" style="opacity: 1 !important; visibility: visible !important; display: inline-block !important;">Status</span> 
-            <span class="badge badge-primary rounded-circle px-2 py-1" style="opacity:1">
+            
+            <!-- Badge with matching text color and lower-opacity background enclosure -->
+            <span class="badge px-2 py-1 font-weight-bold" style="background-color: rgba(67, 94, 190, 0.12); color: #435ebe; border-radius: 6px;">
                 {{ count($statuses) }}
             </span>
+            
             <i class="fas fa-chevron-down text-muted font-11 ml-1"></i>
         </button>
         <div class="dropdown-menu shadow-sm border-0 mt-1">
