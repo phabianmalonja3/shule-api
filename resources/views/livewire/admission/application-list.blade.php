@@ -15,7 +15,7 @@
                     class="form-control pl-5 pr-5 rounded-pill border-light bg-light"
                     style="height: 45px;"
                 >
-                <span class="position-absolute badge bg-white border text-muted" style="top: 10px; right: 12px; font-size: 11px; padding: 4px 6px; border-radius: 6px;">
+                <span class="position-absolute badge bg-white border text-muted shadow-sm" style="top: 10px; right: 12px; font-size: 11px; padding: 4px 6px; border-radius: 6px;">
                     ⌘ K
                 </span>
             </div>
@@ -25,7 +25,7 @@
                 <!-- Status Filter -->
                 @if(count($statuses) > 1)
                     <div class="dropdown">
-                        <button class="btn btn-white border dropdown-toggle px-3 py-2 rounded-pill bg-white shadow-sm font-14" type="button" data-toggle="dropdown">
+                        <button class="btn btn-white border dropdown-toggle px-3 py-2 rounded bg-white font-14" type="button" data-toggle="dropdown">
                             Status 
                             <span class="badge badge-primary rounded-circle ml-1">
                                 {{ count($statuses) }}
