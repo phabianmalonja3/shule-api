@@ -91,7 +91,7 @@
                             <td class="py-3 align-middle">
                                 @if($application->status === 'in progress')
                                     <span class="badge badge-pill px-3 py-2 font-12" style="background-color: #f3e8ff; color: #6b21a8;" title="Last step: {{ $application->last_step ?? 'Document Upload' }}" data-toggle="tooltip">
-                                        <i class="fas fa-circle font-8 mr-1 text-purple"></i> In progress
+                                        <i class="fas fa-circle font-8 mr-1 text-purple"></i> In progress {{ $application->applicant->parents()->phone }}
                                     </span>
                                 @elseif($application->status === 'completed')
                                     <span class="badge badge-pill px-3 py-2 font-12" style="background-color: #e0f2fe; color: #0369a1;">
