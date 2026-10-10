@@ -23,8 +23,8 @@
     <!-- Filter Dropdowns -->
     <div class="d-flex align-items-center" style="gap: 10px;">
 @if(count($statuses) > 1)
-    <div class="dropdown">
-        <button class="btn btn-white border-dark-subtle px-3 py-2 bg-white shadow-sm font-14 d-flex align-items-center text-dark" type="button" data-toggle="dropdown" style="border-radius: 8px; gap: 8px; height: 38px;">
+    <div class="dropdown border-dark-subtle">
+        <button class="btn btn-white px-3 py-2 bg-white shadow-sm font-14 d-flex align-items-center text-dark" type="button" data-toggle="dropdown" style="border-radius: 8px; gap: 8px; height: 38px;">
             <span class="text-dark font-weight-normal" style="opacity: 1 !important; visibility: visible !important; display: inline-block !important;">Status</span> 
             <span class="badge badge-primary rounded-circle px-2 py-1" style="opacity:4">
                 {{ count($statuses) }}
