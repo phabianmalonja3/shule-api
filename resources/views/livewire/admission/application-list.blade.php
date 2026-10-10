@@ -12,7 +12,7 @@
             type="text" 
             wire:model.live.debounce.300ms="search" 
             placeholder="Search by applicant name or phone..." 
-            class="form-control pl-5 pr-5 border-secondary-subtle"
+            class="form-control pl-5 pr-5 border-dark-subtle"
             style="height: 42px; border-radius: 8px;"
         >
         <span class="position-absolute badge bg-white border text-muted shadow-sm" style="top: 10px; right: 12px; font-size: 11px; padding: 4px 6px; border-radius: 6px;">
