@@ -206,7 +206,7 @@
         
         <div class="dropdown-menu dropdown-menu-right shadow-sm border-0 py-1" aria-labelledby="actionDropdown-{{ $application->id }}" style="border-radius: 8px; border: 1px solid #e2e8f0 !important; font-size: 13px; min-width: 150px;">
             <a class="dropdown-item py-2 px-3 text-dark d-flex align-items-center" href="" style="gap: 10px;">
-                <i class="fas fa-eye text-primary" style="width: 14px;"></i> View Details
+                <i class="fas fa-eye" style="width: 14px; color: #059669;"></i> View Details
             </a>
             
             <a class="dropdown-item py-2 px-3 text-dark d-flex align-items-center" href="#" wire:click.prevent="editApplication({{ $application->id }})" style="gap: 10px;">
