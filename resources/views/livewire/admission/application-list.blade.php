@@ -204,7 +204,7 @@
                                         <i class="fas fa-ellipsis-h text-muted font-12"></i>
                                     </button>
                                     
-                                    <div class="dropdown-menu dropdown-menu-right shadow-sm border-0 py-1" aria-labelledby="actionDropdown-{{ $application->id }}" style="border-radius: 8px; border: 1px solid #e2e8f0 !important; font-size: 13px; min-width: 150px;">
+                                    <div class="dropdown-menu dropdown-menu-right shadow-sm border-0 py-1" aria-labelledby="actionDropdown-{{ $application->id }}" style="border-radius: 8px; border: 1px solid #e2e8f0 !important; font-size: 13px; min-width: 100px;">
                                         <a class="dropdown-item py-2 px-3 text-dark d-flex align-items-center" href="" style="gap: 10px;">
                                             <i class="fas fa-eye" style="width: 14px; color: #059669;"></i> View
                                         </a>
