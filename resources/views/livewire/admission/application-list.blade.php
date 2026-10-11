@@ -76,7 +76,9 @@
                                     @php
                                         $parentPhones = $application->applicant->parents()->pluck('phone')->filter()->implode(', ');
                                     
-$avatarThemes = [
+@php
+    // Curated array of soft background and matching text colors
+    $avatarThemes = [
         ['bg' => '#f3e8ff', 'text' => '#6b21a8'], // Purple
         ['bg' => '#e0f2fe', 'text' => '#0369a1'], // Blue
         ['bg' => '#d1fae5', 'text' => '#065f46'], // Green
@@ -85,17 +87,26 @@ $avatarThemes = [
         ['bg' => '#e0e7ff', 'text' => '#3730a3'], // Indigo
     ];
 
-    // Extract the first letter of the first name to use as the color seed
-    $seedChar = strtoupper(substr($application->applicant->first_name ?? 'A', 0, 1));
+    // Extract initials ONLY from the first_name field
+    $firstName = trim($application->applicant->first_name ?? 'A');
+    $initials = collect(explode(' ', $firstName))
+        ->filter()
+        ->map(fn ($word) => strtoupper(substr($word, 0, 1)))
+        ->take(2) // Limits to max 2 characters for the avatar circle
+        ->implode('');
 
-    // Generate a consistent index based on that initial so any applicant starting with 'A' gets the same color
-    $hashIndex = abs(crc32($seedChar)) % count($avatarThemes);
+    if (empty($initials)) {
+        $initials = 'A';
+    }
+
+    // Generate a consistent index based solely on the first-name initials
+    $hashIndex = abs(crc32($initials)) % count($avatarThemes);
     $theme = $avatarThemes[$hashIndex];
 @endphp
 
 <div class="rounded-circle font-weight-bold d-flex align-items-center justify-content-center border-0 shadow-sm" 
      style="width: 40px; height: 40px; font-size: 13px; background-color: {{ $theme['bg'] }}; color: {{ $theme['text'] }};">
-    {{ $seedChar }}{{ strtoupper(substr($application->applicant->first_name ?? '', 0, 1)) }}
+    {{ $initials }}
 </div>
                                     <div>
                                         <h6 class="font-weight-bold text-dark mb-0 font-14">
