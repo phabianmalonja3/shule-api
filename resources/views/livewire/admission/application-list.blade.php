@@ -122,7 +122,7 @@
                             <!-- Progress Bar -->
                             <td class="py-3 align-middle" style="width: 200px;">
                                 <div class="d-flex justify-content-between font-12 text-muted mb-1">
-                                    <span>Tasks complete</span>
+                                    <span>Steps completed by</span>
                                     <span class="font-weight-bold text-dark"> @if($application->status == "in progress") 92% @else 100% @endif</span>
                                 </div>
                                 <div class="progress" style="height: 6px; background-color: #f3f4f6;">
