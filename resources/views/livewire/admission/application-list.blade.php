@@ -112,11 +112,21 @@
                                             {{ $application->applicant->first_name ?? 'Unknown' }} {{ $application->applicant->surname ?? 'Applicant' }}
                                         </h6>
                                         <small class="text-muted">
-                                            <i class="fas fa-phone-alt font-10"></i> {{ $parentPhones ?? 'N/A' }}
+                                            <i class="fas fa-phone-alt font-10 mr-1"></i> {{ $parentPhones ?? 'N/A' }}
                                         </small>
                                     </div>
                                 </div>
                             </td>
+
+                                                                <div>
+                                        <h6 class="font-weight-bold text-dark mb-0 font-14">
+                                            {{ $application->examCenter->name ?? 'N/A' }}
+                                        </h6>
+                                        <small class="text-muted">
+                                            <i class="fas fa-phone-alt font-10 mr-1"></i> {{ $parentPhones ?? 'N/A' }}
+                                        </small>
+                                    </div>
+
                             <td class="py-3 text-muted font-13">
                                 {{ $application->examCenter->name ?? 'N/A' }}
                             </td>
