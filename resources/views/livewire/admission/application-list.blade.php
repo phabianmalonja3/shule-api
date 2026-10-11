@@ -158,37 +158,41 @@
                             @if($this->hasNotified)
                                 <td class="py-3 align-middle text-center">
                                     @if($application->is_notified == 1)
-<span class="badge rounded-circle d-inline-flex align-items-center justify-content-center shadow-sm" 
-                      style="width: 30px; height: 30px; background-color: #d1fae5; color: #065f46;"
-                      title="Already being notified" data-toggle="tooltip">
-                    <i class="fas fa-check font-12"></i>
-                </span>
+                                        <span class="badge rounded-circle d-inline-flex align-items-center justify-content-center shadow-sm" 
+                                            style="width: 30px; height: 30px; background-color: #d1fae5; color: #065f46;"
+                                            title="Already being notified" data-toggle="tooltip">
+                                            <i class="fas fa-check font-12"></i>
+                                        </span>
                                     @else
- <span class="badge rounded-circle d-inline-flex align-items-center justify-content-center" 
-                      style="width: 30px; height: 30px; background-color: #fee2e2; color: #991b1b;"
-                      title="Awaiting notification" data-toggle="tooltip">
-                    <i class="fas fa-times font-12"></i>
+                                        <span class="badge rounded-circle d-inline-flex align-items-center justify-content-center" 
+                                            style="width: 30px; height: 30px; background-color: #fee2e2; color: #991b1b;"
+                                            title="Awaiting notification" data-toggle="tooltip">
+                                            <i class="fas fa-times font-12"></i>
+                                        </span>
+                                    @endif
                                 </td>
                             @endif
-@endif
                             
                             @if($this->hasSelectedOrNotSelected)
                                 <td class="py-3 align-middle text-center">
                                     @if($application->is_confirmed == 1)
-<span class="badge rounded-circle d-inline-flex align-items-center justify-content-center shadow-sm" 
-                      style="width: 30px; height: 30px; background-color: #d1fae5; color: #065f46;"
-                      title="Confirmed" data-toggle="tooltip">
-                    <i class="fas fa-check font-12"></i>
-                </span>
+                                        <span class="badge rounded-circle d-inline-flex align-items-center justify-content-center shadow-sm" 
+                                            style="width: 30px; height: 30px; background-color: #d1fae5; color: #065f46;"
+                                            title="Confirmed" data-toggle="tooltip">
+                                            <i class="fas fa-check font-12"></i>
+                                        </span>
                                     @else
- <span class="badge rounded-circle d-inline-flex align-items-center justify-content-center" 
-                      style="width: 30px; height: 30px; background-color: #fee2e2; color: #991b1b;"
-                      title="Awaiting confirmation" data-toggle="tooltip">
-                    <i class="fas fa-times font-12"></i>
-                </span>                                    @endif
+                                        <span class="badge rounded-circle d-inline-flex align-items-center justify-content-center" 
+                                            style="width: 30px; height: 30px; background-color: #fee2e2; color: #991b1b;"
+                                            title="Awaiting confirmation" data-toggle="tooltip">
+                                            <i class="fas fa-times font-12"></i>
+                                        </span>                                    
+                                    @endif
                                 </td>
                             @endif
-                            <td> </td>
+                            <td class="py-3 align-middle text-muted font-13">
+                                {{ $application->updated_at->diffForHumans() ?? 'N/A' }}
+                            </td>
                             <!-- Actions -->
                             <td class="py-3 align-middle text-right">
                                 <button class="btn btn-sm btn-light text-muted border-0 bg-transparent">
