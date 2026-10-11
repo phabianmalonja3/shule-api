@@ -155,6 +155,17 @@
                                 </div>
                             </td>
 
+                            @if($this->hasNotified)
+                                <td class="py-3 align-middle text-center">
+                                    @if($application->is_notified == 1)
+                                        <span class="text-success font-13" title="Notified"><i class="fas fa-paper-plane"></i> Yes</span>
+                                    @else
+                                        <span class="text-muted font-13" title="Not Notified"><i class="far fa-paper-plane"></i> Pending</span>
+                                    @endif
+                                </td>
+                            @endif
+
+                            
                             @if($this->hasSelectedOrNotSelected)
                                 <td class="py-3 align-middle text-center">
                                     @if($application->is_confirmed == 1)
@@ -171,17 +182,6 @@
                 </span>                                    @endif
                                 </td>
                             @endif
-
-                            @if($this->hasNotified)
-                                <td class="py-3 align-middle text-center">
-                                    @if($application->is_notified == 1)
-                                        <span class="text-success font-13" title="Notified"><i class="fas fa-paper-plane"></i> Yes</span>
-                                    @else
-                                        <span class="text-muted font-13" title="Not Notified"><i class="far fa-paper-plane"></i> Pending</span>
-                                    @endif
-                                </td>
-                            @endif
-
                             <td> </td>
                             <!-- Actions -->
                             <td class="py-3 align-middle text-right">
