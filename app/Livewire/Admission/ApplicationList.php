@@ -54,7 +54,7 @@ protected $rules=[
 
 public function getHasNotifiedProperty()
 {
-    return Admission::where('status', 'notified')->exists();
+    return Admission::where('status', 1)->exists();
 }
 
 public function render()
