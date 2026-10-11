@@ -59,6 +59,7 @@
                 <thead>
                     <tr>
                         <th class="border-0 py-3">Applicant</th>
+                        <th class="border-0 py-3">Exam Center & Date</th>                        
                         <th class="border-0 py-3">Status</th>
                         @if(!$this->hasSelectedOrNotSelected)
                             <th class="border-0 py-3">Progress</th>
@@ -116,7 +117,7 @@
                                     </div>
                                 </div>
                             </td>
-
+                            <td> </td>
                             <!-- Status Badge with Hover Last Step -->
                             <td class="py-3 align-middle">
                                 @if($application->status === 'in progress')
@@ -194,9 +195,11 @@
                                     @endif
                                 </td>
                             @endif
+
                             <td class="py-3 align-middle text-muted font-13">
                                 {{ $application->updated_at?->diffForHumans() ?? 'N/A' }}
                             </td>
+
                             <!-- Actions Dropdown -->
                             <td class="py-3 align-middle text-right">
                                 <div class="dropdown">
@@ -204,7 +207,7 @@
                                         <i class="fas fa-ellipsis-h text-muted font-12"></i>
                                     </button>
                                     
-                                    <div class="dropdown-menu dropdown-menu-right shadow-sm border-0 py-1" aria-labelledby="actionDropdown-{{ $application->id }}" style="border-radius: 8px; border: 1px solid #e2e8f0 !important; font-size: 13px; min-width: 100px;">
+                                    <div class="dropdown-menu dropdown-menu-right shadow-sm border-0 py-1" aria-labelledby="actionDropdown-{{ $application->id }}" style="border-radius: 8px; border: 1px solid #e2e8f0 !important; font-size: 13px; min-width: 150px;">
                                         <a class="dropdown-item py-2 px-3 text-dark d-flex align-items-center" href="" style="gap: 10px;">
                                             <i class="fas fa-eye" style="width: 14px; color: #059669;"></i> View
                                         </a>
