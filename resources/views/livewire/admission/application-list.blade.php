@@ -120,7 +120,7 @@
 
 
 
-                            <td class="py-3">
+                            <td class="">
                                                                 <div>
                                         <h6 class="font-weight-bold text-dark mb-0 font-14">
                                             {{ $application->examCenter->name ?? 'N/A' }}
