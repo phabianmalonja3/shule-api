@@ -60,15 +60,17 @@
                     <tr>
                         <th class="border-0 py-3">Applicant</th>
                         <th class="border-0 py-3">Status</th>
-                        <th class="border-0 py-3">Progress</th>
-@if($this->hasSelectedOrNotSelected)
-    <th class="border-0 py-3 text-center">Notified</th>
-@endif
+                        @if(!$this->hasSelectedOrNotSelected)
+                            <th class="border-0 py-3">Progress</th>
+                        @endif
+                        @if($this->hasSelectedOrNotSelected)
+                            <th class="border-0 py-3 text-center">Notified</th>
+                        @endif
 
-{{-- Confirmed Column: Appears only if at least one application is notified --}}
-@if($this->hasNotified)
-    <th class="border-0 py-3 text-center">Confirmed</th>
-@endif                        
+                        {{-- Confirmed Column: Appears only if at least one application is notified --}}
+                        @if($this->hasNotified)
+                            <th class="border-0 py-3 text-center">Confirmed</th>
+                        @endif                        
                         <th class="border-0 py-3">Updated</th>
                         <th class="border-0 py-3 text-right"></th>
                     </tr>
@@ -144,16 +146,18 @@
                                 @endif
                             </td>
 
-                            <!-- Progress Bar -->
-                            <td class="py-3 align-middle" style="width: 162px;">
-                                <div class="d-flex justify-content-between font-12 text-muted mb-1">
-                                    <span>Steps completed by</span>
-                                    <span class="font-weight-bold text-dark"> @if($application->status == "in progress") 92% @else 100% @endif</span>
-                                </div>
-                                <div class="progress" style="height: 6px; background-color: #f3f4f6;">
-                                    <div class="progress-bar rounded-pill bg-primary" role="progressbar" style="width: {{ $application->status == 'in progress'? $application->progress_percentage : '100%' }};"></div>
-                                </div>
-                            </td>
+                            @if(!$this->hasSelectedOrNotSelected)
+                                <!-- Progress Bar -->
+                                <td class="py-3 align-middle" style="width: 162px;">
+                                    <div class="d-flex justify-content-between font-12 text-muted mb-1">
+                                        <span>Steps completed by</span>
+                                        <span class="font-weight-bold text-dark"> @if($application->status == "in progress") 92% @else 100% @endif</span>
+                                    </div>
+                                    <div class="progress" style="height: 6px; background-color: #f3f4f6;">
+                                        <div class="progress-bar rounded-pill bg-primary" role="progressbar" style="width: {{ $application->status == 'in progress'? $application->progress_percentage : '100%' }};"></div>
+                                    </div>
+                                </td>
+                            @endif
 
                             @if($this->hasNotified)
                                 <td class="py-3 align-middle text-center">
