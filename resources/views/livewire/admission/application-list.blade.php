@@ -215,7 +215,7 @@
             
             <div class="dropdown-divider my-1"></div>
             
-            <button type="button" class="dropdown-item py-2 px-3 text-danger d-flex align-items-center" wire:click="confirmDelete({{ $application->id }})" style="gap: 10px;">
+            <button type="button" class="dropdown-item py-2 px-3 text-dark d-flex align-items-center" wire:click="confirmDelete({{ $application->id }})" style="gap: 10px;">
                 <i class="fas fa-paper-plane" style="width: 14px;"></i> Notify
             </button>
         </div>
