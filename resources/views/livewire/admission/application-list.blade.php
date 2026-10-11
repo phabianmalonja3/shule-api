@@ -197,33 +197,33 @@
                             <td class="py-3 align-middle text-muted font-13">
                                 {{ $application->updated_at?->diffForHumans() ?? 'N/A' }}
                             </td>
-<!-- Actions Dropdown -->
-<td class="py-3 align-middle text-right">
-    <div class="dropdown">
-        <button class="btn btn-white btn-sm shadow-sm border dropdown-toggle-no-caret" type="button" id="actionDropdown-{{ $application->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border-radius: 8px; border-color: #e2e8f0 !important; width: 32px; height: 32px; padding: 0; display: inline-flex; align-items: center; justify-content: center;">
-            <i class="fas fa-ellipsis-h text-muted font-12"></i>
-        </button>
-        
-        <div class="dropdown-menu dropdown-menu-right shadow-sm border-0 py-1" aria-labelledby="actionDropdown-{{ $application->id }}" style="border-radius: 8px; border: 1px solid #e2e8f0 !important; font-size: 13px; min-width: 150px;">
-            <a class="dropdown-item py-2 px-3 text-dark d-flex align-items-center" href="" style="gap: 10px;">
-                <i class="fas fa-eye" style="width: 14px; color: #059669;"></i> View
-            </a>
-            
-@if(!$application->is_notified == 1)
-                <a class="dropdown-item py-2 px-3 text-dark d-flex align-items-center" href="#" wire:click.prevent="editApplication({{ $application->id }})" style="gap: 10px;">
-                    <i class="fas fa-edit text-warning" style="width: 14px;"></i> Edit
-                </a>
-                @if($application->status == 'selected')
-                <div class="dropdown-divider my-1"></div>
-                
-                <button type="button" class="dropdown-item py-2 px-3 text-dark d-flex align-items-center" wire:click="confirmDelete({{ $application->id }})" style="gap: 10px;">
-                    <i class="fas fa-paper-plane" style="width: 14px;"></i> Notify
-                </button>
-                @endif
-            @endif
-        </div>
-    </div>
-</td>
+                            <!-- Actions Dropdown -->
+                            <td class="py-3 align-middle text-right">
+                                <div class="dropdown">
+                                    <button class="btn btn-white btn-sm shadow-sm border dropdown-toggle-no-caret" type="button" id="actionDropdown-{{ $application->id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border-radius: 8px; border-color: #e2e8f0 !important; width: 32px; height: 32px; padding: 0; display: inline-flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-ellipsis-h text-muted font-12"></i>
+                                    </button>
+                                    
+                                    <div class="dropdown-menu dropdown-menu-right shadow-sm border-0 py-1" aria-labelledby="actionDropdown-{{ $application->id }}" style="border-radius: 8px; border: 1px solid #e2e8f0 !important; font-size: 13px; min-width: 150px;">
+                                        <a class="dropdown-item py-2 px-3 text-dark d-flex align-items-center" href="" style="gap: 10px;">
+                                            <i class="fas fa-eye" style="width: 14px; color: #059669;"></i> View
+                                        </a>
+                                        
+                                        @if(!$application->is_notified == 1)
+                                            <a class="dropdown-item py-2 px-3 text-dark d-flex align-items-center" href="#" wire:click.prevent="editApplication({{ $application->id }})" style="gap: 10px;">
+                                                <i class="fas fa-edit text-warning" style="width: 14px;"></i> Edit
+                                            </a>
+                                            @if($application->status == 'selected')
+                                                <div class="dropdown-divider my-1"></div>
+                                                
+                                                <button type="button" class="dropdown-item py-2 px-3 text-dark d-flex align-items-center" wire:click="confirmDelete({{ $application->id }})" style="gap: 10px;">
+                                                    <i class="fas fa-paper-plane" style="width: 14px;"></i> Notify
+                                                </button>
+                                            @endif
+                                        @endif
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                     @empty
                         <tr>
