@@ -95,7 +95,7 @@ $avatarThemes = [
 
 <div class="rounded-circle font-weight-bold d-flex align-items-center justify-content-center border-0 shadow-sm" 
      style="width: 40px; height: 40px; font-size: 13px; background-color: {{ $theme['bg'] }}; color: {{ $theme['text'] }};">
-    {{ $seedChar }}{{ strtoupper(substr($application->applicant->last_name ?? '', 0, 1)) }}
+    {{ $seedChar }}{{ strtoupper(substr($application->applicant->first_name ?? '', 0, 1)) }}
 </div>
                                     <div>
                                         <h6 class="font-weight-bold text-dark mb-0 font-14">
