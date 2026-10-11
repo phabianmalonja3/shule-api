@@ -118,7 +118,7 @@
                                 </div>
                             </td>
                             <td class="py-3 text-muted font-13">
-                                {{ $application->examCenter->name? ?? 'N/A' }}
+                                {{ $application->examCenter->name ?? 'N/A' }}
                             </td>
                             <!-- Status Badge with Hover Last Step -->
                             <td class="py-3 align-middle">
