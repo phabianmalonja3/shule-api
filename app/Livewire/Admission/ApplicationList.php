@@ -47,6 +47,16 @@ protected $rules=[
         session()->flash('message', 'Teacher status updated successfully.');
     }
 
+    public function getHasSelectedOrNotSelectedProperty()
+{
+    return Admission::whereIn('status', ['selected', 'not selected'])->exists();
+}
+
+public function getHasNotifiedProperty()
+{
+    return Admission::where('status', 'notified')->exists();
+}
+
 public function render()
 {
     $user = Auth::user();

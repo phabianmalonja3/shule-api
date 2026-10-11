@@ -61,8 +61,14 @@
                         <th class="border-0 py-3">Applicant</th>
                         <th class="border-0 py-3">Status</th>
                         <th class="border-0 py-3">Progress</th>
-                        <th class="border-0 py-3 text-center">Confirmed</th>
-                        <th class="border-0 py-3 text-center">Notified</th>
+@if($this->hasSelectedOrNotSelected)
+    <th class="border-0 py-3 text-center">Notified</th>
+@endif
+
+{{-- Confirmed Column: Appears only if at least one application is notified --}}
+@if($this->hasNotified)
+    <th class="border-0 py-3 text-center">Confirmed</th>
+@endif                        
                         <th class="border-0 py-3">Updated</th>
                         <th class="border-0 py-3 text-right"></th>
                     </tr>
