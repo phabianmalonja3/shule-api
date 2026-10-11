@@ -155,25 +155,27 @@
                                 </div>
                             </td>
 
-                            <!-- Selection Confirmed -->
-                            <td class="py-3 align-middle text-center">
-                                @if($application->is_confirmed)
-                                    <span class="badge badge-success px-2 py-1 font-11">Yes</span>
-                                @else
-                                    <span class="badge badge-light text-muted border px-2 py-1 font-11">No</span>
-                                @endif
-                            </td>
+                            @if($this->hasSelectedOrNotSelected)
+                                <td class="py-3 align-middle text-center">
+                                    @if($application->is_confirmed)
+                                        <span class="badge badge-success px-2 py-1 font-11">Yes</span>
+                                    @else
+                                        <span class="badge badge-light text-muted border px-2 py-1 font-11">No</span>
+                                    @endif
+                                </td>
+                            @endif
 
-                            <!-- Notified Status -->
-                            <td class="py-3 align-middle text-center">
-                                @if($application->is_notified)
-                                    <span class="text-success font-13" title="Notified"><i class="fas fa-paper-plane"></i></span>
-                                @else
-                                    <span class="text-muted font-13" title="Not Notified"><i class="far fa-paper-plane"></i></span>
-                                @endif
-                            </td>
+                            @if($this->hasNotified)
+                                <td class="py-3 align-middle text-center">
+                                    @if($application->is_notified)
+                                        <span class="text-success font-13" title="Notified"><i class="fas fa-paper-plane"></i></span>
+                                    @else
+                                        <span class="text-muted font-13" title="Not Notified"><i class="far fa-paper-plane"></i></span>
+                                    @endif
+                                </td>
+                            @endif
 
-
+                            <td> </td>
                             <!-- Actions -->
                             <td class="py-3 align-middle text-right">
                                 <button class="btn btn-sm btn-light text-muted border-0 bg-transparent">
