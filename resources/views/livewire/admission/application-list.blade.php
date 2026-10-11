@@ -209,15 +209,17 @@
                 <i class="fas fa-eye" style="width: 14px; color: #059669;"></i> View
             </a>
             
-            <a class="dropdown-item py-2 px-3 text-dark d-flex align-items-center" href="#" wire:click.prevent="editApplication({{ $application->id }})" style="gap: 10px;">
-                <i class="fas fa-edit text-warning" style="width: 14px;"></i> Edit
-            </a>
-            
-            <div class="dropdown-divider my-1"></div>
-            
-            <button type="button" class="dropdown-item py-2 px-3 text-dark d-flex align-items-center" wire:click="confirmDelete({{ $application->id }})" style="gap: 10px;">
-                <i class="fas fa-paper-plane" style="width: 14px;"></i> Notify
-            </button>
+            @if(!$this->hasNotified)
+                <a class="dropdown-item py-2 px-3 text-dark d-flex align-items-center" href="#" wire:click.prevent="editApplication({{ $application->id }})" style="gap: 10px;">
+                    <i class="fas fa-edit text-warning" style="width: 14px;"></i> Edit
+                </a>
+                
+                <div class="dropdown-divider my-1"></div>
+                
+                <button type="button" class="dropdown-item py-2 px-3 text-dark d-flex align-items-center" wire:click="confirmDelete({{ $application->id }})" style="gap: 10px;">
+                    <i class="fas fa-paper-plane" style="width: 14px;"></i> Notify
+                </button>
+            @endif
         </div>
     </div>
 </td>
