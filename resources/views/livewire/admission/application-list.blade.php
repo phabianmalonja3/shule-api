@@ -160,13 +160,13 @@
                                     @if($application->is_notified == 1)
 <span class="badge rounded-circle d-inline-flex align-items-center justify-content-center shadow-sm" 
                       style="width: 30px; height: 30px; background-color: #d1fae5; color: #065f46;"
-                      title="Confirmed by applicant" data-toggle="tooltip">
+                      title="Already being notified" data-toggle="tooltip">
                     <i class="fas fa-check font-12"></i>
                 </span>
                                     @else
  <span class="badge rounded-circle d-inline-flex align-items-center justify-content-center" 
                       style="width: 30px; height: 30px; background-color: #fee2e2; color: #991b1b;"
-                      title="Awaiting confirmation" data-toggle="tooltip">
+                      title="Awaiting notification" data-toggle="tooltip">
                     <i class="fas fa-times font-12"></i>
                                 </td>
                             @endif
