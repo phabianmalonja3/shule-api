@@ -170,7 +170,7 @@
                     <i class="fas fa-times font-12"></i>
                                 </td>
                             @endif
-
+@endif
                             
                             @if($this->hasSelectedOrNotSelected)
                                 <td class="py-3 align-middle text-center">
