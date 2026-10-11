@@ -118,6 +118,9 @@
                                 </div>
                             </td>
 
+
+
+                            <td class="py-3">
                                                                 <div>
                                         <h6 class="font-weight-bold text-dark mb-0 font-14">
                                             {{ $application->examCenter->name ?? 'N/A' }}
@@ -126,9 +129,6 @@
                                             <i class="fas fa-phone-alt font-10 mr-1"></i> {{ $parentPhones ?? 'N/A' }}
                                         </small>
                                     </div>
-
-                            <td class="py-3 text-muted font-13">
-                                {{ $application->examCenter->name ?? 'N/A' }}
                             </td>
                             <!-- Status Badge with Hover Last Step -->
                             <td class="py-3 align-middle">
