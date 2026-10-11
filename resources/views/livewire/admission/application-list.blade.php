@@ -75,10 +75,25 @@
                                 <div class="d-flex align-items-center" style="gap: 12px;">
                                     @php
                                         $parentPhones = $application->applicant->parents()->pluck('phone')->filter()->implode(', ');
+                                    
+                                        // Curated array of soft background and matching text colors
+                                        $avatarThemes = [
+                                            ['bg' => '#f3e8ff', 'text' => '#6b21a8'], // Purple
+                                            ['bg' => '#e0f2fe', 'text' => '#0369a1'], // Blue
+                                            ['bg' => '#d1fae5', 'text' => '#065f46'], // Green
+                                            ['bg' => '#fef3c7', 'text' => '#92400e'], // Amber
+                                            ['bg' => '#ffe4e6', 'text' => '#9f1239'], // Rose
+                                            ['bg' => '#e0e7ff', 'text' => '#3730a3'], // Indigo
+                                        ];
+
+                                        // Generate a consistent index based on the applicant's ID so the color never changes randomly on refresh
+                                        $hashIndex = abs(crc32($application->applicant->id ?? $application->id)) % count($avatarThemes);
+                                        $theme = $avatarThemes[$hashIndex];
                                     @endphp
-                                    <div class="rounded-circle bg-light text-primary font-weight-bold d-flex align-items-center justify-content-center border" style="width: 40px; height: 40px; font-size: 13px;">
-                                        {{ strtoupper(substr($application->applicant->first_name ?? 'A', 0, 1)) }}{{ strtoupper(substr($application->applicant->surname ?? '', 0, 1)) }}
-                                    </div>
+<div class="rounded-circle font-weight-bold d-flex align-items-center justify-content-center border-0 shadow-sm" 
+     style="width: 40px; height: 40px; font-size: 13px; background-color: {{ $theme['bg'] }}; color: {{ $theme['text'] }};">
+    {{ strtoupper(substr($application->applicant->first_name ?? 'A', 0, 1)) }}{{ strtoupper(substr($application->applicant->last_name ?? '', 0, 1)) }}
+</div>
                                     <div>
                                         <h6 class="font-weight-bold text-dark mb-0 font-14">
                                             {{ $application->applicant->first_name ?? 'Unknown' }} {{ $application->applicant->surname ?? 'Applicant' }}
