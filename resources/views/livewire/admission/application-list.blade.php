@@ -76,7 +76,7 @@
                                     @php
                                         $parentPhones = $application->applicant->parents()->pluck('phone')->filter()->implode(', ');
                                     
-@php
+
     // Curated array of soft background and matching text colors
     $avatarThemes = [
         ['bg' => '#f3e8ff', 'text' => '#6b21a8'], // Purple
