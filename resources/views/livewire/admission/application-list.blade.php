@@ -209,7 +209,7 @@
                 <i class="fas fa-eye" style="width: 14px; color: #059669;"></i> View
             </a>
             
-            @if($this->hasNotified)
+            @if(!$this->hasNotified)
                 <a class="dropdown-item py-2 px-3 text-dark d-flex align-items-center" href="#" wire:click.prevent="editApplication({{ $application->id }})" style="gap: 10px;">
                     <i class="fas fa-edit text-warning" style="width: 14px;"></i> Edit
                 </a>
