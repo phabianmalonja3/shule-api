@@ -59,7 +59,8 @@
                 <thead>
                     <tr>
                         <th class="border-0 py-3">Applicant</th>
-                        <th class="border-0 py-3">Exam Center & Date</th>                        
+                        <th class="border-0 py-3">Exam Center & Date</th>
+                        <th class="border-0 py-3">Language Preference</th>                          
                         <th class="border-0 py-3">Status</th>
                         @if(!$this->hasSelectedOrNotSelected)
                             <th class="border-0 py-3">Progress</th>
@@ -119,8 +120,8 @@
                             </td>
 
 
-
-                            <td class="">
+<td> </td>
+                            <td class="py-3">
                                                                 <div>
                                         <h6 class="font-weight-bold text-dark mb-0 font-14">
                                             {{ $application->examCenter->name ?? 'N/A' }}
