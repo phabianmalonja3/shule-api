@@ -77,16 +77,6 @@
                                         $parentPhones = $application->applicant->parents()->pluck('phone')->filter()->implode(', ');
                                     
 
-    // Curated array of soft background and matching text colors
-    $avatarThemes = [
-        ['bg' => '#f3e8ff', 'text' => '#6b21a8'], // Purple
-        ['bg' => '#e0f2fe', 'text' => '#0369a1'], // Blue
-        ['bg' => '#d1fae5', 'text' => '#065f46'], // Green
-        ['bg' => '#fef3c7', 'text' => '#92400e'], // Amber
-        ['bg' => '#ffe4e6', 'text' => '#9f1239'], // Rose
-        ['bg' => '#e0e7ff', 'text' => '#3730a3'], // Indigo
-    ];
-
     // Extract initials ONLY from the first_name field
     $firstName = trim($application->applicant->first_name ?? 'A');
     $initials = collect(explode(' ', $firstName))
@@ -99,10 +89,19 @@
         $initials = 'A';
     }
 
-    // Generate a consistent index based solely on the first-name initials
-    $hashIndex = abs(crc32($initials)) % count($avatarThemes);
-    $theme = $avatarThemes[$hashIndex];
+    // Generate a unique hue angle (0 to 359) based on the initials string
+    // Different initials result in a different hue, guaranteeing unique colors!
+    $hue = abs(crc32($initials)) % 360;
+
+    // Define soft pastel background and matching high-contrast dark text using HSL
+    $bgColor = "hsl({$hue}, 75%, 93%)";
+    $textColor = "hsl({$hue}, 65%, 30%)";
 @endphp
+
+<div class="rounded-circle font-weight-bold d-flex align-items-center justify-content-center border-0 shadow-sm" 
+     style="width: 40px; height: 40px; font-size: 13px; background-color: {{ $bgColor }}; color: {{ $textColor }};">
+    {{ $initials }}
+</div>
 
 <div class="rounded-circle font-weight-bold d-flex align-items-center justify-content-center border-0 shadow-sm" 
      style="width: 40px; height: 40px; font-size: 13px; background-color: {{ $theme['bg'] }}; color: {{ $theme['text'] }};">
