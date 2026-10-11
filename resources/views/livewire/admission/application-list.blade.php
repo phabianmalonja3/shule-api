@@ -75,33 +75,28 @@
                                 <div class="d-flex align-items-center" style="gap: 12px;">
                                     @php
                                         $parentPhones = $application->applicant->parents()->pluck('phone')->filter()->implode(', ');
-                                    
 
-    // Extract initials ONLY from the first_name field
-    $firstName = trim($application->applicant->first_name ?? 'A');
-    $initials = collect(explode(' ', $firstName))
-        ->filter()
-        ->map(fn ($word) => strtoupper(substr($word, 0, 1)))
-        ->take(2) // Limits to max 2 characters for the avatar circle
-        ->implode('');
+                                        $firstName = trim($application->applicant->first_name ?? 'A');
+                                        $initials = collect(explode(' ', $firstName))
+                                            ->filter()
+                                            ->map(fn ($word) => strtoupper(substr($word, 0, 1)))
+                                            ->take(2) // Limits to max 2 characters for the avatar circle
+                                            ->implode('');
 
-    if (empty($initials)) {
-        $initials = 'A';
-    }
+                                        if (empty($initials)) {
+                                            $initials = 'A';
+                                        }
 
-    // Generate a unique hue angle (0 to 359) based on the initials string
-    // Different initials result in a different hue, guaranteeing unique colors!
-    $hue = abs(crc32($initials)) % 360;
+                                        $hue = abs(crc32($initials)) % 360;
 
-    // Define soft pastel background and matching high-contrast dark text using HSL
-    $bgColor = "hsl({$hue}, 75%, 93%)";
-    $textColor = "hsl({$hue}, 65%, 30%)";
-@endphp
+                                        $bgColor = "hsl({$hue}, 75%, 93%)";
+                                        $textColor = "hsl({$hue}, 65%, 30%)";
+                                    @endphp
 
-<div class="rounded-circle font-weight-bold d-flex align-items-center justify-content-center border-0 shadow-sm" 
-     style="width: 40px; height: 40px; font-size: 13px; background-color: {{ $bgColor }}; color: {{ $textColor }};">
-    {{ $initials }}
-</div>
+                                    <div class="rounded-circle font-weight-bold d-flex align-items-center justify-content-center border-0 shadow-sm" 
+                                        style="width: 40px; height: 40px; font-size: 13px; background-color: {{ $bgColor }}; color: {{ $textColor }};">
+                                        {{ $initials }}
+                                    </div>
 
                                     <div>
                                         <h6 class="font-weight-bold text-dark mb-0 font-14">

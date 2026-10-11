@@ -30,7 +30,7 @@
                 <!-- Greeting & Timestamp -->
                 <div class="mb-4">
                     <h3 class="font-28 font-weight-bold text-dark mb-1">
-                        Good {{ now()->hour < 12 ? 'morning' : (now()->hour < 18 ? 'afternoon' : 'evening') }}, {{ Auth::user()->name ?? 'Maya' }}
+                        Good {{ now()->hour < 12 ? 'morning' : (now()->hour < 15 ? 'afternoon' : 'evening') }}, {{ Auth::user()->name ?? 'Maya' }}
                     </h3>
                     <div class="d-flex justify-content-between align-items-center">
                         <p class="text-muted mb-0">Here's an overview of all applications for your school.</p>
