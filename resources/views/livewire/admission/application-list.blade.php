@@ -126,7 +126,7 @@
                                     <span class="font-weight-bold text-dark"> @if($application->status == "in progress") 92% @else 100% </span>
                                 </div>
                                 <div class="progress" style="height: 6px; background-color: #f3f4f6;">
-                                    <div class="progress-bar rounded-pill bg-primary" role="progressbar" style="width: {{ $application->status == 'in progress'?? $application->progress_percentage : '100%' }};"></div>
+                                    <div class="progress-bar rounded-pill bg-primary" role="progressbar" style="width: {{ $application->status == 'in progress'? $application->progress_percentage : '100%' }};"></div>
                                 </div>
                             </td>
 
