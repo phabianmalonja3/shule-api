@@ -112,7 +112,7 @@
                                             {{ $application->applicant->first_name ?? 'Unknown' }} {{ $application->applicant->surname ?? 'Applicant' }}
                                         </h6>
                                         <small class="text-muted">
-                                            <i class="fas fa-phone-alt font-10 mr-1"></i> {{ $parentPhones ?? 'N/A' }}
+                                            <i class="fas fa-phone-alt font-10"></i> {{ $parentPhones ?? 'N/A' }}
                                         </small>
                                     </div>
                                 </div>
