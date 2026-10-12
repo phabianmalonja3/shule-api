@@ -18,7 +18,7 @@ class Admission extends Model
         'is_confirmed',
         'is_paid',
         'school_attended',
-        'preferred_language',
+        'exam_language',
     ];
 
     public function applicant(): BelongsTo

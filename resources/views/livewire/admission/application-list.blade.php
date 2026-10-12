@@ -125,11 +125,11 @@
                                             {{ $application->examCenter->name ?? 'N/A' }}
                                         </h6>
                                         <small class="text-muted">
-                                            {{ $application->examCenter?->applicationExams?->first()?->formatted_exam_date ?? 'No Exam Date Set' }}
+                                            {{ $application->exam_date ?? 'No Exam Date Set' }}
                                         </small>
                                     </div></td>
                             <td class="py-3 align-middle text-muted font-13">
-                                         {{ ucfirst($application->preferred_language) ?? 'No Language Specified' }}
+                                         {{ ucfirst($application->exam_language) ?? 'No Language Specified' }}
                             </td>
                             <!-- Status Badge with Hover Last Step -->
                             <td class="py-3 align-middle">
