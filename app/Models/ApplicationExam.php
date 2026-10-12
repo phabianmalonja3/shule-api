@@ -7,15 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 class ApplicationExam extends Model
 {
 protected $casts = [
-        'exam_date' => 'array',
+        'date' => 'array',
     ];
 
-    // Accessor to easily grab and format the date from the JSON structure
-    public function getFormattedDateAttribute()
+    public function getFormattedExamDateAttribute()
     {
-        // Adjust the key ('date' or index [0]) depending on how your JSON is structured
-        $dateValue = $this->exam_date['date'] ?? $this->exam_date[0] ?? $this->exam_date ?? null;
+        // Extract the actual date string from the JSON structure
+        // (e.g., if your JSON looks like {"date": "2026-05-12"} or is a simple array)
+        $rawDate = $this->date['date'] ?? $this->date[0] ?? null;
 
-        return $dateValue ? Carbon::parse($dateValue)->format('d/m/Y') : null;
+        if (!$rawDate) {
+            return null;
+        }
+
+        return Carbon::parse($rawDate)->format('d/m/Y');
     }
 }
