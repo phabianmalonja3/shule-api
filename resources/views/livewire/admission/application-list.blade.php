@@ -129,7 +129,7 @@
                                         </small>
                                     </div></td>
                             <td class="py-3 align-middle text-muted font-13">
-                                         {{ $application->preferred_language ?? 'No Language Specified' }}
+                                         {{ ucfirst($application->preferred_language) ?? 'No Language Specified' }}
                             </td>
                             <!-- Status Badge with Hover Last Step -->
                             <td class="py-3 align-middle">
