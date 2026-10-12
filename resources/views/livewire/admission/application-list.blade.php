@@ -125,7 +125,7 @@
                                             {{ $application->examCenter->name ?? 'N/A' }}
                                         </h6>
                                         <small class="text-muted">
-                                            {{ $application->exam_date ?? 'No Exam Date Set' }}
+                                            {{ $application->exam_date?->formatted_exam_date ?? 'No Exam Date Set' }}
                                         </small>
                                     </div></td>
                             <td class="py-3 align-middle text-muted font-13">

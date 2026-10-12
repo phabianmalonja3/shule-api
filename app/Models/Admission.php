@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Carbon\Carbon;
 
 class Admission extends Model
 {
@@ -18,6 +19,7 @@ class Admission extends Model
         'is_confirmed',
         'is_paid',
         'school_attended',
+        'exam_date',
         'exam_language',
     ];
 
@@ -43,4 +45,20 @@ class Admission extends Model
             'school_id'         // Local key on exam_centers table (exam_centers.school_id)
         );
     }
+
+
+    public function getFormattedExamDateAttribute()
+    {
+        // Extract the actual date string from the JSON structure
+        // (e.g., if your JSON looks like {"date": "2026-05-12"} or is a simple array)
+        $rawDate = $this->exam_date ?? null;
+
+        if (!$rawDate) {
+            return null;
+        }
+
+        return Carbon::parse($rawDate)->format('d/m/Y');
+    }
+
+
 }
