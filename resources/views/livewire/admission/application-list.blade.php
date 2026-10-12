@@ -125,7 +125,7 @@
                                             {{ $application->examCenter->name ?? 'N/A' }}
                                         </h6>
                                         <small class="text-muted">
-                                            <i class="fas fa-phone-alt font-10 mr-1"></i> {{ $parentPhones ?? 'N/A' }}
+                                            {{ $application->examCenter?->applicationExams?->first()?->formatted_date ?? 'No Exam Date Set' }}
                                         </small>
                                     </div></td>
                             <td class="py-3 align-middle text-muted font-13">
