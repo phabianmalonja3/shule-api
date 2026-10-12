@@ -11,6 +11,10 @@ class Admission extends Model
 {
     protected $table = 'applications';
 
+    protected $casts = [
+        'exam_date' => 'datetime',
+    ];
+
     protected $fillable = [
         'applicant_id', 
         'center_id', 
@@ -44,20 +48,6 @@ class Admission extends Model
             'center_id',        // Local key on applications table (applications.center_id)
             'school_id'         // Local key on exam_centers table (exam_centers.school_id)
         );
-    }
-
-
-    public function getFormattedExamDateAttribute()
-    {
-        // Extract the actual date string from the JSON structure
-        // (e.g., if your JSON looks like {"date": "2026-05-12"} or is a simple array)
-        $rawDate = $this->exam_date ?? null;
-
-        if (!$rawDate) {
-            return null;
-        }
-
-        return Carbon::parse($rawDate)->format('d/m/Y');
     }
 
 
