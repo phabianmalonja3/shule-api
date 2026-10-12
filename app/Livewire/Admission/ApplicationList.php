@@ -63,7 +63,7 @@ public function render()
     $schoolId = $user->school_id;
 
     // Base query for applications scoped to the user's school
-    $baseQuery = Admission::whereHas('examCenter.school', function ($q) use ($schoolId) {
+    $baseQuery = Admission::with(['applicant', 'examCenter.applicationExams'])->whereHas('examCenter.school', function ($q) use ($schoolId) {
         $q->where('schools.id', $schoolId);
     });
 
