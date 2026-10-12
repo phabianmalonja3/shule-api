@@ -16,6 +16,6 @@ protected $casts = [
         // Adjust the key ('date' or index [0]) depending on how your JSON is structured
         $dateValue = $this->exam_date['date'] ?? $this->exam_date[0] ?? $this->exam_date ?? null;
 
-        return $dateValue ? Carbon::parse($dateValue)->format('M d, Y') : null;
+        return $dateValue ? Carbon::parse($dateValue)->format('d/m/Y') : null;
     }
 }
