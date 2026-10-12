@@ -128,8 +128,8 @@
                                             <i class="fas fa-phone-alt font-10 mr-1"></i> {{ $parentPhones ?? 'N/A' }}
                                         </small>
                                     </div></td>
-                            <td class="py-3">
-                                         
+                            <td class="py-3 align-middle text-muted font-13">
+                                         {{ $application->examCenter?->applicationExams?->first()?->exam_date ?? 'No Exam Date Set' }}
                             </td>
                             <!-- Status Badge with Hover Last Step -->
                             <td class="py-3 align-middle">

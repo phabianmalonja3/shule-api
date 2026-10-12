@@ -10,4 +10,9 @@ class ExamCenter extends Model
     {
         return $this->belongsTo(School::class, 'school_id');
     }
+
+    public function applicationExams()
+    {
+        return $this->hasMany(ApplicationExam::class, 'center_id');
+    }
 }
