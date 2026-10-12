@@ -60,7 +60,7 @@
                     <tr>
                         <th class="border-0 py-3">Applicant</th>
                         <th class="border-0 py-3">Exam Center & Date</th>
-                        <th class="border-0 py-3">Language Preference</th>                          
+                        <th class="border-0 py-3">Exam Language</th>                          
                         <th class="border-0 py-3">Status</th>
                         @if(!$this->hasSelectedOrNotSelected)
                             <th class="border-0 py-3">Progress</th>
@@ -125,7 +125,7 @@
                                             {{ $application->examCenter->name ?? 'N/A' }}
                                         </h6>
                                         <small class="text-muted">
-                                            {{ $application->exam_date?->format('d/m/Y') ?? 'No Exam Date Set' }}
+                                            {{ $application->exam_date?->format('d/mon/Y') ?? 'No Exam Date Set' }}
                                         </small>
                                     </div></td>
                             <td class="py-3 align-middle text-muted font-13">
