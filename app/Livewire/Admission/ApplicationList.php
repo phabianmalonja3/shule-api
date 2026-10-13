@@ -17,18 +17,6 @@ public $search;
 public $amount;
 public $status;
 
-public $applicant_name;
-public $middlename;
-public $surname;
-public $email;
-public $gender;
-public $religious;
-public $denomination;
-public $exam_date;
-public $exam_language;
-public $center_id;
-public $status = 'pending';
-
 protected $rules=[
    
         'search' => 'nullable|string|max:255', // Allow null, ensure it's a string, and limit the length
@@ -67,37 +55,6 @@ protected $rules=[
 public function getHasNotifiedProperty()
 {
     return Admission::where('is_notified', 1)->exists();
-}
-
-public function createApplication()
-{
-    $this->resetValidation();
-    $this->reset(['applicant_name', 'email', 'exam_date', 'status']);
-    
-    // Open the modal form
-    $this->isOpen = true;
-}
-
-public function storeApplication()
-{
-    $this->validate([
-        'applicant_name' => 'required|string|max:255',
-        'email' => 'required|email|max:255',
-        'exam_date' => 'required|date',
-        'status' => 'required|string',
-    ]);
-
-    Application::create([
-        'applicant_name' => $this->applicant_name,
-        'email' => $this->email,
-        'exam_date' => $this->exam_date,
-        'status' => $this->status,
-    ]);
-
-    $this->isOpen = false;
-    
-    // Optional: send a success flash message
-    session()->flash('message', 'Application created successfully.');
 }
 
 public function render()
