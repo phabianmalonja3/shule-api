@@ -19,6 +19,18 @@ public $status;
 public $exam_center_id = '';
 public $examCenters;
 
+public $isOpen = false;
+
+// Form fields
+public $applicant_name;
+public $first_name;
+public $middlename;
+public $surname;
+public $center_id;
+public $exam_date;
+public $exam_language;
+public $status = 'in progress';
+
 protected $rules=[
    
         'search' => 'nullable|string|max:255', // Allow null, ensure it's a string, and limit the length
@@ -30,11 +42,12 @@ protected $rules=[
 //         $this->amount += 5;
 //     }
 
-public function mount()
-{
-    // Fetch unique exam centers for the dropdown filter
-    $this->examCenters = \App\Models\ExamCenter::orderBy('name')->get();
-}
+    public function mount()
+    {
+        // Fetch unique exam centers for the dropdown filter
+        $this->examCenters = \App\Models\ExamCenter::orderBy('name')->get();
+    }
+
     public function toggleVerification($teacherId, $isVerified)
     {
         // Find the teacher
@@ -55,13 +68,51 @@ public function mount()
     }
 
     public function getHasSelectedOrNotSelectedProperty()
+    {
+        return Admission::whereIn('status', ['selected', 'not selected'])->exists();
+    }
+
+    public function getHasNotifiedProperty()
+    {
+        return Admission::where('is_notified', 1)->exists();
+    }
+
+
+    public function createApplication()
 {
-    return Admission::whereIn('status', ['selected', 'not selected'])->exists();
+    $this->resetValidation();
+    $this->reset(['first_name', 'middlename', 'surname', 'center_id', 'exam_date', 'exam_langauge', 'status']);
+    
+    // Open the modal form
+    $this->isOpen = true;
 }
 
-public function getHasNotifiedProperty()
+public function storeApplication()
 {
-    return Admission::where('is_notified', 1)->exists();
+    $this->validate([
+        'first_name' => 'required|string|max:40',
+        'middlename' => 'required|string|max:40',
+        'surname' => 'required|string|max:40',                
+        'center_id' => 'required|integer',
+        'exam_date' => 'required|date',
+        'exam_language' => 'required|string|max:40',        
+        'status' => 'required|string|max:20',
+    ]);
+
+    Admission::create([
+        'first_name' => $this->first_name,
+        'middlename' => $this->middlename,
+        'surname' => $this->surname,    
+        'center_id' => $this->center_id,    
+        'exam_date' => $this->exam_date,
+        'exam_language' => $this->exam_language,
+        'status' => $this->status,
+    ]);
+
+    $this->isOpen = false;
+    
+    // Optional: send a success flash message
+    session()->flash('message', 'Application created successfully.');
 }
 
 public function render()
