@@ -37,6 +37,9 @@ protected $rules=[
 
 ];
 
+protected $listeners = [
+    'open-add-application-modal' => 'createApplication'
+];
 // public function loadMore(): void
 //     {
 //         $this->amount += 5;
