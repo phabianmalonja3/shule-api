@@ -19,6 +19,17 @@ public $status;
 public $exam_center_id = '';
 public $examCenters;
 
+//public $isOpen = false;
+
+// Form fields
+public $applicant_name;
+public $first_name;
+public $middlename;
+public $surname;
+public $center_id;
+public $exam_date;
+public $exam_language;
+//public $status = 'in progress';
 
 protected $rules=[
    
