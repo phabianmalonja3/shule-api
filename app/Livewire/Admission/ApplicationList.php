@@ -19,7 +19,7 @@ public $status;
 public $exam_center_id = '';
 public $examCenters;
 
-//public $isOpen = false;
+public $isOpen = false;
 
 // Form fields
 public $applicant_name;
@@ -29,7 +29,7 @@ public $surname;
 public $center_id;
 public $exam_date;
 public $exam_language;
-//public $status = 'in progress';
+public $form_status = 'in progress';
 
 protected $rules=[
    
@@ -78,7 +78,42 @@ protected $rules=[
     }
 
 
+    public function createApplication()
+{
+    $this->resetValidation();
+    $this->reset(['first_name', 'middlename', 'surname', 'center_id', 'exam_date', 'exam_langauge', 'form_status']);
+    
+    // Open the modal form
+    $this->isOpen = true;
+}
 
+public function storeApplication()
+{
+    $this->validate([
+        'first_name' => 'required|string|max:40',
+        'middlename' => 'required|string|max:40',
+        'surname' => 'required|string|max:40',                
+        'center_id' => 'required|integer',
+        'exam_date' => 'required|date',
+        'exam_language' => 'required|string|max:40',        
+        'form_status' => 'required|string|max:20',
+    ]);
+
+    Admission::create([
+        'first_name' => $this->first_name,
+        'middlename' => $this->middlename,
+        'surname' => $this->surname,    
+        'center_id' => $this->center_id,    
+        'exam_date' => $this->exam_date,
+        'exam_language' => $this->exam_language,
+        'status' => $this->form_status,
+    ]);
+
+    $this->isOpen = false;
+    
+    // Optional: send a success flash message
+    session()->flash('message', 'Application created successfully.');
+}
 
 public function render()
 {
