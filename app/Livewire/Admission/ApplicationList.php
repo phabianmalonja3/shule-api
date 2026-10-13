@@ -78,15 +78,6 @@ protected $rules=[
     }
 
 
-    public function createApplication()
-{
-    $this->resetValidation();
-    $this->reset(['first_name', 'middlename', 'surname', 'center_id', 'exam_date', 'exam_langauge', 'status']);
-    
-    // Open the modal form
-    $this->isOpen = true;
-}
-
 
 
 public function render()
