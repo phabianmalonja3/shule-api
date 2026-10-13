@@ -67,7 +67,7 @@ public function getHasNotifiedProperty()
 
 public function render()
 {
-    $applications = Application::query()
+    $applications = Admission::query()
         ->with(['applicant', 'examCenter'])
         ->when($this->search, function ($query) {
             $query->whereHas('applicant', function ($q) {
