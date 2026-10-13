@@ -277,8 +277,16 @@
                     @endforelse
                 </tbody>
             </table>
+        </div>
 
-            <!-- Modal Container -->
+        <!-- Pagination Links -->
+        <div class="mt-4 d-flex justify-content-center">
+            {{ $applications->links() }}
+        </div>
+
+    </div>
+
+                <!-- Modal Container -->
 @if($isOpen)
     <div class="modal fade show d-block" tabindex="-1" role="dialog" style="background: rgba(0,0,0,0.5);">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -343,12 +351,4 @@
         </div>
     </div>
 @endif
-        </div>
-
-        <!-- Pagination Links -->
-        <div class="mt-4 d-flex justify-content-center">
-            {{ $applications->links() }}
-        </div>
-
-    </div>
 </div>
