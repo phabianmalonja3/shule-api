@@ -87,33 +87,7 @@ protected $rules=[
     $this->isOpen = true;
 }
 
-public function storeApplication()
-{
-    $this->validate([
-        'first_name' => 'required|string|max:40',
-        'middlename' => 'required|string|max:40',
-        'surname' => 'required|string|max:40',                
-        'center_id' => 'required|integer',
-        'exam_date' => 'required|date',
-        'exam_language' => 'required|string|max:40',        
-        'status' => 'required|string|max:20',
-    ]);
 
-    Admission::create([
-        'first_name' => $this->first_name,
-        'middlename' => $this->middlename,
-        'surname' => $this->surname,    
-        'center_id' => $this->center_id,    
-        'exam_date' => $this->exam_date,
-        'exam_language' => $this->exam_language,
-        'status' => $this->status,
-    ]);
-
-    $this->isOpen = false;
-    
-    // Optional: send a success flash message
-    session()->flash('message', 'Application created successfully.');
-}
 
 public function render()
 {
