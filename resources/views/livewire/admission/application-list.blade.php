@@ -286,7 +286,9 @@
 
     </div>
 
-                <!-- Modal Container -->
+    
+</div>
+            <!-- Modal Container -->
 @if($isOpen)
     <div class="modal fade show d-block" tabindex="-1" role="dialog" style="background: rgba(0,0,0,0.5);">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -351,4 +353,3 @@
         </div>
     </div>
 @endif
-</div>
