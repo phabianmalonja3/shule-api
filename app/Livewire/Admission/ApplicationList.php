@@ -79,9 +79,9 @@ protected $rules=[
 
 
     public function createApplication()
-{dd(1);
+{
     $this->resetValidation();
-    $this->reset(['first_name', 'middlename', 'surname', 'center_id', 'exam_date', 'exam_langauge', 'form_status']);
+    $this->reset(['first_name', 'middlename', 'surname', 'center_id', 'exam_date', 'exam_language', 'form_status']);
     
     // Open the modal form
     $this->isOpen = true;
