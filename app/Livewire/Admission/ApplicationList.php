@@ -83,7 +83,7 @@ public function render()
         })
         ->paginate(10);
 
-    return view('livewire.application-list', [
+    return view('livewire.admission.application-list', [
         'applications' => $applications,
     ]);
 }
