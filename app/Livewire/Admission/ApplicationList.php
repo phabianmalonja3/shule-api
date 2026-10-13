@@ -16,6 +16,8 @@ use WithPagination;
 public $search;
 public $amount;
 public $status;
+public $exam_center_id = '';
+public $examCenters;
 
 protected $rules=[
    
@@ -27,6 +29,12 @@ protected $rules=[
 //     {
 //         $this->amount += 5;
 //     }
+
+public function mount()
+{
+    // Fetch unique exam centers for the dropdown filter
+    $this->examCenters = \App\Models\ExamCenter::orderBy('name')->get();
+}
 
     public function toggleVerification($teacherId, $isVerified)
     {
@@ -59,43 +67,24 @@ public function getHasNotifiedProperty()
 
 public function render()
 {
-    $user = Auth::user();
-    $schoolId = $user->school_id;
+    $applications = Application::query()
+        ->with(['applicant', 'examCenter'])
+        ->when($this->search, function ($query) {
+            $query->whereHas('applicant', function ($q) {
+                $q->where('first_name', 'like', '%' . $this->search . '%')
+                  ->orWhere('surname', 'like', '%' . $this->search . '%');
+            });
+        })
+        ->when($this->status, function ($query) {
+            $query->where('status', $this->status);
+        })
+        ->when($this->exam_center_id, function ($query) {
+            $query->where('center_id', $this->exam_center_id);
+        })
+        ->paginate(10);
 
-    // Base query for applications scoped to the user's school
-    $baseQuery = Admission::with(['applicant', 'examCenter.applicationExams'])->whereHas('examCenter.school', function ($q) use ($schoolId) {
-        $q->where('schools.id', $schoolId);
-    });
-
-    // Get a plain array of distinct status names
-    $statuses = (clone $baseQuery)
-        ->distinct()
-        ->pluck('status')
-        ->toArray(); // e.g., ['in progress', 'submitted', 'completed']
-
-    // Filtered Applications Query
-    $applicationsQuery = (clone $baseQuery)->with(['applicant', 'examCenter.school']);
-
-    // Apply Search Filter
-    if (!empty($this->search)) {
-        $applicationsQuery->whereHas('applicant', function ($q) {
-            $q->where('first_name', 'like', '%' . $this->search . '%')
-              ->orWhere('last_name', 'like', '%' . $this->search . '%')
-              ->orWhere('phone', 'like', '%' . $this->search . '%')
-              ->orWhere('parent_phone', 'like', '%' . $this->search . '%');
-        });
-    }
-
-    // Apply Status Filter
-    if (!empty($this->status)) {
-        $applicationsQuery->where('status', $this->status);
-    }
-
-    $applications = $applicationsQuery->paginate(10);
-
-    return view('livewire.admission.application-list', [
+    return view('livewire.application-list', [
         'applications' => $applications,
-        'statuses' => $statuses,
     ]);
 }
 }

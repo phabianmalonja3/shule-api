@@ -22,6 +22,33 @@
 
             <!-- Filter Dropdowns -->
             <div class="d-flex align-items-center" style="gap: 10px;">
+                <!-- Exam Center Filter Dropdown -->
+                @if(isset($examCenters) && count($examCenters) > 1)
+                    <div class="dropdown">
+                        <button class="btn btn-white border px-3 py-2 bg-white shadow-sm font-14 d-flex align-items-center text-dark" type="button" data-toggle="dropdown" style="border-radius: 8px; gap: 8px;">
+                            <span class="text-dark font-weight-normal">Center</span> 
+                            
+                            <span class="badge px-2 py-1 font-weight-bold" style="background-color: rgba(67, 94, 190, 0.12); color: #435ebe; border-radius: 6px;">
+                                {{ count($examCenters) }}
+                            </span>
+                            
+                            <i class="fas fa-chevron-down text-muted font-11 ml-1"></i>
+                        </button>
+                        
+                        <div class="dropdown-menu shadow-sm border-0 mt-1" style="border-radius: 8px;">
+                            <a class="dropdown-item py-2 px-3" href="#" wire:click.prevent="$set('exam_center_id', '')">
+                                All Centers
+                            </a>
+                            <div class="dropdown-divider my-1"></div>
+                            
+                            @foreach($examCenters as $center)
+                                <a class="dropdown-item py-2 px-3" href="#" wire:click.prevent="$set('exam_center_id', '{{ $center->id }}')">
+                                    {{ $center->name }}
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
                 @if(count($statuses) > 1)
                     <div class="dropdown">
                         <button class="btn btn-white border px-3 py-2 bg-white shadow-sm font-14 d-flex align-items-center text-dark" type="button" data-toggle="dropdown" style="border-radius: 8px; gap: 8px;">
