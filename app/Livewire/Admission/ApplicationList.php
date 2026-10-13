@@ -19,7 +19,7 @@ public $status;
 public $exam_center_id = '';
 public $examCenters;
 
-public $isOpen = false;
+//public $isOpen = false;
 
 // Form fields
 public $applicant_name;
