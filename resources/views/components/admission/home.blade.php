@@ -16,19 +16,7 @@
 
                     </div>
 
-                    <!-- Right Side: Upload & Download Buttons -->
-<div class="d-flex align-items-center" style="gap: 10px;">
-    <!-- Add Application Button -->
-    <button type="button" class="btn btn-primary font-weight-bold shadow-sm px-3" wire:click="createApplication" style="border-radius: 8px; font-size: 13px;">
-        <i class="fas fa-plus mr-1"></i> Add Application
-    </button>
-    
-    <!-- Download / Export Button -->
-    <button type="button" class="btn btn-white text-dark bg-white border shadow-sm px-3" wire:click="exportApplications" style="border-radius: 8px; border-color: #e2e8f0 !important; font-size: 13px;">
-        <i class="fas fa-download mr-1 text-muted"></i> Download Applications
-    </button>
-</div>
-                </div>
+       </div>
 
                 <!-- Greeting & Timestamp -->
                 <div class="mb-4">
