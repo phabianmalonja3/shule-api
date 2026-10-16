@@ -288,11 +288,11 @@
 
     @if($isViewModalOpen && $selectedApplication)
     <div class="modal fade show d-block" tabindex="-1" role="dialog" style="background: rgba(0,0,0,0.4); z-index: 1050; overflow-y: auto;">
-        <!-- Increased max-width to 580px to comfortably cover all status tags and subject cards -->
-        <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 580px; margin-top: 85px; margin-right: 20px; margin-left: auto;">
+        <!-- Modal takes up 50% of the viewport width while keeping a clean 500px min-width on smaller screens -->
+        <div class="modal-dialog modal-dialog-scrollable" role="document" style="width: 50vw; max-width: 50vw; min-width: 500px; margin-top: 85px; margin-right: 20px; margin-left: auto;">
             <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
                 
-                <!-- Modal Header with Top Icons -->
+                <!-- Modal Header with Top Action Icons -->
                 <div class="modal-header border-bottom px-4 py-3 bg-white d-flex align-items-center justify-content-between">
                     <div>
                         <span class="font-weight-bold font-12" style="color: #435ebe; letter-spacing: 0.5px;">APP-{{ $selectedApplication->id }}</span>
@@ -337,18 +337,18 @@
                     
                     <!-- Applicant Card Section -->
                     <div class="card border-0 shadow-sm mb-4" style="background-color: #1e293b; color: white; border-radius: 10px;">
-                        <div class="card-body p-3">
+                        <div class="card-body p-4">
                             <div class="d-flex justify-content-between align-items-start">
                                 <div>
                                     <span class="text-uppercase font-weight-bold" style="font-size: 10px; color: #94a3b8; letter-spacing: 0.5px;">Applicant</span>
-                                    <h5 class="font-weight-bold mb-1 text-white">
+                                    <h4 class="font-weight-bold mb-1 text-white">
                                         {{ $selectedApplication->applicant->first_name ?? '' }} {{ $selectedApplication->applicant->surname ?? '' }}
-                                    </h5>
+                                    </h4>
                                     <p class="text-muted mb-0 font-13" style="color: #cbd5e1 !important;">
                                         {{ ucfirst($selectedApplication->applicant->gender ?? 'Applicant') }} &bull; {{ $selectedApplication->applicant->category ?? 'Standard' }} applicant
                                     </p>
                                 </div>
-                                <span class="badge px-3 py-1 font-weight-bold" style="background-color: #d1fae5; color: #065f46; border-radius: 20px; font-size: 12px;">
+                                <span class="badge px-3 py-2 font-weight-bold" style="background-color: #d1fae5; color: #065f46; border-radius: 20px; font-size: 12px;">
                                     &bull; {{ ucfirst($selectedApplication->status) }}
                                 </span>
                             </div>
@@ -356,24 +356,24 @@
                     </div>
 
                     <!-- Examination Preferences (Exam Center & Exam Date Side-by-Side) -->
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <h6 class="font-weight-bold text-dark font-14 mb-2">Examination preferences</h6>
                         <div class="card border shadow-none" style="border-radius: 8px; border-color: #e2e8f0 !important; background-color: #f8fafc;">
                             <div class="card-body p-3">
-                                <div class="row align-items-center mb-2">
-                                    <div class="col-7 pr-1">
+                                <div class="row align-items-center mb-3">
+                                    <div class="col-7 pr-2">
                                         <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Exam Center</span>
-                                        <span class="font-weight-bold text-dark font-13 text-truncate d-block">{{ $selectedApplication->examCenter->name ?? 'N/A' }}</span>
+                                        <span class="font-weight-bold text-dark font-14 text-truncate d-block">{{ $selectedApplication->examCenter->name ?? 'N/A' }}</span>
                                     </div>
-                                    <div class="col-5 pl-1">
+                                    <div class="col-5 pl-2">
                                         <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Exam Date</span>
-                                        <span class="font-weight-bold text-dark font-13 text-nowrap d-block">{{ $selectedApplication->exam_date?->format('d M Y') ?? 'Not Set' }}</span>
+                                        <span class="font-weight-bold text-dark font-14 text-nowrap d-block">{{ $selectedApplication->exam_date?->format('d M Y') ?? 'Not Set' }}</span>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
                                         <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Language</span>
-                                        <span class="font-weight-bold text-dark font-13">{{ ucfirst($selectedApplication->exam_language ?? 'N/A') }}</span>
+                                        <span class="font-weight-bold text-dark font-14">{{ ucfirst($selectedApplication->exam_language ?? 'N/A') }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -384,20 +384,20 @@
                     @php
                         $parent = $selectedApplication->applicant->parents()->first();
                     @endphp
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <h6 class="font-weight-bold text-dark font-14 mb-2">Parent or guardian</h6>
                         <div class="card border shadow-none" style="border-radius: 8px; border-color: #e2e8f0 !important; background-color: #f8fafc;">
                             <div class="card-body p-3">
                                 <div class="row align-items-center">
-                                    <div class="col-7 pr-1">
+                                    <div class="col-7 pr-2">
                                         <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Name & Relationship</span>
-                                        <span class="font-weight-bold text-dark font-13 text-truncate d-block">
+                                        <span class="font-weight-bold text-dark font-14 text-truncate d-block">
                                             {{ $parent->name ?? 'N/A' }} &bull; {{ ucfirst($parent->relationship ?? 'Guardian') }}
                                         </span>
                                     </div>
-                                    <div class="col-5 pl-1">
+                                    <div class="col-5 pl-2">
                                         <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Phone Number</span>
-                                        <span class="font-weight-bold text-dark font-13 text-nowrap d-block">{{ $parent->phone ?? 'N/A' }}</span>
+                                        <span class="font-weight-bold text-dark font-14 text-nowrap d-block">{{ $parent->phone ?? 'N/A' }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -415,7 +415,7 @@
                                 </div>
 
                                 <!-- Subject Scores Row -->
-                                <div class="row text-center" style="gap: 10px; margin: 0;">
+                                <div class="row text-center" style="gap: 12px; margin: 0;">
                                     <div class="col bg-white border shadow-sm py-2 px-2 rounded" style="border-color: #e2e8f0 !important; border-radius: 8px !important;">
                                         <span class="text-muted d-block" style="font-size: 11px;">Maths</span>
                                         <span class="font-weight-bold text-dark font-14">84%</span>
