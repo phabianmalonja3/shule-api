@@ -31,6 +31,9 @@ public $exam_date;
 public $exam_language;
 public $form_status = 'in progress';
 
+public $selectedApplication = null;
+public $isViewModalOpen = false;
+
 protected $rules=[
    
         'search' => 'nullable|string|max:255', // Allow null, ensure it's a string, and limit the length
@@ -80,6 +83,19 @@ protected $listeners = [
         return Admission::where('is_notified', 1)->exists();
     }
 
+
+    public function viewApplication($applicationId)
+{
+    // Eager load relationships so all fields shown in the card are available
+    $this->selectedApplication = Admission::with(['applicant.parents', 'examCenter'])->findOrFail($applicationId);
+    $this->isViewModalOpen = true;
+}
+
+public function closeViewModal()
+{
+    $this->isViewModalOpen = false;
+    $this->selectedApplication = null;
+}
 
     public function createApplication()
 {
