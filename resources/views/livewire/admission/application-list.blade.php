@@ -302,10 +302,10 @@
                     </button>
                 </div>
 
-                <!-- Modal Body / Content (Using standard white/light background matching dashboard card body) -->
+                <!-- Modal Body / Content -->
                 <div class="modal-body p-4 bg-white">
                     
-                    <!-- Applicant Card Section (Styled dark to mirror primary highlights) -->
+                    <!-- Applicant Card Section -->
                     <div class="card border-0 shadow-sm mb-4" style="background-color: #1e293b; color: white; border-radius: 10px;">
                         <div class="card-body p-3">
                             <div class="d-flex justify-content-between align-items-start">
@@ -352,7 +352,7 @@
                     @php
                         $parent = $selectedApplication->applicant->parents()->first();
                     @endphp
-                    <div class="mb-2">
+                    <div class="mb-3">
                         <h6 class="font-weight-bold text-dark font-14 mb-2">Parent or guardian</h6>
                         <div class="card border shadow-none" style="border-radius: 8px; border-color: #e2e8f0 !important; background-color: #f8fafc;">
                             <div class="card-body p-3">
@@ -366,6 +366,35 @@
                                     <div class="col-5 pl-1">
                                         <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Phone Number</span>
                                         <span class="font-weight-bold text-dark font-13 text-nowrap d-block">{{ $parent->phone ?? 'N/A' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Education History (Added matching your design) -->
+                    <div class="mb-2">
+                        <h6 class="font-weight-bold text-dark font-14 mb-2">Education history</h6>
+                        <div class="card border shadow-none" style="border-radius: 8px; border-color: #e2e8f0 !important; background-color: #f8fafc;">
+                            <div class="card-body p-3">
+                                <div class="mb-3">
+                                    <h6 class="font-weight-bold text-dark mb-0 font-14">Arusha Secondary School</h6>
+                                    <span class="text-muted font-13">Form VI</span>
+                                </div>
+
+                                <!-- Subject Scores Row -->
+                                <div class="row text-center" style="gap: 6px; margin: 0;">
+                                    <div class="col bg-white border shadow-sm py-2 px-1 rounded" style="border-color: #e2e8f0 !important; border-radius: 8px !important;">
+                                        <span class="text-muted d-block" style="font-size: 11px;">Maths</span>
+                                        <span class="font-weight-bold text-dark font-14">84%</span>
+                                    </div>
+                                    <div class="col bg-white border shadow-sm py-2 px-1 rounded" style="border-color: #e2e8f0 !important; border-radius: 8px !important;">
+                                        <span class="text-muted d-block" style="font-size: 11px;">English</span>
+                                        <span class="font-weight-bold text-dark font-14">78%</span>
+                                    </div>
+                                    <div class="col bg-white border shadow-sm py-2 px-1 rounded" style="border-color: #e2e8f0 !important; border-radius: 8px !important;">
+                                        <span class="text-muted d-block" style="font-size: 11px;">Science</span>
+                                        <span class="font-weight-bold text-dark font-14">88%</span>
                                     </div>
                                 </div>
                             </div>
