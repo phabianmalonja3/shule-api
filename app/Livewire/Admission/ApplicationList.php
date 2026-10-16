@@ -88,7 +88,7 @@ protected $listeners = [
     
     // Open the modal form
     $this->isOpen = true;
-    dd('Nsuuu');
+    //dd('Nsuuu');
 }
 
 public function storeApplication()
