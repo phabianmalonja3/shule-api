@@ -19,8 +19,10 @@
                     <!-- Right Side: Upload & Download Buttons -->
 <div class="d-flex align-items-center" style="gap: 10px;">
     <!-- Add Application Button -->
-    <button type="button" class="btn btn-primary font-weight-bold shadow-sm px-3" @click="$dispatch('open-add-application-modal')" style="border-radius: 8px; font-size: 13px;">
-        <i class="fas fa-plus mr-1"></i> Add Application
+    <button type="button" class="btn btn-primary font-weight-bold shadow-sm px-3" 
+        onclick="Livewire.dispatch('open-add-application-modal')" 
+        style="border-radius: 8px; font-size: 13px;">
+        <i class="fas fa-plus mr-1"></i> Add applications
     </button>
     
     <!-- Download / Export Button -->
