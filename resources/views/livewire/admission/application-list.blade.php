@@ -291,15 +291,44 @@
         <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 480px; margin-top: 60px; margin-right: 20px; margin-left: auto;">
             <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
                 
-                <!-- Modal Header -->
+                <!-- Modal Header with Stylish Action Icons -->
                 <div class="modal-header border-bottom px-4 py-3 bg-white d-flex align-items-center justify-content-between">
                     <div>
                         <span class="font-weight-bold font-12" style="color: #435ebe; letter-spacing: 0.5px;">APP-{{ $selectedApplication->id }}</span>
                         <h5 class="modal-title font-weight-bold text-dark mb-0">Application details</h5>
                     </div>
-                    <button type="button" class="close border-0 bg-light rounded-circle d-flex align-items-center justify-content-center" wire:click="closeViewModal" aria-label="Close" style="width: 32px; height: 32px; cursor: pointer;">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    
+                    <!-- Header Action Buttons -->
+                    <div class="d-flex align-items-center" style="gap: 8px;">
+                        <!-- Print Button -->
+                        <button type="button" 
+                                onclick="window.print()" 
+                                class="btn btn-sm d-flex align-items-center justify-content-center shadow-sm border-0" 
+                                style="width: 34px; height: 34px; border-radius: 8px; background-color: #f1f5f9; color: #475569;" 
+                                title="Print application" 
+                                data-toggle="tooltip">
+                            <i class="fas fa-print font-13"></i>
+                        </button>
+
+                        <!-- Edit Button -->
+                        <button type="button" 
+                                wire:click="editApplication({{ $selectedApplication->id }})" 
+                                class="btn btn-sm d-flex align-items-center justify-content-center shadow-sm border-0" 
+                                style="width: 34px; height: 34px; border-radius: 8px; background-color: #fef3c7; color: #d97706;" 
+                                title="Edit application" 
+                                data-toggle="tooltip">
+                            <i class="fas fa-pen font-12"></i>
+                        </button>
+
+                        <!-- Close Button -->
+                        <button type="button" 
+                                class="btn btn-sm d-flex align-items-center justify-content-center border-0" 
+                                wire:click="closeViewModal" 
+                                style="width: 34px; height: 34px; border-radius: 8px; background-color: #f1f5f9; color: #64748b;" 
+                                aria-label="Close">
+                            <span aria-hidden="true" class="font-18">&times;</span>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Modal Body / Content -->
@@ -372,7 +401,7 @@
                         </div>
                     </div>
 
-                    <!-- Education History (Added matching your design) -->
+                    <!-- Education History -->
                     <div class="mb-2">
                         <h6 class="font-weight-bold text-dark font-14 mb-2">Education history</h6>
                         <div class="card border shadow-none" style="border-radius: 8px; border-color: #e2e8f0 !important; background-color: #f8fafc;">
@@ -403,11 +432,30 @@
 
                 </div>
 
-                <!-- Modal Footer -->
-                <div class="modal-footer border-top bg-white px-4 py-3">
-                    <button type="button" class="btn btn-light px-4 font-weight-bold w-100 border" wire:click="closeViewModal" style="border-radius: 8px; border-color: #cbd5e1 !important;">
-                        Close
+                <!-- Modal Footer with Action Buttons -->
+                <div class="modal-footer border-top bg-white px-4 py-3 d-flex align-items-center justify-content-between" style="gap: 10px;">
+                    <button type="button" 
+                            onclick="window.print()" 
+                            class="btn btn-outline-secondary font-weight-bold px-3 d-flex align-items-center justify-content-center" 
+                            style="border-radius: 8px; border-color: #cbd5e1 !important; height: 38px; gap: 6px; font-size: 13px;">
+                        <i class="fas fa-print font-12"></i> Print
                     </button>
+                    
+                    <div class="d-flex align-items-center" style="gap: 8px;">
+                        <button type="button" 
+                                wire:click="editApplication({{ $selectedApplication->id }})" 
+                                class="btn btn-warning text-dark font-weight-bold px-3 d-flex align-items-center justify-content-center shadow-sm" 
+                                style="border-radius: 8px; height: 38px; gap: 6px; font-size: 13px;">
+                            <i class="fas fa-pen font-12"></i> Edit
+                        </button>
+                        
+                        <button type="button" 
+                                class="btn btn-light font-weight-bold px-3 border" 
+                                wire:click="closeViewModal" 
+                                style="border-radius: 8px; border-color: #cbd5e1 !important; height: 38px; font-size: 13px;">
+                            Close
+                        </button>
+                    </div>
                 </div>
 
             </div>
