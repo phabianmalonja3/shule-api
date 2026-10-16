@@ -63,7 +63,7 @@ Route::get('/online-application', [OnlineApplicationController::class, 'createOn
 Route::middleware(['auth', 'adminOnly'])->group(function () {
 
 
-Route::get('/staff/applications/create', [Admission::class, 'create'])->name('applications.create');
+Route::get('/staff/applications/create', [Admission::class, 'showApplicationForm'])->name('applications.create');
 
     // Route to handle scheduling the application
     Route::patch('/application/{application}/schedule', [SchoolApplicationController::class, 'scheduleApplication'])->name('application.schedule');

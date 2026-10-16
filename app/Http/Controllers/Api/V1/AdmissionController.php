@@ -42,7 +42,7 @@ class AdmissionController extends Controller
         return back();
     }
 
-    public function create(Request $request)
+    public function showApplicationForm(Request $request)
     {
         dd('mfyuu');
     }
