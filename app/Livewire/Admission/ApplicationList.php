@@ -87,7 +87,7 @@ protected $listeners = [
     public function viewApplication($applicationId)
 {
     // Eager load relationships so all fields shown in the card are available
-    $this->selectedApplication = Admission::with(['applicant.parents', 'examCenter'])->findOrFail($applicationId);
+    $this->selectedApplication = Admission::with(['applicant', 'examCenter'])->findOrFail($applicationId);
     $this->isViewModalOpen = true;
 }
 
