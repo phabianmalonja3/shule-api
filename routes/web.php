@@ -62,7 +62,8 @@ Route::get('/waiting/approve', [SchoolApplicationController::class, 'waiting'])-
 Route::get('/online-application', [OnlineApplicationController::class, 'createOnlineApplication'])->name('online.application');
 Route::middleware(['auth', 'adminOnly'])->group(function () {
 
-    
+
+Route::get('/waiting/approve', [SchoolApplicationController::class, 'waiting'])->name('application.create');
 
     // Route to handle scheduling the application
     Route::patch('/application/{application}/schedule', [SchoolApplicationController::class, 'scheduleApplication'])->name('application.schedule');
