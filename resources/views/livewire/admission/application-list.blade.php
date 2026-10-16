@@ -289,7 +289,7 @@
     @if($isViewModalOpen && $selectedApplication)
     <div class="modal fade show d-block" tabindex="-1" role="dialog" style="background: rgba(0,0,0,0.4); z-index: 1050; overflow-y: auto;">
         <!-- Modal takes up 50% of the viewport width while keeping a clean 500px min-width on smaller screens -->
-        <div class="modal-dialog modal-dialog-scrollable" role="document" style="width: 40vw; max-width: 40vw; min-width: 500px; margin-top: 85px; margin-right: 20px; margin-left: auto;">
+        <div class="modal-dialog modal-dialog-scrollable" role="document" style="width: 38vw; max-width: 38vw; min-width: 500px; margin-top: 85px; margin-right: 20px; margin-left: auto;">
             <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
                 
                 <!-- Modal Header with Top Action Icons -->
