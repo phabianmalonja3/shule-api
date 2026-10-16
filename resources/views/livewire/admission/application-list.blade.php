@@ -287,104 +287,102 @@
     </div>
 
     @if($isViewModalOpen && $selectedApplication)
-        <div class="modal fade show d-block" tabindex="-1" role="dialog" style="background: rgba(0,0,0,0.5); z-index: 1050;">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
+    <div class="modal fade show d-block" tabindex="-1" role="dialog" style="background: rgba(0,0,0,0.4); z-index: 1050; overflow-y: auto;">
+        <!-- Added 'justify-content-end', 'align-items-start', and top margin to push it lower and to the right -->
+        <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 420px; margin-top: 60px; margin-right: 20px; margin-left: auto;">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
+                
+                <!-- Modal Header -->
+                <div class="modal-header border-bottom px-4 py-3 bg-white d-flex align-items-center justify-content-between">
+                    <div>
+                        <span class="text-success font-weight-bold font-12" style="letter-spacing: 0.5px;">APP-{{ $selectedApplication->id }}</span>
+                        <h5 class="modal-title font-weight-bold text-dark mb-0">Application details</h5>
+                    </div>
+                    <!-- Fully visible close button -->
+                    <button type="button" class="close border-0 bg-light rounded-circle d-flex align-items-center justify-content-center" wire:click="closeViewModal" aria-label="Close" style="width: 32px; height: 32px; cursor: pointer;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <!-- Modal Body / Content -->
+                <div class="modal-body p-4 bg-light">
                     
-                    <!-- Modal Header -->
-                    <div class="modal-header border-bottom px-4 py-3 bg-white d-flex align-items-center justify-content-between">
-                        <div>
-                            <span class="text-success font-weight-bold font-12" style="letter-spacing: 0.5px;">APP-{{ $selectedApplication->id }}</span>
-                            <h5 class="modal-title font-weight-bold text-dark mb-0">Application details</h5>
+                    <!-- Applicant Card Section -->
+                    <div class="card border-0 shadow-sm mb-4" style="background-color: #0d1b2a; color: white; border-radius: 12px;">
+                        <div class="card-body p-3">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <span class="text-uppercase font-weight-bold" style="font-size: 10px; color: #94a3b8; letter-spacing: 0.5px;">Applicant</span>
+                                    <h5 class="font-weight-bold mb-1 text-white">
+                                        {{ $selectedApplication->applicant->first_name ?? '' }} {{ $selectedApplication->applicant->surname ?? '' }}
+                                    </h5>
+                                    <p class="text-muted mb-0 font-13" style="color: #cbd5e1 !important;">
+                                        {{ ucfirst($selectedApplication->applicant->gender ?? 'Applicant') }} &bull; {{ $selectedApplication->applicant->category ?? 'Standard' }} applicant
+                                    </p>
+                                </div>
+                                <span class="badge px-2 py-1 font-weight-bold" style="background-color: #d1fae5; color: #065f46; border-radius: 20px; font-size: 11px;">
+                                    &bull; {{ ucfirst($selectedApplication->status) }}
+                                </span>
+                            </div>
                         </div>
-                        <button type="button" class="close border-0 bg-light rounded-circle d-flex align-items-center justify-content-center" wire:click="closeViewModal" aria-label="Close" style="width: 32px; height: 32px;">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
                     </div>
 
-                    <!-- Modal Body / Content matching your design layout -->
-                    <div class="modal-body p-4 bg-light">
-                        
-                        <!-- Applicant Card Section -->
-                        <div class="card border-0 shadow-sm mb-4" style="background-color: #0d1b2a; color: white; border-radius: 12px;">
-                            <div class="card-body p-4">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div>
-                                        <span class="text-uppercase font-weight-bold" style="font-size: 10px; color: #94a3b8; letter-spacing: 0.5px;">Applicant</span>
-                                        <h4 class="font-weight-bold mb-1 text-white">
-                                            {{ $selectedApplication->applicant->first_name ?? '' }} {{ $selectedApplication->applicant->surname ?? '' }}
-                                        </h4>
-                                        <p class="text-muted mb-0 font-13" style="color: #cbd5e1 !important;">
-                                            {{ ucfirst($selectedApplication->applicant->gender ?? 'Applicant') }} &bull; {{ $selectedApplication->applicant->category ?? 'Standard' }} applicant
-                                        </p>
+                    <!-- Examination Preferences -->
+                    <div class="mb-3">
+                        <h6 class="font-weight-bold text-dark font-14 mb-2">Examination preferences</h6>
+                        <div class="card border-0 shadow-sm" style="border-radius: 10px;">
+                            <div class="card-body p-3">
+                                <div class="mb-2">
+                                    <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Exam Center</span>
+                                    <span class="font-weight-bold text-dark font-13">{{ $selectedApplication->examCenter->name ?? 'N/A' }}</span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Exam Date</span>
+                                        <span class="font-weight-bold text-dark font-13">{{ $selectedApplication->exam_date?->format('d M Y') ?? 'Not Set' }}</span>
                                     </div>
-                                    <span class="badge px-3 py-2 font-weight-bold" style="background-color: #d1fae5; color: #065f46; border-radius: 20px; font-size: 12px;">
-                                        &bull; {{ ucfirst($selectedApplication->status) }}
+                                    <div class="col-6">
+                                        <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Language</span>
+                                        <span class="font-weight-bold text-dark font-13">{{ ucfirst($selectedApplication->exam_language ?? 'N/A') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Parent or Guardian -->
+                    @php
+                        $parent = $selectedApplication->applicant->parents()->first();
+                    @endphp
+                    <div class="mb-2">
+                        <h6 class="font-weight-bold text-dark font-14 mb-2">Parent or guardian</h6>
+                        <div class="card border-0 shadow-sm" style="border-radius: 10px;">
+                            <div class="card-body p-3">
+                                <div class="mb-2">
+                                    <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Name & Relationship</span>
+                                    <span class="font-weight-bold text-dark font-13">
+                                        {{ $parent->name ?? 'N/A' }} &bull; {{ ucfirst($parent->relationship ?? 'Guardian') }}
                                     </span>
                                 </div>
-                            </div>
-                        </div>
-
-                        <!-- Examination Preferences -->
-                        <div class="mb-3">
-                            <h6 class="font-weight-bold text-dark font-14 mb-3">Examination preferences</h6>
-                            <div class="card border-0 shadow-sm" style="border-radius: 10px;">
-                                <div class="card-body p-3">
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3 mb-md-0">
-                                            <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Exam Center</span>
-                                            <span class="font-weight-bold text-dark font-14">{{ $selectedApplication->examCenter->name ?? 'N/A' }}</span>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Exam Date</span>
-                                            <span class="font-weight-bold text-dark font-14">{{ $selectedApplication->exam_date?->format('d M Y') ?? 'Not Set' }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-12">
-                                            <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Language</span>
-                                            <span class="font-weight-bold text-dark font-14">{{ ucfirst($selectedApplication->exam_language ?? 'N/A') }}</span>
-                                        </div>
-                                    </div>
+                                <div>
+                                    <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Phone Number</span>
+                                    <span class="font-weight-bold text-dark font-13">{{ $parent->phone ?? 'N/A' }}</span>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Parent or Guardian -->
-                        @php
-                            $parent = $selectedApplication->applicant->parents()->first();
-                        @endphp
-                        <div class="mb-3">
-                            <h6 class="font-weight-bold text-dark font-14 mb-3">Parent or guardian</h6>
-                            <div class="card border-0 shadow-sm" style="border-radius: 10px;">
-                                <div class="card-body p-3">
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3 mb-md-0">
-                                            <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Name & Relationship</span>
-                                            <span class="font-weight-bold text-dark font-14">
-                                                {{ $parent->name ?? 'N/A' }} &bull; {{ ucfirst($parent->relationship ?? 'Guardian') }}
-                                            </span>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Phone Number</span>
-                                            <span class="font-weight-bold text-dark font-14">{{ $parent->phone ?? 'N/A' }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <!-- Modal Footer -->
-                    <div class="modal-footer border-top bg-white px-4 py-3">
-                        <button type="button" class="btn btn-light px-4 font-weight-bold" wire:click="closeViewModal" style="border-radius: 8px;">
-                            Close
-                        </button>
                     </div>
 
                 </div>
+
+                <!-- Modal Footer -->
+                <div class="modal-footer border-top bg-white px-4 py-3">
+                    <button type="button" class="btn btn-light px-4 font-weight-bold w-100" wire:click="closeViewModal" style="border-radius: 8px;">
+                        Close
+                    </button>
+                </div>
+
             </div>
         </div>
-    @endif
+    </div>
+@endif
 </div>
