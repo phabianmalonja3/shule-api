@@ -288,8 +288,8 @@
 
     @if($isViewModalOpen && $selectedApplication)
     <div class="modal fade show d-block" tabindex="-1" role="dialog" style="background: rgba(0,0,0,0.4); z-index: 1050; overflow-y: auto;">
-        <!-- Added 'justify-content-end', 'align-items-start', and top margin to push it lower and to the right -->
-        <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 420px; margin-top: 60px; margin-right: 20px; margin-left: auto;">
+        <!-- Width increased slightly to 480px to accommodate single-row layout -->
+        <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 480px; margin-top: 60px; margin-right: 20px; margin-left: auto;">
             <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
                 
                 <!-- Modal Header -->
@@ -298,7 +298,6 @@
                         <span class="text-success font-weight-bold font-12" style="letter-spacing: 0.5px;">APP-{{ $selectedApplication->id }}</span>
                         <h5 class="modal-title font-weight-bold text-dark mb-0">Application details</h5>
                     </div>
-                    <!-- Fully visible close button -->
                     <button type="button" class="close border-0 bg-light rounded-circle d-flex align-items-center justify-content-center" wire:click="closeViewModal" aria-label="Close" style="width: 32px; height: 32px; cursor: pointer;">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -350,7 +349,7 @@
                         </div>
                     </div>
 
-                    <!-- Parent or Guardian -->
+                    <!-- Parent or Guardian (Fits Name, Relationship & Phone on a Single Row) -->
                     @php
                         $parent = $selectedApplication->applicant->parents()->first();
                     @endphp
@@ -358,15 +357,17 @@
                         <h6 class="font-weight-bold text-dark font-14 mb-2">Parent or guardian</h6>
                         <div class="card border-0 shadow-sm" style="border-radius: 10px;">
                             <div class="card-body p-3">
-                                <div class="mb-2">
-                                    <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Name & Relationship</span>
-                                    <span class="font-weight-bold text-dark font-13">
-                                        {{ $parent->name ?? 'N/A' }} &bull; {{ ucfirst($parent->relationship ?? 'Guardian') }}
-                                    </span>
-                                </div>
-                                <div>
-                                    <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Phone Number</span>
-                                    <span class="font-weight-bold text-dark font-13">{{ $parent->phone ?? 'N/A' }}</span>
+                                <div class="row align-items-center">
+                                    <div class="col-7 pr-1">
+                                        <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Name & Relationship</span>
+                                        <span class="font-weight-bold text-dark font-13 text-truncate d-block">
+                                            {{ $parent->name ?? 'N/A' }} &bull; {{ ucfirst($parent->relationship ?? 'Guardian') }}
+                                        </span>
+                                    </div>
+                                    <div class="col-5 pl-1">
+                                        <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Phone Number</span>
+                                        <span class="font-weight-bold text-dark font-13 text-nowrap d-block">{{ $parent->phone ?? 'N/A' }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
