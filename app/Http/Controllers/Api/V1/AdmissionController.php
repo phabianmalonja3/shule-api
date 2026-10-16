@@ -35,12 +35,17 @@ class AdmissionController extends Controller
 {
 
     public function toggleStatus(User $teacher)
-{
-    $teacher->is_verified = !$teacher->is_verified; // Toggle status
-    $teacher->save();
-    flash()->option('position', 'bottom-right')->success('Teacher status updated successfully!');
-    return back();
-}
+    {
+        $teacher->is_verified = !$teacher->is_verified; // Toggle status
+        $teacher->save();
+        flash()->option('position', 'bottom-right')->success('Teacher status updated successfully!');
+        return back();
+    }
+
+    public function create(Request $request)
+    {
+        dd('mfyuu');
+    }
 
 public function removeStreamSubject($teacherId, $classId)
 {
