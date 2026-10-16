@@ -288,14 +288,13 @@
 
     @if($isViewModalOpen && $selectedApplication)
     <div class="modal fade show d-block" tabindex="-1" role="dialog" style="background: rgba(0,0,0,0.4); z-index: 1050; overflow-y: auto;">
-        <!-- Width increased slightly to 480px to accommodate single-row layout -->
         <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 480px; margin-top: 60px; margin-right: 20px; margin-left: auto;">
             <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
                 
                 <!-- Modal Header -->
                 <div class="modal-header border-bottom px-4 py-3 bg-white d-flex align-items-center justify-content-between">
                     <div>
-                        <span class="text-success font-weight-bold font-12" style="letter-spacing: 0.5px;">APP-{{ $selectedApplication->id }}</span>
+                        <span class="font-weight-bold font-12" style="color: #435ebe; letter-spacing: 0.5px;">APP-{{ $selectedApplication->id }}</span>
                         <h5 class="modal-title font-weight-bold text-dark mb-0">Application details</h5>
                     </div>
                     <button type="button" class="close border-0 bg-light rounded-circle d-flex align-items-center justify-content-center" wire:click="closeViewModal" aria-label="Close" style="width: 32px; height: 32px; cursor: pointer;">
@@ -303,11 +302,11 @@
                     </button>
                 </div>
 
-                <!-- Modal Body / Content -->
-                <div class="modal-body p-4 bg-light">
+                <!-- Modal Body / Content (Using standard white/light background matching dashboard card body) -->
+                <div class="modal-body p-4 bg-white">
                     
-                    <!-- Applicant Card Section -->
-                    <div class="card border-0 shadow-sm mb-4" style="background-color: #0d1b2a; color: white; border-radius: 12px;">
+                    <!-- Applicant Card Section (Styled dark to mirror primary highlights) -->
+                    <div class="card border-0 shadow-sm mb-4" style="background-color: #1e293b; color: white; border-radius: 10px;">
                         <div class="card-body p-3">
                             <div class="d-flex justify-content-between align-items-start">
                                 <div>
@@ -329,7 +328,7 @@
                     <!-- Examination Preferences -->
                     <div class="mb-3">
                         <h6 class="font-weight-bold text-dark font-14 mb-2">Examination preferences</h6>
-                        <div class="card border-0 shadow-sm" style="border-radius: 10px;">
+                        <div class="card border shadow-none" style="border-radius: 8px; border-color: #e2e8f0 !important; background-color: #f8fafc;">
                             <div class="card-body p-3">
                                 <div class="mb-2">
                                     <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Exam Center</span>
@@ -349,13 +348,13 @@
                         </div>
                     </div>
 
-                    <!-- Parent or Guardian (Fits Name, Relationship & Phone on a Single Row) -->
+                    <!-- Parent or Guardian -->
                     @php
                         $parent = $selectedApplication->applicant->parents()->first();
                     @endphp
                     <div class="mb-2">
                         <h6 class="font-weight-bold text-dark font-14 mb-2">Parent or guardian</h6>
-                        <div class="card border-0 shadow-sm" style="border-radius: 10px;">
+                        <div class="card border shadow-none" style="border-radius: 8px; border-color: #e2e8f0 !important; background-color: #f8fafc;">
                             <div class="card-body p-3">
                                 <div class="row align-items-center">
                                     <div class="col-7 pr-1">
@@ -377,7 +376,7 @@
 
                 <!-- Modal Footer -->
                 <div class="modal-footer border-top bg-white px-4 py-3">
-                    <button type="button" class="btn btn-light px-4 font-weight-bold w-100" wire:click="closeViewModal" style="border-radius: 8px;">
+                    <button type="button" class="btn btn-light px-4 font-weight-bold w-100 border" wire:click="closeViewModal" style="border-radius: 8px; border-color: #cbd5e1 !important;">
                         Close
                     </button>
                 </div>
