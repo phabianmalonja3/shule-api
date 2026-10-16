@@ -288,7 +288,8 @@
 
     @if($isViewModalOpen && $selectedApplication)
     <div class="modal fade show d-block" tabindex="-1" role="dialog" style="background: rgba(0,0,0,0.4); z-index: 1050; overflow-y: auto;">
-        <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 480px; margin-top: 60px; margin-right: 20px; margin-left: auto;">
+        <!-- Pushed down with margin-top: 85px for clear view of upper perimeter -->
+        <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 480px; margin-top: 85px; margin-right: 20px; margin-left: auto;">
             <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
                 
                 <!-- Modal Header with Top Icons -->
@@ -434,16 +435,6 @@
                         </div>
                     </div>
 
-                </div>
-
-                <!-- Clean Footer -->
-                <div class="modal-footer border-top bg-white px-4 py-3">
-                    <button type="button" 
-                            class="btn btn-light font-weight-bold w-100 border" 
-                            wire:click="closeViewModal" 
-                            style="border-radius: 8px; border-color: #cbd5e1 !important;">
-                        Close
-                    </button>
                 </div>
 
             </div>
