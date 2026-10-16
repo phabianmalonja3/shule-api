@@ -291,16 +291,16 @@
         <div class="modal-dialog modal-dialog-scrollable" role="document" style="max-width: 480px; margin-top: 60px; margin-right: 20px; margin-left: auto;">
             <div class="modal-content border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
                 
-                <!-- Modal Header with Stylish Action Icons -->
+                <!-- Modal Header with Top Icons -->
                 <div class="modal-header border-bottom px-4 py-3 bg-white d-flex align-items-center justify-content-between">
                     <div>
                         <span class="font-weight-bold font-12" style="color: #435ebe; letter-spacing: 0.5px;">APP-{{ $selectedApplication->id }}</span>
                         <h5 class="modal-title font-weight-bold text-dark mb-0">Application details</h5>
                     </div>
                     
-                    <!-- Header Action Buttons -->
+                    <!-- Top Action Icons -->
                     <div class="d-flex align-items-center" style="gap: 8px;">
-                        <!-- Print Button -->
+                        <!-- Print Icon -->
                         <button type="button" 
                                 onclick="window.print()" 
                                 class="btn btn-sm d-flex align-items-center justify-content-center shadow-sm border-0" 
@@ -310,7 +310,7 @@
                             <i class="fas fa-print font-13"></i>
                         </button>
 
-                        <!-- Edit Button -->
+                        <!-- Edit Icon -->
                         <button type="button" 
                                 wire:click="editApplication({{ $selectedApplication->id }})" 
                                 class="btn btn-sm d-flex align-items-center justify-content-center shadow-sm border-0" 
@@ -320,7 +320,7 @@
                             <i class="fas fa-pen font-12"></i>
                         </button>
 
-                        <!-- Close Button -->
+                        <!-- Close Icon -->
                         <button type="button" 
                                 class="btn btn-sm d-flex align-items-center justify-content-center border-0" 
                                 wire:click="closeViewModal" 
@@ -354,21 +354,25 @@
                         </div>
                     </div>
 
-                    <!-- Examination Preferences -->
+                    <!-- Examination Preferences (Exam Center & Exam Date on the Same Row) -->
                     <div class="mb-3">
                         <h6 class="font-weight-bold text-dark font-14 mb-2">Examination preferences</h6>
                         <div class="card border shadow-none" style="border-radius: 8px; border-color: #e2e8f0 !important; background-color: #f8fafc;">
                             <div class="card-body p-3">
-                                <div class="mb-2">
-                                    <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Exam Center</span>
-                                    <span class="font-weight-bold text-dark font-13">{{ $selectedApplication->examCenter->name ?? 'N/A' }}</span>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Exam Date</span>
-                                        <span class="font-weight-bold text-dark font-13">{{ $selectedApplication->exam_date?->format('d M Y') ?? 'Not Set' }}</span>
+                                <!-- Row 1: Exam Center & Exam Date Side-by-Side -->
+                                <div class="row align-items-center mb-2">
+                                    <div class="col-7 pr-1">
+                                        <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Exam Center</span>
+                                        <span class="font-weight-bold text-dark font-13 text-truncate d-block">{{ $selectedApplication->examCenter->name ?? 'N/A' }}</span>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-5 pl-1">
+                                        <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Exam Date</span>
+                                        <span class="font-weight-bold text-dark font-13 text-nowrap d-block">{{ $selectedApplication->exam_date?->format('d M Y') ?? 'Not Set' }}</span>
+                                    </div>
+                                </div>
+                                <!-- Row 2: Exam Language -->
+                                <div class="row">
+                                    <div class="col-12">
                                         <span class="text-muted d-block text-uppercase font-weight-bold" style="font-size: 10px; letter-spacing: 0.5px;">Language</span>
                                         <span class="font-weight-bold text-dark font-13">{{ ucfirst($selectedApplication->exam_language ?? 'N/A') }}</span>
                                     </div>
@@ -432,30 +436,14 @@
 
                 </div>
 
-                <!-- Modal Footer with Action Buttons -->
-                <div class="modal-footer border-top bg-white px-4 py-3 d-flex align-items-center justify-content-between" style="gap: 10px;">
+                <!-- Clean Footer -->
+                <div class="modal-footer border-top bg-white px-4 py-3">
                     <button type="button" 
-                            onclick="window.print()" 
-                            class="btn btn-outline-secondary font-weight-bold px-3 d-flex align-items-center justify-content-center" 
-                            style="border-radius: 8px; border-color: #cbd5e1 !important; height: 38px; gap: 6px; font-size: 13px;">
-                        <i class="fas fa-print font-12"></i> Print
+                            class="btn btn-light font-weight-bold w-100 border" 
+                            wire:click="closeViewModal" 
+                            style="border-radius: 8px; border-color: #cbd5e1 !important;">
+                        Close
                     </button>
-                    
-                    <div class="d-flex align-items-center" style="gap: 8px;">
-                        <button type="button" 
-                                wire:click="editApplication({{ $selectedApplication->id }})" 
-                                class="btn btn-warning text-dark font-weight-bold px-3 d-flex align-items-center justify-content-center shadow-sm" 
-                                style="border-radius: 8px; height: 38px; gap: 6px; font-size: 13px;">
-                            <i class="fas fa-pen font-12"></i> Edit
-                        </button>
-                        
-                        <button type="button" 
-                                class="btn btn-light font-weight-bold px-3 border" 
-                                wire:click="closeViewModal" 
-                                style="border-radius: 8px; border-color: #cbd5e1 !important; height: 38px; font-size: 13px;">
-                            Close
-                        </button>
-                    </div>
                 </div>
 
             </div>
