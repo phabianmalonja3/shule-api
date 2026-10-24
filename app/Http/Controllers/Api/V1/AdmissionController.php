@@ -42,7 +42,10 @@ class AdmissionController extends Controller
         return back();
     }
 
-
+    public function showApplicationForm(Request $request)
+    {
+        dd('mfyuu');
+    }
 
 public function removeStreamSubject($teacherId, $classId)
 {
