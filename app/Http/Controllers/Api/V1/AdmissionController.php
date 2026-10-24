@@ -214,7 +214,7 @@ public function updateTeacher(Teacher $teacher)
         $examCenters = ExamCenter::all();
 
         return view('admission.create-application', [
-            'examCenters' => examCenters,
+            'examCenters' => $examCenters,
             'exam_language' => old('exam_language', 'english'), // Preserves old input on validation errors
         ]);
     }
