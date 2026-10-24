@@ -7,7 +7,7 @@
         <x-navbar />
         <x-admin.sidebar />
         <div class="main-content">
-            <div style="background-color: #f4f8f7; min-height: 100vh; color: #1e293b;">
+            
                 <div class="container" style="max-width: 860px;">
 
                     <!-- Top Header Navigation / Title -->
@@ -472,7 +472,7 @@
                     </form>
 
                 </div>
-            </div>
+            
         </div>
     </div>
 </x-layout>
