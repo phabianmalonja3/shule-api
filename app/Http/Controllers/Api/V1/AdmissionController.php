@@ -211,12 +211,11 @@ public function updateTeacher(Teacher $teacher)
 
     public function create()
     {
-        $examCenters = ExamCenter::where('school_id', Auth::user()->school_id ?? null)
-            // ->where('is_active', true)
-            ->get();
+        $examCenters = ExamCenter::all();
 
         return view('admission.create-application', [
-            'examCenters' => $examCenters,
+            'examCenters' => examCenters,
+            'exam_language' => old('exam_language', 'english'), // Preserves old input on validation errors
         ]);
     }
 
