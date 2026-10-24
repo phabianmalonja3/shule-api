@@ -1,6 +1,6 @@
 <x-layout >
     <x-slot:title>
-        Application Dashboard
+        Application Form
     </x-slot:title>
     <div class="py-5" style="background-color: #f4f8f7; min-height: 100vh; color: #1e293b;">
         <div class="container" style="max-width: 860px;">
@@ -17,11 +17,10 @@
                         <small class="text-uppercase font-weight-bold text-muted" style="font-size: 10px; letter-spacing: 0.8px;">Education Opportunity Programme</small>
                     </div>
                 </div>
-                <span class="badge px-3 py-2 font-weight-bold shadow-sm d-flex align-items-center" 
-                    style="background-color: #ffffff; color: #0f766e; border-radius: 20px; gap: 6px; font-size: 12px; border: 1px solid #e2e8f0;">
-                    <span class="rounded-circle" style="width: 8px; height: 8px; background-color: #10b981;"></span>
-                    Secure application portal
-                </span>
+
+                <a href="{{ route('admissions.create') }}" target="_blank" class="btn btn-primary font-weight-bold shadow-sm px-3" style="border-radius: 8px; font-size: 13px; text-decoration: none;">
+                            <i class="fas fa-plus mr-1"></i> Add applications
+                        </a>
             </div>
 
             <!-- Start Your Application Banner Card -->
