@@ -1,4 +1,7 @@
-
+<x-layout >
+    <x-slot:title>
+        Application Dashboard
+    </x-slot:title>
     <div class="py-5" style="background-color: #f4f8f7; min-height: 100vh; color: #1e293b;">
         <div class="container" style="max-width: 860px;">
 
@@ -466,3 +469,4 @@
 
         </div>
     </div>
+</x-layout>
