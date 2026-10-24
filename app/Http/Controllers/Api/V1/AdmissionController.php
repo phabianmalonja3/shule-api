@@ -102,7 +102,7 @@ public function updateTeacher(Teacher $teacher)
 
 
     public function index(Request $request)
-    {dd('ddd');
+    {
         $user = Auth::user(); // Get the authenticated user
         $schoolId = $user->school_id; // Get the school ID
 
