@@ -15,6 +15,7 @@ use App\Models\Admission;
 use Illuminate\Support\Str;
 use App\Imports\UsersImport;
 use App\Models\Announcement;
+use App\Models\ExamCenter;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
@@ -208,7 +209,16 @@ public function updateTeacher(Teacher $teacher)
         ]);
     }
 
+    public function create()
+    {
+        $examCenters = ExamCenter::where('school_id', Auth::user()->school_id ?? null)
+            ->where('is_active', true)
+            ->get();
 
+        return view('admission.create-application', [
+            'examCenters' => $examCenters,
+        ]);
+    }
 
      /**
      * Generate and download the Excel sample file with descriptive headers for the add teachers.
