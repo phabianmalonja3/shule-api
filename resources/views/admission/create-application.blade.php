@@ -18,7 +18,7 @@
                     </div>
                 </div>
 
-                <a href="{{ route('admissions.create') }}" target="_blank" class="btn btn-primary font-weight-bold shadow-sm px-3" style="border-radius: 8px; font-size: 13px; text-decoration: none;">
+                <a href="{{ route('admissions.create') }}" target="_blank" class="btn btn-primary font-weight-bold shadow-sm px-3" style="background-color: #0f766e; border-radius: 8px; font-size: 13px; text-decoration: none;">
                             <i class="fas fa-plus mr-1"></i> Add applications
                         </a>
             </div>
