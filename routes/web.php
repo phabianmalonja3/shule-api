@@ -62,9 +62,6 @@ Route::get('/waiting/approve', [SchoolApplicationController::class, 'waiting'])-
 Route::get('/online-application', [OnlineApplicationController::class, 'createOnlineApplication'])->name('online.application');
 Route::middleware(['auth', 'adminOnly'])->group(function () {
 
-
-Route::get('/admissions/create', [AdmissionController::class, 'showApplicationForm'])->name('admissions.create');
-
     // Route to handle scheduling the application
     Route::patch('/application/{application}/schedule', [SchoolApplicationController::class, 'scheduleApplication'])->name('application.schedule');
     Route::get('/application/review', [SchoolApplicationController::class, 'review'])->name('application.review');
@@ -195,6 +192,7 @@ Route::delete('schoolSubjects/delete', [SubjectController::class, 'deleteSchoolS
     Route::put('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
     Route::put('/profile/change-password', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
     Route::resource('academic-years', AcademicYearController::class);
+Route::get('/admissions/create', [AdmissionController::class, 'showApplicationForm'])->name('admissions.create');
 
     Route::resource('admissions',  AdmissionController::class);
 });
