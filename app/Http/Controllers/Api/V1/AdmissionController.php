@@ -212,7 +212,7 @@ public function updateTeacher(Teacher $teacher)
     public function create()
     {
         $examCenters = ExamCenter::where('school_id', Auth::user()->school_id ?? null)
-            ->where('is_active', true)
+            // ->where('is_active', true)
             ->get();
 
         return view('admission.create-application', [
