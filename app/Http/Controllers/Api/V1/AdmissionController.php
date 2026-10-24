@@ -208,23 +208,7 @@ public function updateTeacher(Teacher $teacher)
         ]);
     }
 
-    public function create()
-    {
-        $excludedRoles = ['header teacher','head teacher', 'administrator', 'parent', 'student','class teacher'];
 
-        $schoolId = Auth::user()->school_id;
-
-        // Count academic teachers for the current school
-        $academicTeacherCount = \App\Models\User::whereHas('roles', function ($query) {
-            $query->where('name', 'academic teacher');
-        })->where('school_id', $schoolId)->count();
-
-
-        $roles = Role::whereNotIn('name', values: $excludedRoles)->get();
-
-
-            return view('components.teacher.upload',compact('roles','academicTeacherCount'));
-    }
 
      /**
      * Generate and download the Excel sample file with descriptive headers for the add teachers.
