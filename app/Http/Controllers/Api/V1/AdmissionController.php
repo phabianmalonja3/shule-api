@@ -211,12 +211,27 @@ public function updateTeacher(Teacher $teacher)
 
     public function create()
     {
-        $examCenters = ExamCenter::all();
+$examCenters = ExamCenter::all();
 
-        return view('admission.create-application', [
-            'examCenters' => $examCenters,
-            'exam_language' => old('exam_language', 'english'), // Preserves old input on validation errors
+        // Pass initial default arrays so foreach loops don't throw undefined errors
+        $parents = old('parents', [
+            [
+                'relationship' => '', 'phone' => '', 'first_name' => '', 
+                'middlename' => '', 'surname' => '', 'occupation' => '', 
+                'region' => '', 'district' => '', 'ward' => '', 'street' => ''
+            ]
         ]);
+
+        $schools = old('schools', [
+            [
+                'name' => '', 'region' => '', 'district' => '', 'ward' => '', 
+                'street' => '', 'max_standard' => '', 'is_finalist' => false, 
+                'math_score' => '', 'english_score' => '', 'science_score' => '', 
+                'headteacher_name' => '', 'headteacher_phone' => ''
+            ]
+        ]);
+
+        return view('admission.create-application', compact('examCenters', 'parents', 'schools'));
     }
 
      /**
