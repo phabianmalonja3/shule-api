@@ -213,7 +213,7 @@ public function updateTeacher(Teacher $teacher)
     {
 
         //$user = Auth::user()->school;
-        $schoolName = Auth::user()->school()->name;
+        $schoolName = Auth::user()->school->name;
         $examCenters = ExamCenter::all();
 
         // Pass initial default arrays so foreach loops don't throw undefined errors
