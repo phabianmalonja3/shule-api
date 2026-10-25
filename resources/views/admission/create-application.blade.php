@@ -1,10 +1,9 @@
-<x-layout>
+<x-layout >
     <x-slot:title>
         Application Form
     </x-slot:title>
-
     <div class="main-wrapper main-wrapper-1">
-        <div class="navbar-bg"></div>
+      <div class="navbar-bg"></div>
         <x-navbar />
         <x-admin.sidebar />
         <div class="main-content">
@@ -15,7 +14,7 @@
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <div class="d-flex align-items-center" style="gap: 14px;">
                             <div class="rounded-circle d-flex align-items-center justify-content-center text-white" 
-                                 style="width: 48px; height: 48px; background-color: #0f766e; border-radius: 12px !important;">
+                                style="width: 48px; height: 48px; background-color: #0f766e; border-radius: 12px !important;">
                                 <i class="fas fa-graduation-cap font-20"></i>
                             </div>
                             <div>
@@ -25,8 +24,8 @@
                         </div>
 
                         <a href="{{ route('admissions.create') }}" target="_blank" class="btn btn-primary font-weight-bold shadow-sm px-3" style="background-color: #0f766e; border-radius: 8px; font-size: 13px; text-decoration: none;">
-                            <i class="fas fa-plus mr-1"></i> Upload applications
-                        </a>
+                                    <i class="fas fa-plus mr-1"></i> Upload applications
+                                </a>
                     </div>
 
                     <!-- Start Your Application Banner Card -->
@@ -56,16 +55,16 @@
                         </div>
                     </div>
 
-                    <!-- Standard HTML Form Submission -->
-                    <form action="{{ route('admissions.store') }}" method="POST">
-                        @csrf
+                    <!-- Main Submission Form -->
+                    <form wire:submit.prevent="store">
 
                         <!-- SECTION 01: Examination Preferences -->
                         <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
                             <div class="card-body p-4 p-md-5">
+                                
                                 <div class="d-flex align-items-center mb-4" style="gap: 16px;">
                                     <div class="rounded-circle d-flex align-items-center justify-content-center" 
-                                         style="width: 44px; height: 44px; background-color: #ccfbf1; color: #0f766e; border-radius: 12px !important;">
+                                        style="width: 44px; height: 44px; background-color: #ccfbf1; color: #0f766e; border-radius: 12px !important;">
                                         <i class="far fa-calendar-alt font-18"></i>
                                     </div>
                                     <div>
@@ -79,10 +78,10 @@
                                     <!-- Exam Center Dropdown -->
                                     <div class="col-md-6 form-group mb-4">
                                         <label class="font-weight-bold text-dark font-13">Exam center <span class="text-danger">*</span></label>
-                                        <select name="center_id" class="form-control px-3" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                                        <select wire:model="center_id" class="form-control px-3" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                             <option value="">Choose an exam center</option>
                                             @foreach($examCenters as $center)
-                                                <option value="{{ $center->id }}" {{ old('center_id') == $center->id ? 'selected' : '' }}>{{ $center->name }}</option>
+                                                <option value="{{ $center->id }}">{{ $center->name }}</option>
                                             @endforeach
                                         </select>
                                         @error('center_id') <small class="text-danger font-12">{{ $message }}</small> @enderror
@@ -91,7 +90,7 @@
                                     <!-- Preferred Exam Date -->
                                     <div class="col-md-6 form-group mb-4">
                                         <label class="font-weight-bold text-dark font-13">Preferred exam date <span class="text-danger">*</span></label>
-                                        <input type="date" name="exam_date" value="{{ old('exam_date') }}" class="form-control px-3" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                                        <input type="date" wire:model="exam_date" class="form-control px-3" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                         @error('exam_date') <small class="text-danger font-12">{{ $message }}</small> @enderror
                                     </div>
                                 </div>
@@ -103,12 +102,16 @@
                                         
                                         <!-- English -->
                                         <div class="col-md flex-grow-1 p-0">
-                                            <label class="card border p-3 mb-0 text-left w-100 h-100" style="border-radius: 12px; cursor: pointer;">
+                                            <label class="card border p-3 mb-0 text-left w-100 h-100" 
+                                                style="border-radius: 12px; cursor: pointer; border-color: {{ $exam_language === 'english' ? '#0f766e' : '#e2e8f0' }} !important; background-color: {{ $exam_language === 'english' ? '#f0fdf4' : '#ffffff' }}; transition: all 0.2s;">
                                                 <div class="d-flex align-items-center" style="gap: 12px;">
-                                                    <input type="radio" name="exam_language" value="english" {{ old('exam_language', 'english') === 'english' ? 'checked' : '' }}>
+                                                    <input type="radio" wire:model.live="exam_language" value="english" class="mt-0">
+                                                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #ccfbf1; color: #0f766e;">
+                                                        <i class="fas fa-globe font-14"></i>
+                                                    </div>
                                                     <div>
                                                         <h6 class="font-weight-bold text-dark mb-0 font-14">English</h6>
-                                                        <small class="text-muted d-block font-12">I prefer to receive exam instructions in English</small>
+                                                        <small class="text-muted d-block font-12" style="line-height: 1.3;">I prefer to receive exam instructions in English</small>
                                                     </div>
                                                 </div>
                                             </label>
@@ -116,12 +119,16 @@
 
                                         <!-- Kiswahili -->
                                         <div class="col-md flex-grow-1 p-0">
-                                            <label class="card border p-3 mb-0 text-left w-100 h-100" style="border-radius: 12px; cursor: pointer;">
+                                            <label class="card border p-3 mb-0 text-left w-100 h-100" 
+                                                style="border-radius: 12px; cursor: pointer; border-color: {{ $exam_language === 'kiswahili' ? '#0f766e' : '#e2e8f0' }} !important; background-color: {{ $exam_language === 'kiswahili' ? '#f0fdf4' : '#ffffff' }}; transition: all 0.2s;">
                                                 <div class="d-flex align-items-center" style="gap: 12px;">
-                                                    <input type="radio" name="exam_language" value="kiswahili" {{ old('exam_language') === 'kiswahili' ? 'checked' : '' }}>
+                                                    <input type="radio" wire:model.live="exam_language" value="kiswahili" class="mt-0">
+                                                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #ccfbf1; color: #0f766e;">
+                                                        <i class="fas fa-globe font-14"></i>
+                                                    </div>
                                                     <div>
                                                         <h6 class="font-weight-bold text-dark mb-0 font-14">Kiswahili</h6>
-                                                        <small class="text-muted d-block font-12">Napendelea maelekezo ya mtihani kwa Kiswahili</small>
+                                                        <small class="text-muted d-block font-12" style="line-height: 1.3;">Napendelea maelekezo ya mtihani kwa Kiswahili</small>
                                                     </div>
                                                 </div>
                                             </label>
@@ -129,12 +136,16 @@
 
                                         <!-- No Preference -->
                                         <div class="col-md flex-grow-1 p-0">
-                                            <label class="card border p-3 mb-0 text-left w-100 h-100" style="border-radius: 12px; cursor: pointer;">
+                                            <label class="card border p-3 mb-0 text-left w-100 h-100" 
+                                                style="border-radius: 12px; cursor: pointer; border-color: {{ $exam_language === 'no_preference' ? '#0f766e' : '#e2e8f0' }} !important; background-color: {{ $exam_language === 'no_preference' ? '#f0fdf4' : '#ffffff' }}; transition: all 0.2s;">
                                                 <div class="d-flex align-items-center" style="gap: 12px;">
-                                                    <input type="radio" name="exam_language" value="no_preference" {{ old('exam_language') === 'no_preference' ? 'checked' : '' }}>
+                                                    <input type="radio" wire:model.live="exam_language" value="no_preference" class="mt-0">
+                                                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #ccfbf1; color: #0f766e;">
+                                                        <i class="fas fa-globe font-14"></i>
+                                                    </div>
                                                     <div>
                                                         <h6 class="font-weight-bold text-dark mb-0 font-14">No preference</h6>
-                                                        <small class="text-muted d-block font-12">I am comfortable with either language</small>
+                                                        <small class="text-muted d-block font-12" style="line-height: 1.3;">I am comfortable with either language</small>
                                                     </div>
                                                 </div>
                                             </label>
@@ -143,15 +154,17 @@
                                     </div>
                                     @error('exam_language') <small class="text-danger font-12 d-block mt-2">{{ $message }}</small> @enderror
                                 </div>
+
                             </div>
                         </div>
 
                         <!-- SECTION 02: Applicant Details -->
                         <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
                             <div class="card-body p-4 p-md-5">
+                                
                                 <div class="d-flex align-items-center mb-4" style="gap: 16px;">
                                     <div class="rounded-circle d-flex align-items-center justify-content-center" 
-                                         style="width: 44px; height: 44px; background-color: #ccfbf1; color: #0f766e; border-radius: 12px !important;">
+                                        style="width: 44px; height: 44px; background-color: #ccfbf1; color: #0f766e; border-radius: 12px !important;">
                                         <i class="far fa-user font-18"></i>
                                     </div>
                                     <div>
@@ -162,70 +175,81 @@
                                 </div>
 
                                 <div class="row">
+                                    <!-- First Name -->
                                     <div class="col-md-6 form-group mb-3">
                                         <label class="font-weight-bold text-dark font-13">First name <span class="text-danger">*</span></label>
-                                        <input type="text" name="first_name" value="{{ old('first_name') }}" class="form-control px-3" placeholder="Enter first name" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                                        <input type="text" wire:model="first_name" class="form-control px-3" placeholder="Enter first name" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                         @error('first_name') <small class="text-danger font-12">{{ $message }}</small> @enderror
                                     </div>
 
+                                    <!-- Middle Name -->
                                     <div class="col-md-6 form-group mb-3">
                                         <label class="font-weight-bold text-dark font-13">Middle name</label>
-                                        <input type="text" name="middlename" value="{{ old('middlename') }}" class="form-control px-3" placeholder="Enter middle name" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                                        <input type="text" wire:model="middlename" class="form-control px-3" placeholder="Enter middle name" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                                        @error('middlename') <small class="text-danger font-12">{{ $message }}</small> @enderror
                                     </div>
 
+                                    <!-- Surname -->
                                     <div class="col-md-6 form-group mb-3">
                                         <label class="font-weight-bold text-dark font-13">Surname <span class="text-danger">*</span></label>
-                                        <input type="text" name="surname" value="{{ old('surname') }}" class="form-control px-3" placeholder="Enter surname" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                                        <input type="text" wire:model="surname" class="form-control px-3" placeholder="Enter surname" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                         @error('surname') <small class="text-danger font-12">{{ $message }}</small> @enderror
                                     </div>
 
+                                    <!-- Gender -->
                                     <div class="col-md-6 form-group mb-3">
                                         <label class="font-weight-bold text-dark font-13">Gender <span class="text-danger">*</span></label>
-                                        <select name="gender" class="form-control px-3" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                                        <select wire:model="gender" class="form-control px-3" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                             <option value="">Select an option</option>
-                                            <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
-                                            <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
                                         </select>
                                         @error('gender') <small class="text-danger font-12">{{ $message }}</small> @enderror
                                     </div>
 
+                                    <!-- Religion -->
                                     <div class="col-md-6 form-group mb-3">
                                         <label class="font-weight-bold text-dark font-13">Religion <span class="text-danger">*</span></label>
-                                        <select name="religion" class="form-control px-3" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                                        <select wire:model="religion" class="form-control px-3" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                             <option value="">Select an option</option>
-                                            <option value="christian" {{ old('religion') == 'christian' ? 'selected' : '' }}>Christian</option>
-                                            <option value="islam" {{ old('religion') == 'islam' ? 'selected' : '' }}>Islam</option>
-                                            <option value="other" {{ old('religion') == 'other' ? 'selected' : '' }}>Other</option>
+                                            <option value="christian">Christian</option>
+                                            <option value="islam">Islam</option>
+                                            <option value="other">Other</option>
                                         </select>
                                         @error('religion') <small class="text-danger font-12">{{ $message }}</small> @enderror
                                     </div>
 
+                                    <!-- Denomination -->
                                     <div class="col-md-6 form-group mb-3">
                                         <label class="font-weight-bold text-dark font-13">Denomination</label>
-                                        <input type="text" name="denomination" value="{{ old('denomination') }}" class="form-control px-3" placeholder="e.g. Catholic, Lutheran" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                                        <input type="text" wire:model="denomination" class="form-control px-3" placeholder="e.g. Catholic, Lutheran" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                                        @error('denomination') <small class="text-danger font-12">{{ $message }}</small> @enderror
                                     </div>
 
+                                    <!-- Current Residence -->
                                     <div class="col-md-6 form-group mb-0">
                                         <label class="font-weight-bold text-dark font-13">Current residence <span class="text-danger">*</span></label>
-                                        <select name="current_residence" class="form-control px-3" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                                        <select wire:model="current_residence" class="form-control px-3" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                             <option value="">Select an option</option>
-                                            <option value="stays_with_father" {{ old('current_residence') == 'stays_with_father' ? 'selected' : '' }}>Stays with father</option>
-                                            <option value="stays_with_mother" {{ old('current_residence') == 'stays_with_mother' ? 'selected' : '' }}>Stays with mother</option>
-                                            <option value="stays_with_both" {{ old('current_residence') == 'stays_with_both' ? 'selected' : '' }}>Stays with both parents</option>
-                                            <option value="stays_with_guardian" {{ old('current_residence') == 'stays_with_guardian' ? 'selected' : '' }}>Stays with guardian</option>
+                                            <option value="stays_with_father">Stays with father</option>
+                                            <option value="stays_with_mother">Stays with mother</option>
+                                            <option value="stays_with_both">Stays with both parents</option>
+                                            <option value="stays_with_guardian">Stays with guardian</option>
                                         </select>
                                         @error('current_residence') <small class="text-danger font-12">{{ $message }}</small> @enderror
                                     </div>
                                 </div>
+
                             </div>
                         </div>
 
                         <!-- SECTION 03: Parent & Guardian Details -->
                         <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
                             <div class="card-body p-4 p-md-5">
+                                
                                 <div class="d-flex align-items-center mb-4" style="gap: 16px;">
                                     <div class="rounded-circle d-flex align-items-center justify-content-center" 
-                                         style="width: 44px; height: 44px; background-color: #ccfbf1; color: #0f766e; border-radius: 12px !important;">
+                                        style="width: 44px; height: 44px; background-color: #ccfbf1; color: #0f766e; border-radius: 12px !important;">
                                         <i class="fas fa-users font-18"></i>
                                     </div>
                                     <div>
@@ -235,6 +259,7 @@
                                     </div>
                                 </div>
 
+                                <!-- Loop Through Parents Array -->
                                 @foreach($parents as $index => $parent)
                                     <div class="card border p-4 mb-4" style="border-radius: 12px; border-color: #e2e8f0 !important; background-color: #f8fafc;">
                                         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -242,72 +267,86 @@
                                                 <span class="text-uppercase font-weight-bold" style="font-size: 10px; color: #0f766e; letter-spacing: 0.8px;">Contact 0{{ $index + 1 }}</span>
                                                 <h6 class="font-weight-bold text-dark mb-0">Parent or guardian details</h6>
                                             </div>
+                                            @if(count($parents) > 1)
+                                                <button type="button" class="btn btn-sm btn-outline-danger border-0" wire:click="removeParent({{ $index }})" style="border-radius: 6px;">
+                                                    <i class="fas fa-trash-alt mr-1"></i> Remove
+                                                </button>
+                                            @endif
                                         </div>
 
                                         <div class="row">
                                             <div class="col-md-6 form-group mb-3">
                                                 <label class="font-weight-bold text-dark font-13">Relationship to applicant <span class="text-danger">*</span></label>
-                                                <select name="parents[{{ $index }}][relationship]" class="form-control px-3" style="height: 46px; border-radius: 8px;">
+                                                <select wire:model="parents.{{ $index }}.relationship" class="form-control px-3" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                                     <option value="">Select relationship</option>
-                                                    <option value="father" {{ ($parent['relationship'] ?? '') == 'father' ? 'selected' : '' }}>Father</option>
-                                                    <option value="mother" {{ ($parent['relationship'] ?? '') == 'mother' ? 'selected' : '' }}>Mother</option>
-                                                    <option value="guardian" {{ ($parent['relationship'] ?? '') == 'guardian' ? 'selected' : '' }}>Guardian</option>
+                                                    <option value="father">Father</option>
+                                                    <option value="mother">Mother</option>
+                                                    <option value="guardian">Guardian</option>
                                                 </select>
                                             </div>
 
                                             <div class="col-md-6 form-group mb-3">
                                                 <label class="font-weight-bold text-dark font-13">Phone number <span class="text-danger">*</span></label>
-                                                <input type="text" name="parents[{{ $index }}][phone]" value="{{ $parent['phone'] ?? '' }}" class="form-control px-3" placeholder="+255 7XX XXX XXX" style="height: 46px; border-radius: 8px;">
+                                                <input type="text" wire:model="parents.{{ $index }}.phone" class="form-control px-3" placeholder="+255 7XX XXX XXX" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                             </div>
 
                                             <div class="col-md-6 form-group mb-3">
                                                 <label class="font-weight-bold text-dark font-13">First name <span class="text-danger">*</span></label>
-                                                <input type="text" name="parents[{{ $index }}][first_name]" value="{{ $parent['first_name'] ?? '' }}" class="form-control px-3" placeholder="Enter first name" style="height: 46px; border-radius: 8px;">
+                                                <input type="text" wire:model="parents.{{ $index }}.first_name" class="form-control px-3" placeholder="Enter first name" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                             </div>
 
                                             <div class="col-md-6 form-group mb-3">
                                                 <label class="font-weight-bold text-dark font-13">Middle name</label>
-                                                <input type="text" name="parents[{{ $index }}][middlename]" value="{{ $parent['middlename'] ?? '' }}" class="form-control px-3" placeholder="Enter middle name" style="height: 46px; border-radius: 8px;">
+                                                <input type="text" wire:model="parents.{{ $index }}.middlename" class="form-control px-3" placeholder="Enter middle name" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                             </div>
 
                                             <div class="col-md-6 form-group mb-3">
                                                 <label class="font-weight-bold text-dark font-13">Surname <span class="text-danger">*</span></label>
-                                                <input type="text" name="parents[{{ $index }}][surname]" value="{{ $parent['surname'] ?? '' }}" class="form-control px-3" placeholder="Enter surname" style="height: 46px; border-radius: 8px;">
+                                                <input type="text" wire:model="parents.{{ $index }}.surname" class="form-control px-3" placeholder="Enter surname" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                             </div>
 
                                             <div class="col-md-6 form-group mb-3">
                                                 <label class="font-weight-bold text-dark font-13">Occupation <span class="text-danger">*</span></label>
-                                                <input type="text" name="parents[{{ $index }}][occupation]" value="{{ $parent['occupation'] ?? '' }}" class="form-control px-3" placeholder="e.g. Farmer, Teacher" style="height: 46px; border-radius: 8px;">
+                                                <input type="text" wire:model="parents.{{ $index }}.occupation" class="form-control px-3" placeholder="e.g. Farmer, Teacher" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                             </div>
 
                                             <div class="col-md-6 form-group mb-3">
                                                 <label class="font-weight-bold text-dark font-13">Region <span class="text-danger">*</span></label>
-                                                <input type="text" name="parents[{{ $index }}][region]" value="{{ $parent['region'] ?? '' }}" class="form-control px-3" placeholder="e.g. Arusha" style="height: 46px; border-radius: 8px;">
+                                                <input type="text" wire:model="parents.{{ $index }}.region" class="form-control px-3" placeholder="e.g. Arusha" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                             </div>
 
                                             <div class="col-md-6 form-group mb-3">
                                                 <label class="font-weight-bold text-dark font-13">District <span class="text-danger">*</span></label>
-                                                <input type="text" name="parents[{{ $index }}][district]" value="{{ $parent['district'] ?? '' }}" class="form-control px-3" placeholder="Enter district" style="height: 46px; border-radius: 8px;">
+                                                <input type="text" wire:model="parents.{{ $index }}.district" class="form-control px-3" placeholder="Enter district" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                             </div>
 
                                             <div class="col-md-6 form-group mb-3">
                                                 <label class="font-weight-bold text-dark font-13">Ward <span class="text-danger">*</span></label>
-                                                <input type="text" name="parents[{{ $index }}][ward]" value="{{ $parent['ward'] ?? '' }}" class="form-control px-3" placeholder="Enter ward" style="height: 46px; border-radius: 8px;">
+                                                <input type="text" wire:model="parents.{{ $index }}.ward" class="form-control px-3" placeholder="Enter ward" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                             </div>
 
                                             <div class="col-md-6 form-group mb-0">
                                                 <label class="font-weight-bold text-dark font-13">Street / Village <span class="text-danger">*</span></label>
-                                                <input type="text" name="parents[{{ $index }}][street]" value="{{ $parent['street'] ?? '' }}" class="form-control px-3" placeholder="Enter street or village" style="height: 46px; border-radius: 8px;">
+                                                <input type="text" wire:model="parents.{{ $index }}.street" class="form-control px-3" placeholder="Enter street or village" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                             </div>
                                         </div>
                                     </div>
                                 @endforeach
+
+                                <!-- Add Parent Button -->
+                                <button type="button" class="btn border-dashed font-weight-bold py-2 px-3 d-inline-flex align-items-center" 
+                                        wire:click="addParent"
+                                        style="border: 1.5px dashed #0f766e; color: #0f766e; background-color: #f0fdf4; border-radius: 8px; gap: 8px; font-size: 13px;">
+                                    <i class="fas fa-plus font-12"></i> Add mother, father or guardian
+                                </button>
+
                             </div>
                         </div>
 
                         <!-- SECTION 04: School Information -->
                         <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
                             <div class="card-body p-4 p-md-5">
+                                
                                 @foreach($schools as $sIndex => $school)
                                     <div class="mb-4">
                                         <span class="text-uppercase font-weight-bold" style="font-size: 10px; color: #0f766e; letter-spacing: 0.8px;">School 0{{ $sIndex + 1 }}</span>
@@ -315,36 +354,113 @@
 
                                         <div class="form-group mb-3">
                                             <label class="font-weight-bold text-dark font-13">School name <span class="text-danger">*</span></label>
-                                            <input type="text" name="schools[{{ $sIndex }}][name]" value="{{ $school['name'] ?? '' }}" class="form-control px-3" placeholder="Enter the official school name" style="height: 46px; border-radius: 8px;">
+                                            <input type="text" wire:model="schools.{{ $sIndex }}.name" class="form-control px-3" placeholder="Enter the official school name" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                         </div>
 
                                         <div class="row">
                                             <div class="col-md-6 form-group mb-3">
                                                 <label class="font-weight-bold text-dark font-13">Region <span class="text-danger">*</span></label>
-                                                <input type="text" name="schools[{{ $sIndex }}][region]" value="{{ $school['region'] ?? '' }}" class="form-control px-3" placeholder="e.g. Arusha" style="height: 46px; border-radius: 8px;">
+                                                <input type="text" wire:model="schools.{{ $sIndex }}.region" class="form-control px-3" placeholder="e.g. Arusha" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                             </div>
 
                                             <div class="col-md-6 form-group mb-3">
                                                 <label class="font-weight-bold text-dark font-13">District <span class="text-danger">*</span></label>
-                                                <input type="text" name="schools[{{ $sIndex }}][district]" value="{{ $school['district'] ?? '' }}" class="form-control px-3" placeholder="e.g. Arusha City" style="height: 46px; border-radius: 8px;">
+                                                <input type="text" wire:model="schools.{{ $sIndex }}.district" class="form-control px-3" placeholder="e.g. Arusha City" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                             </div>
 
                                             <div class="col-md-6 form-group mb-3">
                                                 <label class="font-weight-bold text-dark font-13">Ward <span class="text-danger">*</span></label>
-                                                <input type="text" name="schools[{{ $sIndex }}][ward]" value="{{ $school['ward'] ?? '' }}" class="form-control px-3" placeholder="Enter ward" style="height: 46px; border-radius: 8px;">
+                                                <input type="text" wire:model="schools.{{ $sIndex }}.ward" class="form-control px-3" placeholder="Enter ward" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                             </div>
 
                                             <div class="col-md-6 form-group mb-3">
                                                 <label class="font-weight-bold text-dark font-13">Street / Village <span class="text-danger">*</span></label>
-                                                <input type="text" name="schools[{{ $sIndex }}][street]" value="{{ $school['street'] ?? '' }}" class="form-control px-3" placeholder="Enter street or village" style="height: 46px; border-radius: 8px;">
+                                                <input type="text" wire:model="schools.{{ $sIndex }}.street" class="form-control px-3" placeholder="Enter street or village" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                                            </div>
+
+                                            <div class="col-md-6 form-group mb-3">
+                                                <label class="font-weight-bold text-dark font-13">Maximum standard <span class="text-danger">*</span></label>
+                                                <select wire:model="schools.{{ $sIndex }}.max_standard" class="form-control px-3" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                                                    <option value="">Select level</option>
+                                                    <option value="form_4">Form IV</option>
+                                                    <option value="form_6">Form VI</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-6 form-group mb-3">
+                                                <label class="font-weight-bold text-dark font-13">Finalist status <span class="text-danger">*</span></label>
+                                                <div class="d-flex align-items-center p-1 bg-light border rounded" style="height: 46px; border-radius: 8px !important; border-color: #cbd5e1 !important;">
+                                                    <button type="button" class="btn btn-sm w-50 font-weight-bold {{ $schools[$sIndex]['is_finalist'] ? 'btn-white shadow-sm text-dark' : 'text-muted' }}" 
+                                                            wire:click="$set('schools.{{ $sIndex }}.is_finalist', true)" style="border-radius: 6px;">
+                                                        Yes
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm w-50 font-weight-bold {{ !$schools[$sIndex]['is_finalist'] ? 'btn-white shadow-sm text-dark' : 'text-muted' }}" 
+                                                            wire:click="$set('schools.{{ $sIndex }}.is_finalist', false)" style="border-radius: 6px;">
+                                                        No
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
+
+                                        <hr class="my-4" style="border-top: 1px dashed #e2e8f0;">
+
+                                        <!-- Average Subject Scores -->
+                                        <div class="row align-items-center mb-4">
+                                            <div class="col-md-4 mb-2 mb-md-0">
+                                                <h6 class="font-weight-bold text-dark mb-0 font-14">Average subject scores</h6>
+                                                <small class="text-muted font-12">Enter the applicant's most recent average as a percentage.</small>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <label class="font-weight-bold text-dark font-12">Mathematics <span class="text-danger">*</span></label>
+                                                        <input type="number" wire:model="schools.{{ $sIndex }}.math_score" class="form-control text-center" placeholder="0–100" min="0" max="100" style="height: 42px; border-radius: 8px;">
+                                                    </div>
+                                                    <div class="col">
+                                                        <label class="font-weight-bold text-dark font-12">English <span class="text-danger">*</span></label>
+                                                        <input type="number" wire:model="schools.{{ $sIndex }}.english_score" class="form-control text-center" placeholder="0–100" min="0" max="100" style="height: 42px; border-radius: 8px;">
+                                                    </div>
+                                                    <div class="col">
+                                                        <label class="font-weight-bold text-dark font-12">Science <span class="text-danger">*</span></label>
+                                                        <input type="number" wire:model="schools.{{ $sIndex }}.science_score" class="form-control text-center" placeholder="0–100" min="0" max="100" style="height: 42px; border-radius: 8px;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <hr class="my-4" style="border-top: 1px dashed #e2e8f0;">
+
+                                        <!-- Headteacher Contact -->
+                                        <div class="row align-items-center">
+                                            <div class="col-md-4 mb-2 mb-md-0 d-flex align-items-start" style="gap: 8px;">
+                                                <span class="rounded-circle mt-1" style="width: 8px; height: 8px; background-color: #f59e0b; flex-shrink: 0;"></span>
+                                                <div>
+                                                    <h6 class="font-weight-bold text-dark mb-0 font-14">Headteacher contact</h6>
+                                                    <small class="text-muted font-12">Optional for applicants who are not finalists.</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 form-group mb-2 mb-md-0">
+                                                <input type="text" wire:model="schools.{{ $sIndex }}.headteacher_name" class="form-control px-3" placeholder="Full name" style="height: 42px; border-radius: 8px;">
+                                            </div>
+                                            <div class="col-md-4 form-group mb-0">
+                                                <input type="text" wire:model="schools.{{ $sIndex }}.headteacher_phone" class="form-control px-3" placeholder="+255 7XX XXX XXX" style="height: 42px; border-radius: 8px;">
+                                            </div>
+                                        </div>
+
                                     </div>
                                 @endforeach
+
+                                <!-- Add School Button -->
+                                <button type="button" class="btn border-dashed font-weight-bold py-2 px-3 d-inline-flex align-items-center mt-2" 
+                                        wire:click="addSchool"
+                                        style="border: 1.5px dashed #0f766e; color: #0f766e; background-color: #f0fdf4; border-radius: 8px; gap: 8px; font-size: 13px;">
+                                    <i class="fas fa-plus font-12"></i> Add another school
+                                </button>
+
                             </div>
                         </div>
 
-                        <!-- Footer Submit Button -->
+                        <!-- Footer Confirmation & Submit Button -->
                         <div class="d-flex flex-column flex-md-row align-items-center justify-content-between my-5" style="gap: 16px;">
                             <span class="text-muted font-14">By submitting, you confirm that the information provided is accurate and complete.</span>
                             <button type="submit" class="btn font-weight-bold text-white px-4 py-3 shadow d-inline-flex align-items-center" 

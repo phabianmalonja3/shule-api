@@ -210,9 +210,11 @@ public function updateTeacher(Teacher $teacher)
     }
 
     public function create()
-{
-        $examCenters = ExamCenter::all();
+    {
 
+    $examCenters = ExamCenter::all();
+
+        // Pass initial default arrays so foreach loops don't throw undefined errors
         $parents = old('parents', [
             [
                 'relationship' => '', 'phone' => '', 'first_name' => '', 
@@ -224,32 +226,16 @@ public function updateTeacher(Teacher $teacher)
         $schools = old('schools', [
             [
                 'name' => '', 'region' => '', 'district' => '', 'ward' => '', 
-                'street' => '', 'max_standard' => '', 'is_finalist' => '0', 
+                'street' => '', 'max_standard' => '', 'is_finalist' => false, 
                 'math_score' => '', 'english_score' => '', 'science_score' => '', 
                 'headteacher_name' => '', 'headteacher_phone' => ''
             ]
         ]);
 
-        return view('admission.create-application', compact('examCenters', 'parents', 'schools'));
+        $exam_language = old('exam_language', 'english');
+        return view('admission.create-application', compact('examCenters', 'parents', 'schools', 'exam_language'));
+
     }
-
-    // public function store(Request $request)
-    // {
-    //     $request->validate([
-    //         'center_id' => 'required',
-    //         'exam_date' => 'required|date',
-    //         'exam_language' => 'required',
-    //         'first_name' => 'required|string|max:255',
-    //         'surname' => 'required|string|max:255',
-    //         'gender' => 'required',
-    //         'religion' => 'required',
-    //         'current_residence' => 'required',
-    //     ]);
-
-    //     // Save logic here...
-
-    //     return redirect()->route('admissions.index')->with('success', 'Application submitted successfully!');
-    // }
 
      /**
      * Generate and download the Excel sample file with descriptive headers for the add teachers.
