@@ -8,10 +8,10 @@
         <x-admin.sidebar />
         <div class="main-content">
             <div class="py-3" style="background-color: #f4f8f7; min-height: 100vh; color: #1e293b;">
-                <div class="container" style="max-width: 1000px;">
+                <div class="container" style="max-width: 1500px;">
 
                     <!-- Top Header Navigation / Title -->
-                    <div class="d-flex align-items-center justify-content-between mb-3">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
                         <div class="d-flex align-items-center" style="gap: 14px;">
                             <div class="rounded-circle d-flex align-items-center justify-content-center text-white" 
                                 style="width: 48px; height: 48px; background-color: #0f766e; border-radius: 12px !important;">
@@ -30,7 +30,7 @@
 
                     <!-- Start Your Application Banner Card -->
                     <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px; background-color: #ffffff;">
-                        <div class="card-body p-3 p-md-4">
+                        <div class="card-body p-4 p-md-5">
                             <div class="row align-items-center">
                                 <div class="col-md-7 mb-4 mb-md-0">
                                     <span class="text-uppercase font-weight-bold" style="font-size: 11px; color: #0f766e; letter-spacing: 1px;">2025 Student Intake</span>
@@ -60,7 +60,7 @@
 
                         <!-- SECTION 01: Examination Preferences -->
                         <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
-                            <div class="card-body p-3 p-md-4">
+                            <div class="card-body p-4 p-md-5">
                                 
                                 <div class="d-flex align-items-center mb-4" style="gap: 16px;">
                                     <div class="rounded-circle d-flex align-items-center justify-content-center" 
@@ -160,7 +160,7 @@
 
                         <!-- SECTION 02: Applicant Details -->
                         <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
-                            <div class="card-body p-3 p-md-4">
+                            <div class="card-body p-4 p-md-5">
                                 
                                 <div class="d-flex align-items-center mb-4" style="gap: 16px;">
                                     <div class="rounded-circle d-flex align-items-center justify-content-center" 
@@ -245,7 +245,7 @@
 
                         <!-- SECTION 03: Parent & Guardian Details -->
                         <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
-                            <div class="card-body p-3 p-md-4">
+                            <div class="card-body p-4 p-md-5">
                                 
                                 <div class="d-flex align-items-center mb-4" style="gap: 16px;">
                                     <div class="rounded-circle d-flex align-items-center justify-content-center" 
@@ -261,7 +261,7 @@
 
                                 <!-- Loop Through Parents Array -->
                                 @foreach($parents as $index => $parent)
-                                    <div class="card border p-3 mb-4" style="border-radius: 12px; border-color: #e2e8f0 !important; background-color: #f8fafc;">
+                                    <div class="card border p-4 mb-4" style="border-radius: 12px; border-color: #e2e8f0 !important; background-color: #f8fafc;">
                                         <div class="d-flex justify-content-between align-items-center mb-3">
                                             <div>
                                                 <span class="text-uppercase font-weight-bold" style="font-size: 10px; color: #0f766e; letter-spacing: 0.8px;">Contact 0{{ $index + 1 }}</span>
@@ -345,7 +345,7 @@
 
                         <!-- SECTION 04: School Information -->
                         <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
-                            <div class="card-body p-3 p-md-4">
+                            <div class="card-body p-4 p-md-5">
                                 
                                 @foreach($schools as $sIndex => $school)
                                     <div class="mb-4">
