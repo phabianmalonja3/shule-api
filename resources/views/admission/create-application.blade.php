@@ -14,7 +14,7 @@
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <div class="d-flex align-items-center" style="gap: 14px;">
                             <div class="rounded-circle d-flex align-items-center justify-content-center text-white" 
-                                style="width: 48px; height: 48px; background-color: #f3f4f6; border-radius: 12px !important;">
+                                style="width: 48px; height: 48px; background-color: #0f766e; border-radius: 12px !important;">
                                 <i class="fas fa-graduation-cap font-20"></i>
                             </div>
                             <div>
