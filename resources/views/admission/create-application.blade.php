@@ -8,7 +8,8 @@
         <x-admin.sidebar />
         <div class="main-content">
             <section class="section">
-                <div class="py-2" style="background-color: #f4f8f7; min-height: 100vh; color: #1e293b;">
+                <div class="card shadow-sm border-0 rounded-lg">
+
                     <div class="container" style="max-width: 2000px;">
 
                         <!-- Top Header Navigation / Title -->
