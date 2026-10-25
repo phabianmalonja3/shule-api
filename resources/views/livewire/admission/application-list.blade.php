@@ -146,15 +146,16 @@
                                 </div>
                             </td>
 
-
-<td>                        <div>
-                                        <h6 class="font-weight-bold text-dark mb-0 font-14">
-                                            {{ $application->examCenter->name ?? 'N/A' }}
-                                        </h6>
-                                        <small class="text-muted">
-                                            {{ $application->exam_date?->format('d M Y') ?? 'No Exam Date Set' }}
-                                        </small>
-                                    </div></td>
+                            <td>                        
+                                <div>
+                                    <h6 class="font-weight-bold text-dark mb-0 font-14">
+                                        {{ $application->examCenter->name ?? 'N/A' }}
+                                    </h6>
+                                    <small class="text-muted">
+                                        {{ $application->exam_date?->format('d M Y') ?? 'No Exam Date Set' }}
+                                    </small>
+                                </div>
+                            </td>
                             <td class="py-3 align-middle text-muted font-13">
                                          {{ ucfirst($application->exam_language) ?? 'No Language Specified' }}
                             </td>

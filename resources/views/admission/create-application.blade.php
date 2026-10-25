@@ -9,9 +9,7 @@
         <div class="main-content">
             <section class="section">
                 <div class="card shadow-sm border-0 rounded-lg">
-
-                    <div class="container" style="max-width: 2000px;">
-
+                    <div class="card-body">
                         <!-- Top Header Navigation / Title -->
                         <div class="d-flex align-items-center justify-content-between mb-4">
                             <div class="d-flex align-items-center" style="gap: 14px;">
