@@ -7,8 +7,8 @@
         <x-navbar />
         <x-admin.sidebar />
         <div class="main-content">
-            <div class="py-3" style="background-color: #f4f8f7; min-height: 100vh; color: #1e293b;">
-                <div class="container" style="max-width: 1500px;">
+            <div class="py-2" style="background-color: #f4f8f7; min-height: 100vh; color: #1e293b;">
+                <div class="container" style="max-width: 1800px;">
 
                     <!-- Top Header Navigation / Title -->
                     <div class="d-flex align-items-center justify-content-between mb-4">
