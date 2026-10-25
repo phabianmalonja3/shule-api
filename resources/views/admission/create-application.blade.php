@@ -19,7 +19,7 @@
                                 </div>
                                 <div>
                                     <h5 class="font-weight-bold mb-0 text-dark" style="letter-spacing: -0.3px;">Student Application</h5>
-                                    <small class="text-uppercase font-weight-bold text-muted" style="font-size: 10px; letter-spacing: 0.8px;">Education Opportunity Programme</small>
+                                    <small class="text-uppercase font-weight-bold text-muted" style="font-size: 10px; letter-spacing: 0.8px;"> {{ $schoolName }}</small>
                                 </div>
                             </div>
 
