@@ -3,7 +3,7 @@
         Application Form
     </x-slot:title>
     <div class="main-wrapper main-wrapper-1">
-      <div class="navbar-bg"></div>
+        <div class="navbar-bg"></div>
         <x-navbar />
         <x-admin.sidebar />
         <div class="main-content">
