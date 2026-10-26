@@ -14,44 +14,48 @@
                             $applicationType = 'Form I';
                         @endphp
 
-                        @if(is_array($school->school_type) && in_array('O-Level', $school->school_type) && in_array('A-Level', $school->school_type))
-                                <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
-                                    <div class="card-body p-4 p-md-5">
-                                        <div class="form-group mb-0">
-                                            <label class="font-weight-bold text-dark font-13 mb-2">Choose application type <span class="text-danger">*</span></label>
-                                            <div class="d-flex align-items-center mb-4" style="gap: 16px;">
-                                            
-                                                <!-- Form One -->
-                                                <div class="col-md flex-grow-1 p-0">
-                                                    <label class="card border p-2.5 p-md-3 mb-0 text-left w-100 h-100" style="border-radius: 10px; cursor: pointer;">
-                                                        <div class="d-flex align-items-center" style="gap: 10px;">
-                                                            <input type="radio" name="application_type" value="form_one" class="app-type-radio" {{ old('application_type') === 'form_one' ? 'checked' : '' }}>
-                                                            <div>
-                                                                <h6 class="font-weight-bold text-dark mb-0 font-13">Form One</h6>
-                                                                <small class="text-muted d-block font-11">Apply for Ordinary Level (Form I)</small>
-                                                            </div>
-                                                        </div>
-                                                    </label>
-                                                </div>
-
-                                                <!-- Form Five -->
-                                                <div class="col-md flex-grow-1 p-0">
-                                                    <label class="card border p-2.5 p-md-3 mb-0 text-left w-100 h-100" style="border-radius: 10px; cursor: pointer;">
-                                                        <div class="d-flex align-items-center" style="gap: 10px;">
-                                                            <input type="radio" name="application_type" value="form_five" class="app-type-radio" {{ old('application_type') === 'form_five' ? 'checked' : '' }}>
-                                                            <div>
-                                                                <h6 class="font-weight-bold text-dark mb-0 font-13">Form Five</h6>
-                                                                <small class="text-muted d-block font-11">Apply for Advanced Level (Form V)</small>
-                                                            </div>
-                                                        </div>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            @error('application_type') <small class="text-danger font-12 d-block mt-1">{{ $message }}</small> @enderror
-                                        </div>
+    @if(is_array($school->school_type) && in_array('O-Level', $school->school_type) && in_array('A-Level', $school->school_type))
+        <div class="card border-0 shadow-sm mb-4" id="app-type-card" style="border-radius: 16px;">
+            <div class="card-body p-4 p-md-5">
+                <div class="form-group mb-0">
+                    <label class="font-weight-bold text-dark font-13 mb-2">Choose application type <span class="text-danger">*</span></label>
+                    <div class="d-flex align-items-center mb-4" style="gap: 16px;">
+                        
+                        <!-- Form One -->
+                        <div class="col-md flex-grow-1 p-0">
+                            <label class="card border p-2.5 p-md-3 mb-0 text-left w-100 h-100" style="border-radius: 10px; cursor: pointer;">
+                                <div class="d-flex align-items-center" style="gap: 10px;">
+                                    <input type="radio" name="application_type" value="form_one" class="app-type-radio" {{ old('application_type') === 'form_one' ? 'checked' : '' }}>
+                                    <div>
+                                        <h6 class="font-weight-bold text-dark mb-0 font-13">Form One</h6>
+                                        <small class="text-muted d-block font-11">Apply for Ordinary Level (Form I)</small>
                                     </div>
                                 </div>
-                        @endif
+                            </label>
+                        </div>
+
+                        <!-- Form Five -->
+                        <div class="col-md flex-grow-1 p-0">
+                            <label class="card border p-2.5 p-md-3 mb-0 text-left w-100 h-100" style="border-radius: 10px; cursor: pointer;">
+                                <div class="d-flex align-items-center" style="gap: 10px;">
+                                    <input type="radio" name="application_type" value="form_five" class="app-type-radio" {{ old('application_type') === 'form_five' ? 'checked' : '' }}>
+                                    <div>
+                                        <h6 class="font-weight-bold text-dark mb-0 font-13">Form Five</h6>
+                                        <small class="text-muted d-block font-11">Apply for Advanced Level (Form V)</small>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+
+                    </div>
+                    @error('application_type') <small class="text-danger font-12 d-block mt-1">{{ $message }}</small> @enderror
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <!-- EVERYTHING BELOW -->
+    <div id="form-content-below" style="display: none;">
 
                         <div id="form-content-below" style="display: none;">
                             <!-- Top Header Navigation / Title -->
