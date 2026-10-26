@@ -62,32 +62,32 @@
                                         <label class="font-weight-bold text-dark font-13 mb-2">Choose application type <span class="text-danger">*</span></label>
                                         <div class="row" style="gap: 10px; margin: 0;">
                                         
-                                        <!-- Form One -->
-                                        <div class="col-md flex-grow-1 p-0">
-                                            <label class="card border p-2.5 p-md-3 mb-0 text-left w-100 h-100" style="border-radius: 10px; cursor: pointer;">
-                                                <div class="d-flex align-items-center" style="gap: 10px;">
-                                                    <input type="radio" name="application_type" value="form_one" class="app-type-radio" {{ old('application_type') === 'form_one' ? 'checked' : '' }}>
-                                                    <div>
-                                                        <h6 class="font-weight-bold text-dark mb-0 font-13">Form One</h6>
-                                                        <small class="text-muted d-block font-11">Apply for Ordinary Level (Form I)</small>
+                                            <!-- Form One -->
+                                            <div class="col-md flex-grow-1 p-0">
+                                                <label class="card border p-2.5 p-md-3 mb-0 text-left w-100 h-100" style="border-radius: 10px; cursor: pointer;">
+                                                    <div class="d-flex align-items-center" style="gap: 10px;">
+                                                        <input type="radio" name="application_type" value="form_one" class="app-type-radio" {{ old('application_type') === 'form_one' ? 'checked' : '' }}>
+                                                        <div>
+                                                            <h6 class="font-weight-bold text-dark mb-0 font-13">Form One</h6>
+                                                            <small class="text-muted d-block font-11">Apply for Ordinary Level (Form I)</small>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </label>
-                                        </div>
+                                                </label>
+                                            </div>
 
-                                        <!-- Form Five -->
-                                        <div class="col-md flex-grow-1 p-0">
-                                            <label class="card border p-2.5 p-md-3 mb-0 text-left w-100 h-100" style="border-radius: 10px; cursor: pointer;">
-                                                <div class="d-flex align-items-center" style="gap: 10px;">
-                                                    <input type="radio" name="application_type" value="form_five" class="app-type-radio" {{ old('application_type') === 'form_five' ? 'checked' : '' }}>
-                                                    <div>
-                                                        <h6 class="font-weight-bold text-dark mb-0 font-13">Form Five</h6>
-                                                        <small class="text-muted d-block font-11">Apply for Advanced Level (Form V)</small>
+                                            <!-- Form Five -->
+                                            <div class="col-md flex-grow-1 p-0">
+                                                <label class="card border p-2.5 p-md-3 mb-0 text-left w-100 h-100" style="border-radius: 10px; cursor: pointer;">
+                                                    <div class="d-flex align-items-center" style="gap: 10px;">
+                                                        <input type="radio" name="application_type" value="form_five" class="app-type-radio" {{ old('application_type') === 'form_five' ? 'checked' : '' }}>
+                                                        <div>
+                                                            <h6 class="font-weight-bold text-dark mb-0 font-13">Form Five</h6>
+                                                            <small class="text-muted d-block font-11">Apply for Advanced Level (Form V)</small>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </label>
+                                                </label>
+                                            </div>
                                         </div>
-
                                     </div>
                             </div>
                             <!-- SECTION 01: Examination Preferences -->
