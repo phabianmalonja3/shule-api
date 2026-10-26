@@ -75,7 +75,7 @@
                             <div class="card-body p-4 p-md-5">
                                 <div class="row align-items-center">
                                     <div class="col-md-7 mb-4 mb-md-0">
-                                        <span class="text-uppercase font-weight-bold" style="font-size: 11px; color: #0f766e; letter-spacing: 1px;">{{ date('Y') }} Intake</span>
+                                        <span class="text-uppercase font-weight-bold" style="font-size: 11px; color: #0f766e; letter-spacing: 1px;">@if($applicationType == 'Form I') date('Y')+1 @else date('Y') @endif Intake</span>
                                         <h1 class="font-weight-bold text-dark mt-1 mb-2" style="font-size: 36px; letter-spacing: -0.5px;">Start your application</h1>
                                         <p class="text-muted mb-0 font-14" style="line-height: 1.6;">
                                             Tell us about yourself and your education journey. Fields marked with an asterisk (<span class="text-danger">*</span>) are required.
