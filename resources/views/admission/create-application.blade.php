@@ -55,7 +55,10 @@
                         @endif
 
                         <!-- EVERYTHING BELOW -->
-                        <div id="form-content-below" style="display: none;">
+                        <div id="form-content-below" 
+                             @if(is_array($school->school_type) && in_array('O-Level', $school->school_type) && in_array('A-Level', $school->school_type))
+                                style="display: none;"
+                             @endif>
                             <div id="form-content-below" style="display: none;">
                                 <!-- Top Header Navigation / Title -->
                                 <div class="d-flex align-items-center justify-content-between mb-4">
