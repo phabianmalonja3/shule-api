@@ -58,6 +58,7 @@
                         <!-- Main Submission Form -->
                         <form wire:submit.prevent="store">
                             <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
+                                <div class="card-body p-4 p-md-5">
                                     <div class="form-group mb-0">
                                         <label class="font-weight-bold text-dark font-13 mb-2">Choose application type <span class="text-danger">*</span></label>
                                         <div class="row" style="gap: 10px; margin: 0;">
@@ -89,6 +90,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
                             </div>
                             <!-- SECTION 01: Examination Preferences -->
                             <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
