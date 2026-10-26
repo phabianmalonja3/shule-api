@@ -542,9 +542,9 @@
                 });
 
                 if (isChecked) {
-                    // Hide the application type card and show the rest of the form
-                    appTypeCard.style.display = 'none';
-                    formContentBelow.style.display = 'block';
+                    // Hide the application type card and force-show the rest of the form using 'important'
+                    appTypeCard.style.setProperty('display', 'none', 'important');
+                    formContentBelow.style.setProperty('display', 'block', 'important');
 
                     // Enable buttons
                     allButtons.forEach(btn => {
@@ -553,9 +553,9 @@
                         btn.style.cursor = 'pointer';
                     });
                 } else {
-                    // Show application type card, hide everything below, disable buttons
-                    appTypeCard.style.display = 'block';
-                    formContentBelow.style.display = 'none';
+                    // Show application type card, force-hide everything below, disable buttons
+                    appTypeCard.style.setProperty('display', 'block', 'important');
+                    formContentBelow.style.setProperty('display', 'none', 'important');
 
                     allButtons.forEach(btn => {
                         btn.disabled = true;
@@ -564,9 +564,9 @@
                     });
                 }
             } else {
-                // If the card doesn't exist (single level school), show everything and enable buttons
+                // If the card doesn't exist (single-level school), force-show everything
                 if (formContentBelow) {
-                    formContentBelow.style.display = 'block';
+                    formContentBelow.style.setProperty('display', 'block', 'important');
                 }
                 allButtons.forEach(btn => {
                     btn.disabled = false;
