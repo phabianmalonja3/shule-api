@@ -213,7 +213,7 @@ public function updateTeacher(Teacher $teacher)
     {
 
         //$user = Auth::user()->school;
-        $schoolName = Auth::user()->school->name;
+        $school = Auth::user()->school;
         $examCenters = ExamCenter::all();
 
         // Pass initial default arrays so foreach loops don't throw undefined errors
@@ -235,7 +235,7 @@ public function updateTeacher(Teacher $teacher)
         ]);
 
         $exam_language = old('exam_language', 'english');
-        return view('admission.create-application', compact('examCenters', 'parents', 'schools', 'exam_language', 'schoolName'));
+        return view('admission.create-application', compact('examCenters', 'parents', 'schools', 'exam_language', 'school'));
 
     }
 

@@ -19,7 +19,7 @@
                                 </div>
                                 <div>
                                     <h5 class="font-weight-bold mb-0 text-dark" style="letter-spacing: -0.3px;">Student Application</h5>
-                                    <small class="text-uppercase font-weight-bold text-muted" style="font-size: 10px; letter-spacing: 0.8px;"> {{ $schoolName }}</small>
+                                    <small class="text-uppercase font-weight-bold text-muted" style="font-size: 10px; letter-spacing: 0.8px;"> {{ $school->name }}</small>
                                 </div>
                             </div>
 
@@ -57,42 +57,44 @@
 
                         <!-- Main Submission Form -->
                         <form wire:submit.prevent="store">
-                            <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
-                                <div class="card-body p-4 p-md-5">
-                                    <div class="form-group mb-0">
-                                        <label class="font-weight-bold text-dark font-13 mb-2">Choose application type <span class="text-danger">*</span></label>
-                                        <div class="d-flex align-items-center mb-4" style="gap: 16px;">
-                                        
-                                            <!-- Form One -->
-                                            <div class="col-md flex-grow-1 p-0">
-                                                <label class="card border p-2.5 p-md-3 mb-0 text-left w-100 h-100" style="border-radius: 10px; cursor: pointer;">
-                                                    <div class="d-flex align-items-center" style="gap: 10px;">
-                                                        <input type="radio" name="application_type" value="form_one" class="app-type-radio" {{ old('application_type') === 'form_one' ? 'checked' : '' }}>
-                                                        <div>
-                                                            <h6 class="font-weight-bold text-dark mb-0 font-13">Form One</h6>
-                                                            <small class="text-muted d-block font-11">Apply for Ordinary Level (Form I)</small>
+                            @if(is_array($school->school_type) && in_array('o-level', $school->school_type) && in_array('a-level', $school->school_type))
+                                <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
+                                    <div class="card-body p-4 p-md-5">
+                                        <div class="form-group mb-0">
+                                            <label class="font-weight-bold text-dark font-13 mb-2">Choose application type <span class="text-danger">*</span></label>
+                                            <div class="d-flex align-items-center mb-4" style="gap: 16px;">
+                                            
+                                                <!-- Form One -->
+                                                <div class="col-md flex-grow-1 p-0">
+                                                    <label class="card border p-2.5 p-md-3 mb-0 text-left w-100 h-100" style="border-radius: 10px; cursor: pointer;">
+                                                        <div class="d-flex align-items-center" style="gap: 10px;">
+                                                            <input type="radio" name="application_type" value="form_one" class="app-type-radio" {{ old('application_type') === 'form_one' ? 'checked' : '' }}>
+                                                            <div>
+                                                                <h6 class="font-weight-bold text-dark mb-0 font-13">Form One</h6>
+                                                                <small class="text-muted d-block font-11">Apply for Ordinary Level (Form I)</small>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </label>
-                                            </div>
+                                                    </label>
+                                                </div>
 
-                                            <!-- Form Five -->
-                                            <div class="col-md flex-grow-1 p-0">
-                                                <label class="card border p-2.5 p-md-3 mb-0 text-left w-100 h-100" style="border-radius: 10px; cursor: pointer;">
-                                                    <div class="d-flex align-items-center" style="gap: 10px;">
-                                                        <input type="radio" name="application_type" value="form_five" class="app-type-radio" {{ old('application_type') === 'form_five' ? 'checked' : '' }}>
-                                                        <div>
-                                                            <h6 class="font-weight-bold text-dark mb-0 font-13">Form Five</h6>
-                                                            <small class="text-muted d-block font-11">Apply for Advanced Level (Form V)</small>
+                                                <!-- Form Five -->
+                                                <div class="col-md flex-grow-1 p-0">
+                                                    <label class="card border p-2.5 p-md-3 mb-0 text-left w-100 h-100" style="border-radius: 10px; cursor: pointer;">
+                                                        <div class="d-flex align-items-center" style="gap: 10px;">
+                                                            <input type="radio" name="application_type" value="form_five" class="app-type-radio" {{ old('application_type') === 'form_five' ? 'checked' : '' }}>
+                                                            <div>
+                                                                <h6 class="font-weight-bold text-dark mb-0 font-13">Form Five</h6>
+                                                                <small class="text-muted d-block font-11">Apply for Advanced Level (Form V)</small>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </label>
+                                                    </label>
+                                                </div>
                                             </div>
+                                            @error('application_type') <small class="text-danger font-12 d-block mt-1">{{ $message }}</small> @enderror
                                         </div>
-                                        @error('application_type') <small class="text-danger font-12 d-block mt-1">{{ $message }}</small> @enderror
                                     </div>
                                 </div>
-                            </div>
+                            @endif
                             <!-- SECTION 01: Examination Preferences -->
                             <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
                                 <div class="card-body p-4 p-md-5">
