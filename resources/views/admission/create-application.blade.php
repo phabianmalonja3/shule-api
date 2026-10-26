@@ -519,7 +519,6 @@
         const allButtons = document.querySelectorAll('button');
 
         function evaluateFormState() {
-            // Check if the application type section is present and visible
             if (appTypeCard && window.getComputedStyle(appTypeCard).display !== 'none') {
                 const radios = document.querySelectorAll('.app-type-radio');
                 let isChecked = false;
@@ -530,19 +529,27 @@
                     }
                 });
 
-                // Disable all buttons if visible and no radio button is checked
+                // Disable buttons and make them visibly faint/inactive
                 allButtons.forEach(btn => {
                     btn.disabled = !isChecked;
+                    if (!isChecked) {
+                        btn.style.opacity = '0.5';
+                        btn.style.cursor = 'not-allowed';
+                    } else {
+                        btn.style.opacity = '1';
+                        btn.style.cursor = 'pointer';
+                    }
                 });
             } else {
-                // If not visible or not present, ensure buttons are enabled
+                // Restore normal appearance and active state
                 allButtons.forEach(btn => {
                     btn.disabled = false;
+                    btn.style.opacity = '1';
+                    btn.style.cursor = 'pointer';
                 });
             }
         }
 
-        // Listen for changes on radio buttons or any other dynamic input
         document.addEventListener('change', function(e) {
             if (e.target.classList.contains('app-type-radio') || e.target.classList.contains('school-type-select')) {
                 evaluateFormState();
