@@ -519,51 +519,37 @@
         const allButtons = document.querySelectorAll('button');
 
         function evaluateFormState() {
-            let hasBothSchoolType = false;
-
-            // Check if any school is configured as 'both'
-            document.querySelectorAll('.school-type-select').forEach(select => {
-                if (select.value === 'both') {
-                    hasBothSchoolType = true;
-                }
-            });
-
-            if (hasBothSchoolType) {
-                // School type is 'both': Show the card and require radio selection
-                appTypeCard.style.display = 'block';
-
+            // Check if the application type section is present and visible
+            if (appTypeCard && window.getComputedStyle(appTypeCard).display !== 'none') {
                 const radios = document.querySelectorAll('.app-type-radio');
                 let isChecked = false;
+
                 radios.forEach(radio => {
-                    if (radio.checked) isChecked = true;
+                    if (radio.checked) {
+                        isChecked = true;
+                    }
                 });
 
-                // Disable all buttons if no radio is checked
+                // Disable all buttons if visible and no radio button is checked
                 allButtons.forEach(btn => {
                     btn.disabled = !isChecked;
                 });
             } else {
-                // School type is strictly o-level or a-level: Hide card and keep buttons enabled
-                appTypeCard.style.display = 'none';
-
+                // If not visible or not present, ensure buttons are enabled
                 allButtons.forEach(btn => {
                     btn.disabled = false;
-                });
-
-                // Clear radio selections when hidden
-                document.querySelectorAll('.app-type-radio').forEach(radio => {
-                    radio.checked = false;
                 });
             }
         }
 
+        // Listen for changes on radio buttons or any other dynamic input
         document.addEventListener('change', function(e) {
-            if (e.target.classList.contains('school-type-select') || e.target.classList.contains('app-type-radio')) {
+            if (e.target.classList.contains('app-type-radio') || e.target.classList.contains('school-type-select')) {
                 evaluateFormState();
             }
         });
 
-        // Run evaluation on initial load
+        // Run on initial page load
         evaluateFormState();
     });
 </script>
