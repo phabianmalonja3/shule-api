@@ -61,7 +61,7 @@
                                 <div class="card-body p-4 p-md-5">
                                     <div class="form-group mb-0">
                                         <label class="font-weight-bold text-dark font-13 mb-2">Choose application type <span class="text-danger">*</span></label>
-                                        <div class="row" style="gap: 10px; margin: 0;">
+                                        <div class="d-flex align-items-center mb-4" style="gap: 16px;">
                                         
                                             <!-- Form One -->
                                             <div class="col-md flex-grow-1 p-0">
