@@ -89,6 +89,7 @@
                                                 </label>
                                             </div>
                                         </div>
+                                        @error('application_type') <small class="text-danger font-12 d-block mt-1">{{ $message }}</small> @enderror
                                     </div>
                                 </div>
                             </div>
@@ -509,4 +510,55 @@
             </section>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const appTypeCard = document.getElementById('app-type-card');
+            const submitBtn = document.getElementById('submit-btn');
+
+            function evaluateFormState() {
+                // Check if any school has max standard set to Form VI (form_6)
+                let hasForm6School = false;
+                document.querySelectorAll('.school-max-standard').forEach(select => {
+                    if (select.value === 'form_6') {
+                        hasForm6School = true;
+                    }
+                });
+
+                if (hasForm6School) {
+                    // Show the application type card
+                    appTypeCard.style.display = 'block';
+
+                    // Check if one of the application type radios is checked
+                    const radios = document.querySelectorAll('.app-type-radio');
+                    let isChecked = false;
+                    radios.forEach(radio => {
+                        if (radio.checked) isChecked = true;
+                    });
+
+                    // If not selected, disable all submit buttons
+                    submitBtn.disabled = !isChecked;
+                } else {
+                    // Hide the card and enable submission
+                    appTypeCard.style.display = 'none';
+                    submitBtn.disabled = false;
+
+                    // Uncheck radios when hidden
+                    document.querySelectorAll('.app-type-radio').forEach(radio => {
+                        radio.checked = false;
+                    });
+                }
+            }
+
+            // Listen to any changes on the form
+            document.addEventListener('change', function(e) {
+                if (e.target.classList.contains('school-max-standard') || e.target.classList.contains('app-type-radio')) {
+                    evaluateFormState();
+                }
+            });
+
+            // Run check on initial page load
+            evaluateFormState();
+        });
+    </script>
 </x-layout>
