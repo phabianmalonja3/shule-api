@@ -57,7 +57,7 @@
 
                         <!-- Main Submission Form -->
                         <form wire:submit.prevent="store">
-                            @if(is_array($school->school_type) && in_array('o-level', $school->school_type) && in_array('a-level', $school->school_type))
+                            @if(is_array($school->school_type) && in_array('O-Level', $school->school_type) && in_array('A-Level', $school->school_type))
                                 <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
                                     <div class="card-body p-4 p-md-5">
                                         <div class="form-group mb-0">
