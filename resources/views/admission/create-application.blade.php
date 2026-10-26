@@ -527,66 +527,57 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const appTypeCard = document.getElementById('app-type-card');
-            const formContentBelow = document.getElementById('form-content-below');
-            const allButtons = document.querySelectorAll('button');
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const appTypeCard = document.getElementById('app-type-card');
+        const formContentBelow = document.getElementById('form-content-below');
+        const allButtons = document.querySelectorAll('button');
 
-            function evaluateFormState() {
-                if (appTypeCard) {
-                    const radios = document.querySelectorAll('.app-type-radio');
-                    let isChecked = false;
+        function evaluateFormState() {
+            if (!appTypeCard) return;
 
-                    radios.forEach(radio => {
-                        if (radio.checked) {
-                            isChecked = true;
-                        }
-                    });
+            const radios = document.querySelectorAll('.app-type-radio');
+            let isChecked = false;
 
-                    if (isChecked) {
-                        // Hide the application type card and force-show the rest of the form using 'important'
-                        appTypeCard.style.setProperty('display', 'none', 'important');
-                        formContentBelow.style.setProperty('display', 'block', 'important');
-
-                        // Enable buttons
-                        allButtons.forEach(btn => {
-                            btn.disabled = false;
-                            btn.style.opacity = '1';
-                            btn.style.cursor = 'pointer';
-                        });
-                    } else {
-                        // Show application type card, force-hide everything below, disable buttons
-                        appTypeCard.style.setProperty('display', 'block', 'important');
-                        formContentBelow.style.setProperty('display', 'none', 'important');
-
-                        allButtons.forEach(btn => {
-                            btn.disabled = true;
-                            btn.style.opacity = '0.5';
-                            btn.style.cursor = 'not-allowed';
-                        });
-                    }
-                } else {
-                    // If the card doesn't exist (single-level school), force-show everything
-                    if (formContentBelow) {
-                        formContentBelow.style.setProperty('display', 'block', 'important');
-                    }
-                    allButtons.forEach(btn => {
-                        btn.disabled = false;
-                        btn.style.opacity = '1';
-                        btn.style.cursor = 'pointer';
-                    });
-                }
-            }
-
-            document.addEventListener('change', function(e) {
-                if (e.target.classList.contains('app-type-radio')) {
-                    evaluateFormState();
+            radios.forEach(radio => {
+                if (radio.checked) {
+                    isChecked = true;
                 }
             });
 
-            // Run evaluation on initial page load
-            evaluateFormState();
+            if (isChecked) {
+                // Hide application type card and reveal the rest of the form
+                appTypeCard.style.setProperty('display', 'none', 'important');
+                formContentBelow.style.setProperty('display', 'block', 'important');
+
+                // Enable buttons and restore normal appearance
+                allButtons.forEach(btn => {
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                    btn.style.cursor = 'pointer';
+                });
+            } else {
+                // Show application type card, hide rest of form, disable buttons (faint)
+                appTypeCard.style.setProperty('display', 'block', 'important');
+                formContentBelow.style.setProperty('display', 'none', 'important');
+
+                allButtons.forEach(btn => {
+                    btn.disabled = true;
+                    btn.style.opacity = '0.5';
+                    btn.style.cursor = 'not-allowed';
+                });
+            }
+        }
+
+        // Listen for changes on the application type radio buttons
+        document.addEventListener('change', function(e) {
+            if (e.target.classList.contains('app-type-radio')) {
+                evaluateFormState();
+            }
         });
-    </script>
+
+        // Run evaluation on initial page load
+        evaluateFormState();
+    });
+</script>
 </x-layout>
