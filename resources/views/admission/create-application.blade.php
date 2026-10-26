@@ -1,4 +1,4 @@
-<x-layout >
+<x-layout>
     <x-slot:title>
         Application Form
     </x-slot:title>
@@ -14,18 +14,18 @@
                         <div class="d-flex align-items-center justify-content-between mb-4">
                             <div class="d-flex align-items-center" style="gap: 14px;">
                                 <div class="rounded-circle d-flex align-items-center justify-content-center text-white" 
-                                    style="width: 48px; height: 48px; background-color: #0f766e; border-radius: 12px !important;">
+                                     style="width: 48px; height: 48px; background-color: #0f766e; border-radius: 12px !important;">
                                     <i class="fas fa-graduation-cap font-20"></i>
                                 </div>
                                 <div>
                                     <h5 class="font-weight-bold mb-0 text-dark" style="letter-spacing: -0.3px;">Student Application</h5>
-                                    <small class="text-uppercase font-weight-bold text-muted" style="font-size: 10px; letter-spacing: 0.8px;"> {{ $schoolName }}</small>
+                                    <small class="text-uppercase font-weight-bold text-muted" style="font-size: 10px; letter-spacing: 0.8px;"> {{ $schoolName ?? '' }}</small>
                                 </div>
                             </div>
 
                             <a href="{{ route('admissions.create') }}" target="_blank" class="btn btn-primary font-weight-bold shadow-sm px-3" style="background-color: #0f766e; border-radius: 8px; font-size: 13px; text-decoration: none;">
-                                        <i class="fas fa-plus mr-1"></i> Upload applications
-                                    </a>
+                                <i class="fas fa-plus mr-1"></i> Upload applications
+                            </a>
                         </div>
 
                         <!-- Start Your Application Banner Card -->
@@ -57,20 +57,22 @@
 
                         <!-- Main Submission Form -->
                         <form wire:submit.prevent="store">
-                            <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
+
+                            <!-- APPLICATION TYPE SECTION (Conditional: Appears before Exam Preferences when school has Form VI) -->
+                            <div id="app-type-card" class="card border-0 shadow-sm mb-4" style="border-radius: 16px; display: none;">
                                 <div class="card-body p-4 p-md-5">
                                     <div class="form-group mb-0">
-                                        <label class="font-weight-bold text-dark font-13 mb-2">Choose application type <span class="text-danger">*</span></label>
-                                        <div class="d-flex align-items-center mb-4" style="gap: 16px;">
-                                        
+                                        <label class="font-weight-bold text-dark font-13 mb-3">Choose application type <span class="text-danger">*</span></label>
+                                        <div class="row" style="gap: 12px; margin: 0;">
+                                            
                                             <!-- Form One -->
                                             <div class="col-md flex-grow-1 p-0">
-                                                <label class="card border p-2.5 p-md-3 mb-0 text-left w-100 h-100" style="border-radius: 10px; cursor: pointer;">
-                                                    <div class="d-flex align-items-center" style="gap: 10px;">
+                                                <label class="card border p-3 mb-0 text-left w-100 h-100" style="border-radius: 10px; cursor: pointer;">
+                                                    <div class="d-flex align-items-center" style="gap: 12px;">
                                                         <input type="radio" name="application_type" value="form_one" class="app-type-radio" {{ old('application_type') === 'form_one' ? 'checked' : '' }}>
                                                         <div>
-                                                            <h6 class="font-weight-bold text-dark mb-0 font-13">Form One</h6>
-                                                            <small class="text-muted d-block font-11">Apply for Ordinary Level (Form I)</small>
+                                                            <h6 class="font-weight-bold text-dark mb-0 font-14">Form One</h6>
+                                                            <small class="text-muted d-block font-12">Apply for Ordinary Level (Form I)</small>
                                                         </div>
                                                     </div>
                                                 </label>
@@ -78,27 +80,29 @@
 
                                             <!-- Form Five -->
                                             <div class="col-md flex-grow-1 p-0">
-                                                <label class="card border p-2.5 p-md-3 mb-0 text-left w-100 h-100" style="border-radius: 10px; cursor: pointer;">
-                                                    <div class="d-flex align-items-center" style="gap: 10px;">
+                                                <label class="card border p-3 mb-0 text-left w-100 h-100" style="border-radius: 10px; cursor: pointer;">
+                                                    <div class="d-flex align-items-center" style="gap: 12px;">
                                                         <input type="radio" name="application_type" value="form_five" class="app-type-radio" {{ old('application_type') === 'form_five' ? 'checked' : '' }}>
                                                         <div>
-                                                            <h6 class="font-weight-bold text-dark mb-0 font-13">Form Five</h6>
-                                                            <small class="text-muted d-block font-11">Apply for Advanced Level (Form V)</small>
+                                                            <h6 class="font-weight-bold text-dark mb-0 font-14">Form Five</h6>
+                                                            <small class="text-muted d-block font-12">Apply for Advanced Level (Form V)</small>
                                                         </div>
                                                     </div>
                                                 </label>
                                             </div>
+
                                         </div>
-                                        @error('application_type') <small class="text-danger font-12 d-block mt-1">{{ $message }}</small> @enderror
+                                        @error('application_type') <small class="text-danger font-12 d-block mt-2">{{ $message }}</small> @enderror
                                     </div>
                                 </div>
                             </div>
+
                             <!-- SECTION 01: Examination Preferences -->
                             <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
                                 <div class="card-body p-4 p-md-5">
                                     <div class="d-flex align-items-center mb-4" style="gap: 16px;">
                                         <div class="rounded-circle d-flex align-items-center justify-content-center" 
-                                            style="width: 44px; height: 44px; background-color: #ccfbf1; color: #0f766e; border-radius: 12px !important;">
+                                             style="width: 44px; height: 44px; background-color: #ccfbf1; color: #0f766e; border-radius: 12px !important;">
                                             <i class="far fa-calendar-alt font-18"></i>
                                         </div>
                                         <div>
@@ -137,7 +141,7 @@
                                             <!-- English -->
                                             <div class="col-md flex-grow-1 p-0">
                                                 <label class="card border p-3 mb-0 text-left w-100 h-100" 
-                                                    style="border-radius: 12px; cursor: pointer; border-color: {{ $exam_language === 'english' ? '#0f766e' : '#e2e8f0' }} !important; background-color: {{ $exam_language === 'english' ? '#f0fdf4' : '#ffffff' }}; transition: all 0.2s;">
+                                                       style="border-radius: 12px; cursor: pointer; border-color: {{ ($exam_language ?? '') === 'english' ? '#0f766e' : '#e2e8f0' }} !important; background-color: {{ ($exam_language ?? '') === 'english' ? '#f0fdf4' : '#ffffff' }}; transition: all 0.2s;">
                                                     <div class="d-flex align-items-center" style="gap: 12px;">
                                                         <input type="radio" wire:model.live="exam_language" value="english" class="mt-0">
                                                         <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #ccfbf1; color: #0f766e;">
@@ -154,7 +158,7 @@
                                             <!-- Kiswahili -->
                                             <div class="col-md flex-grow-1 p-0">
                                                 <label class="card border p-3 mb-0 text-left w-100 h-100" 
-                                                    style="border-radius: 12px; cursor: pointer; border-color: {{ $exam_language === 'kiswahili' ? '#0f766e' : '#e2e8f0' }} !important; background-color: {{ $exam_language === 'kiswahili' ? '#f0fdf4' : '#ffffff' }}; transition: all 0.2s;">
+                                                       style="border-radius: 12px; cursor: pointer; border-color: {{ ($exam_language ?? '') === 'kiswahili' ? '#0f766e' : '#e2e8f0' }} !important; background-color: {{ ($exam_language ?? '') === 'kiswahili' ? '#f0fdf4' : '#ffffff' }}; transition: all 0.2s;">
                                                     <div class="d-flex align-items-center" style="gap: 12px;">
                                                         <input type="radio" wire:model.live="exam_language" value="kiswahili" class="mt-0">
                                                         <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #ccfbf1; color: #0f766e;">
@@ -171,7 +175,7 @@
                                             <!-- No Preference -->
                                             <div class="col-md flex-grow-1 p-0">
                                                 <label class="card border p-3 mb-0 text-left w-100 h-100" 
-                                                    style="border-radius: 12px; cursor: pointer; border-color: {{ $exam_language === 'no_preference' ? '#0f766e' : '#e2e8f0' }} !important; background-color: {{ $exam_language === 'no_preference' ? '#f0fdf4' : '#ffffff' }}; transition: all 0.2s;">
+                                                       style="border-radius: 12px; cursor: pointer; border-color: {{ ($exam_language ?? '') === 'no_preference' ? '#0f766e' : '#e2e8f0' }} !important; background-color: {{ ($exam_language ?? '') === 'no_preference' ? '#f0fdf4' : '#ffffff' }}; transition: all 0.2s;">
                                                     <div class="d-flex align-items-center" style="gap: 12px;">
                                                         <input type="radio" wire:model.live="exam_language" value="no_preference" class="mt-0">
                                                         <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #ccfbf1; color: #0f766e;">
@@ -195,10 +199,9 @@
                             <!-- SECTION 02: Applicant Details -->
                             <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
                                 <div class="card-body p-4 p-md-5">
-                                    
                                     <div class="d-flex align-items-center mb-4" style="gap: 16px;">
                                         <div class="rounded-circle d-flex align-items-center justify-content-center" 
-                                            style="width: 44px; height: 44px; background-color: #ccfbf1; color: #0f766e; border-radius: 12px !important;">
+                                             style="width: 44px; height: 44px; background-color: #ccfbf1; color: #0f766e; border-radius: 12px !important;">
                                             <i class="far fa-user font-18"></i>
                                         </div>
                                         <div>
@@ -280,10 +283,9 @@
                             <!-- SECTION 03: Parent & Guardian Details -->
                             <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
                                 <div class="card-body p-4 p-md-5">
-                                    
                                     <div class="d-flex align-items-center mb-4" style="gap: 16px;">
                                         <div class="rounded-circle d-flex align-items-center justify-content-center" 
-                                            style="width: 44px; height: 44px; background-color: #ccfbf1; color: #0f766e; border-radius: 12px !important;">
+                                             style="width: 44px; height: 44px; background-color: #ccfbf1; color: #0f766e; border-radius: 12px !important;">
                                             <i class="fas fa-users font-18"></i>
                                         </div>
                                         <div>
@@ -412,112 +414,45 @@
                                                     <input type="text" wire:model="schools.{{ $sIndex }}.street" class="form-control px-3" placeholder="Enter street or village" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                                 </div>
 
+                                                <!-- Maximum Standard Select -->
                                                 <div class="col-md-6 form-group mb-3">
                                                     <label class="font-weight-bold text-dark font-13">Maximum standard <span class="text-danger">*</span></label>
-                                                    <select wire:model="schools.{{ $sIndex }}.max_standard" class="form-control px-3" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
-                                                        <option value="">Select level</option>
+                                                    <select wire:model="schools.{{ $sIndex }}.max_standard" class="form-control px-3 school-max-standard" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                                                        <option value="">Select maximum standard</option>
                                                         <option value="form_4">Form IV</option>
                                                         <option value="form_6">Form VI</option>
                                                     </select>
                                                 </div>
-
-                                                <div class="col-md-6 form-group mb-3">
-                                                    <label class="font-weight-bold text-dark font-13">Finalist status <span class="text-danger">*</span></label>
-                                                    <div class="d-flex align-items-center p-1 bg-light border rounded" style="height: 46px; border-radius: 8px !important; border-color: #cbd5e1 !important;">
-                                                        <button type="button" class="btn btn-sm w-50 font-weight-bold {{ $schools[$sIndex]['is_finalist'] ? 'btn-white shadow-sm text-dark' : 'text-muted' }}" 
-                                                                wire:click="$set('schools.{{ $sIndex }}.is_finalist', true)" style="border-radius: 6px;">
-                                                            Yes
-                                                        </button>
-                                                        <button type="button" class="btn btn-sm w-50 font-weight-bold {{ !$schools[$sIndex]['is_finalist'] ? 'btn-white shadow-sm text-dark' : 'text-muted' }}" 
-                                                                wire:click="$set('schools.{{ $sIndex }}.is_finalist', false)" style="border-radius: 6px;">
-                                                            No
-                                                        </button>
-                                                    </div>
-                                                </div>
                                             </div>
-
-                                            <hr class="my-4" style="border-top: 1px dashed #e2e8f0;">
-
-                                            <!-- Average Subject Scores -->
-                                            <div class="row align-items-center mb-4">
-                                                <div class="col-md-4 mb-2 mb-md-0">
-                                                    <h6 class="font-weight-bold text-dark mb-0 font-14">Average subject scores</h6>
-                                                    <small class="text-muted font-12">Enter the applicant's most recent average as a percentage.</small>
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <label class="font-weight-bold text-dark font-12">Mathematics <span class="text-danger">*</span></label>
-                                                            <input type="number" wire:model="schools.{{ $sIndex }}.math_score" class="form-control text-center" placeholder="0–100" min="0" max="100" style="height: 42px; border-radius: 8px;">
-                                                        </div>
-                                                        <div class="col">
-                                                            <label class="font-weight-bold text-dark font-12">English <span class="text-danger">*</span></label>
-                                                            <input type="number" wire:model="schools.{{ $sIndex }}.english_score" class="form-control text-center" placeholder="0–100" min="0" max="100" style="height: 42px; border-radius: 8px;">
-                                                        </div>
-                                                        <div class="col">
-                                                            <label class="font-weight-bold text-dark font-12">Science <span class="text-danger">*</span></label>
-                                                            <input type="number" wire:model="schools.{{ $sIndex }}.science_score" class="form-control text-center" placeholder="0–100" min="0" max="100" style="height: 42px; border-radius: 8px;">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <hr class="my-4" style="border-top: 1px dashed #e2e8f0;">
-
-                                            <!-- Headteacher Contact -->
-                                            <div class="row align-items-center">
-                                                <div class="col-md-4 mb-2 mb-md-0 d-flex align-items-start" style="gap: 8px;">
-                                                    <span class="rounded-circle mt-1" style="width: 8px; height: 8px; background-color: #f59e0b; flex-shrink: 0;"></span>
-                                                    <div>
-                                                        <h6 class="font-weight-bold text-dark mb-0 font-14">Headteacher contact</h6>
-                                                        <small class="text-muted font-12">Optional for applicants who are not finalists.</small>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4 form-group mb-2 mb-md-0">
-                                                    <input type="text" wire:model="schools.{{ $sIndex }}.headteacher_name" class="form-control px-3" placeholder="Full name" style="height: 42px; border-radius: 8px;">
-                                                </div>
-                                                <div class="col-md-4 form-group mb-0">
-                                                    <input type="text" wire:model="schools.{{ $sIndex }}.headteacher_phone" class="form-control px-3" placeholder="+255 7XX XXX XXX" style="height: 42px; border-radius: 8px;">
-                                                </div>
-                                            </div>
-
                                         </div>
                                     @endforeach
-
-                                    <!-- Add School Button -->
-                                    <button type="button" class="btn border-dashed font-weight-bold py-2 px-3 d-inline-flex align-items-center mt-2" 
-                                            wire:click="addSchool"
-                                            style="border: 1.5px dashed #0f766e; color: #0f766e; background-color: #f0fdf4; border-radius: 8px; gap: 8px; font-size: 13px;">
-                                        <i class="fas fa-plus font-12"></i> Add another school
-                                    </button>
 
                                 </div>
                             </div>
 
                             <!-- Footer Confirmation & Submit Button -->
-                            <div class="d-flex flex-column flex-md-row align-items-center justify-content-between my-5" style="gap: 16px;">
+                            <div class="d-flex flex-column flex-md-row align-items-center justify-content-between my-4" style="gap: 16px;">
                                 <span class="text-muted font-14">By submitting, you confirm that the information provided is accurate and complete.</span>
-                                <button type="submit" class="btn font-weight-bold text-white px-4 py-3 shadow d-inline-flex align-items-center" 
+                                <button type="submit" id="submit-btn" class="btn font-weight-bold text-white px-4 py-3 shadow d-inline-flex align-items-center" 
                                         style="background-color: #0f766e; border-radius: 12px; gap: 10px; font-size: 15px;">
                                     Submit application <i class="fas fa-arrow-right font-13"></i>
                                 </button>
                             </div>
 
                         </form>
-
                     </div>
                 </div>
             </section>
         </div>
     </div>
 
+    <!-- Script to handle dynamic application type visibility and button state enforcement -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const appTypeCard = document.getElementById('app-type-card');
             const submitBtn = document.getElementById('submit-btn');
 
             function evaluateFormState() {
-                // Check if any school has max standard set to Form VI (form_6)
                 let hasForm6School = false;
                 document.querySelectorAll('.school-max-standard').forEach(select => {
                     if (select.value === 'form_6') {
@@ -526,38 +461,31 @@
                 });
 
                 if (hasForm6School) {
-                    // Show the application type card
                     appTypeCard.style.display = 'block';
 
-                    // Check if one of the application type radios is checked
                     const radios = document.querySelectorAll('.app-type-radio');
                     let isChecked = false;
                     radios.forEach(radio => {
                         if (radio.checked) isChecked = true;
                     });
 
-                    // If not selected, disable all submit buttons
                     submitBtn.disabled = !isChecked;
                 } else {
-                    // Hide the card and enable submission
                     appTypeCard.style.display = 'none';
                     submitBtn.disabled = false;
 
-                    // Uncheck radios when hidden
                     document.querySelectorAll('.app-type-radio').forEach(radio => {
                         radio.checked = false;
                     });
                 }
             }
 
-            // Listen to any changes on the form
             document.addEventListener('change', function(e) {
                 if (e.target.classList.contains('school-max-standard') || e.target.classList.contains('app-type-radio')) {
                     evaluateFormState();
                 }
             });
 
-            // Run check on initial page load
             evaluateFormState();
         });
     </script>
