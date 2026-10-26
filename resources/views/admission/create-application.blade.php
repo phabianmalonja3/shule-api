@@ -10,6 +10,10 @@
             <section class="section">
                 <div class="card shadow-sm border-0 rounded-lg">
                     <div class="card-body">
+                        @php
+                            $applicationType = 'Form I';
+                        @endphp
+
                         @if(is_array($school->school_type) && in_array('O-Level', $school->school_type) && in_array('A-Level', $school->school_type))
                                 <div class="card border-0 shadow-sm mb-4" style="border-radius: 16px;">
                                     <div class="card-body p-4 p-md-5">
@@ -56,7 +60,7 @@
                                     <i class="fas fa-graduation-cap font-20"></i>
                                 </div>
                                 <div>
-                                    <h5 class="font-weight-bold mb-0 text-dark" style="letter-spacing: -0.3px;">Student Application</h5>
+                                    <h5 class="font-weight-bold mb-0 text-dark" style="letter-spacing: -0.3px;">{{ $applicationType }} Application</h5>
                                     <small class="text-uppercase font-weight-bold text-muted" style="font-size: 10px; letter-spacing: 0.8px;"> {{ $school->name }}</small>
                                 </div>
                             </div>
