@@ -517,14 +517,17 @@
         const allButtons = document.querySelectorAll('button');
 
         function evaluateFormState() {
-            let hasForm6School = false;
-            document.querySelectorAll('.school-max-standard').forEach(select => {
-                if (select.value === 'form_6') {
-                    hasForm6School = true;
+            let hasBothSchoolType = false;
+
+            // Check if any school is configured as 'both'
+            document.querySelectorAll('.school-type-select').forEach(select => {
+                if (select.value === 'both') {
+                    hasBothSchoolType = true;
                 }
             });
 
-            if (hasForm6School) {
+            if (hasBothSchoolType) {
+                // School type is 'both': Show the card and require radio selection
                 appTypeCard.style.display = 'block';
 
                 const radios = document.querySelectorAll('.app-type-radio');
@@ -533,18 +536,19 @@
                     if (radio.checked) isChecked = true;
                 });
 
-                // Disable all buttons when none of the application type radio buttons is checked
+                // Disable all buttons if no radio is checked
                 allButtons.forEach(btn => {
                     btn.disabled = !isChecked;
                 });
             } else {
+                // School type is strictly o-level or a-level: Hide card and keep buttons enabled
                 appTypeCard.style.display = 'none';
-                
-                // Enable all buttons when the application type section is not applicable
+
                 allButtons.forEach(btn => {
                     btn.disabled = false;
                 });
 
+                // Clear radio selections when hidden
                 document.querySelectorAll('.app-type-radio').forEach(radio => {
                     radio.checked = false;
                 });
@@ -552,11 +556,12 @@
         }
 
         document.addEventListener('change', function(e) {
-            if (e.target.classList.contains('school-max-standard') || e.target.classList.contains('app-type-radio')) {
+            if (e.target.classList.contains('school-type-select') || e.target.classList.contains('app-type-radio')) {
                 evaluateFormState();
             }
         });
 
+        // Run evaluation on initial load
         evaluateFormState();
     });
 </script>
