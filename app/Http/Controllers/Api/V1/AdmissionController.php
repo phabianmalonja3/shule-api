@@ -234,8 +234,11 @@ public function updateTeacher(Teacher $teacher)
             ]
         ]);
 
+        $schools_attended = [
+        ['name' => '', 'location' => '', 'year_completed' => '', 'index_number' => '']
+    ];
         $exam_language = old('exam_language', 'english');
-        return view('admission.create-application', compact('examCenters', 'parents', 'schools', 'exam_language', 'school'));
+        return view('admission.create-application', compact('examCenters', 'parents', 'schools', 'exam_language', 'school','schools_attended'));
 
     }
 

@@ -378,7 +378,7 @@
                                         </div>
 
                                         <!-- Loop Through Schools Array -->
-                                        @forelse($schools_attended as $sIndex => $schoolItem)
+                                        @foreach($schools_attended as $sIndex => $schoolItem)
                                             <div class="card border p-4 mb-4" style="border-radius: 12px; border-color: #e2e8f0 !important; background-color: #f8fafc;">
                                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                                     <div>
