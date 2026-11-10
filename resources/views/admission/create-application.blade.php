@@ -449,7 +449,7 @@
                         @error('schools_attended.'.$sIndex.'.headteacher_phone') <small class="text-danger font-12">{{ $message }}</small> @enderror
                     </div>
                     <!-- Recent Examination Maximum Scores Sub-section -->
-                     @if(count(schools_attended) == 0)
+                     @if(count($schools_attended) == 0)
 <div class="mt-4 pt-3 border-top">
     <h6 class="font-weight-bold text-dark mb-3">
         <i class="fas fa-chart-bar mr-2 text-teal" style="color: #0f766e;"></i> Most Recent Exam — Subject Scores
