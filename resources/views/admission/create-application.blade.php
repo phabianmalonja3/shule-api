@@ -340,6 +340,12 @@
                                                     </div>
 
                                                     <div class="col-md-6 form-group mb-3">
+                                                        <label class="font-weight-bold text-dark font-13">Email <span class="text-muted font-weight-normal">(Optional)</span></label>
+                                                        <input type="text" wire:model="schools_attended.{{ $index }}.street" class="form-control px-3" placeholder="e.g. mouse@keyboard.com" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                                                        @error('schools_attended.'.$index.'.street') <small class="text-danger font-12">{{ $message }}</small> @enderror
+                                                    </div>
+
+                                                    <div class="col-md-6 form-group mb-3">
                                                         <label class="font-weight-bold text-dark font-13">Region <span class="text-danger">*</span></label>
                                                         <input type="text" wire:model="schools_attended.{{ $index }}.region" class="form-control px-3" placeholder="e.g. Dar es Salaam" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                                         @error('schools_attended.'.$index.'.region') <small class="text-danger font-12">{{ $message }}</small> @enderror
