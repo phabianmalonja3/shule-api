@@ -450,13 +450,13 @@
                     </div>
                     <!-- Recent Examination Maximum Scores Sub-section -->
                      @if($sIndex === count($schools_attended) - 1)
-                        <div class="form-group mb-3">
+                        <div class="col-md-6 form-group mb-3">
                             <h6 class="font-weight-bold text-dark mb-3">
                                 <i class="fas fa-chart-bar mr-2 text-teal" style="color: #0f766e;"></i> Most Recent Exam — Subject Scores
                             </h6>
-                            <div class="row">
+                            <div class="row col-md-4 form-group mb-3">
                                 <!-- Mathematics Max Score -->
-                                 <div class="col-md-4 form-group mb-3 d-flex flex-column justify-content-between">
+                                 <div >
 
                                     <label class="font-weight-bold text-dark font-13">Mathematics <span class="text-danger">*</span></label>
                                     <input type="number" wire:model="schools_attended.{{ $sIndex }}.max_score_maths" class="form-control px-3" placeholder="e.g. 100" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
@@ -464,14 +464,14 @@
                                 </div>
 
                                 <!-- English Max Score -->
-                                <div class="col-md-4 form-group mb-3">
+                                <div >
                                     <label class="font-weight-bold text-dark font-13">English <span class="text-danger">*</span></label>
                                     <input type="number" wire:model="schools_attended.{{ $sIndex }}.max_score_english" class="form-control px-3" placeholder="e.g. 100" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                     @error('schools_attended.'.$sIndex.'.max_score_english') <small class="text-danger font-12">{{ $message }}</small> @enderror
                                 </div>
 
                                 <!-- Science Max Score -->
-                                <div class="col-md-4 form-group mb-3">
+                                <div >
                                     <label class="font-weight-bold text-dark font-13">Science <span class="text-danger">*</span></label>
                                     <input type="number" wire:model="schools_attended.{{ $sIndex }}.max_score_science" class="form-control px-3" placeholder="e.g. 100" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                     @error('schools_attended.'.$sIndex.'.max_score_science') <small class="text-danger font-12">{{ $message }}</small> @enderror
