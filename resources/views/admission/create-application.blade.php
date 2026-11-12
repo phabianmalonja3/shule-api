@@ -321,16 +321,27 @@
                                                 </div>
 
                                                 <div class="row">
-                                                    <div class="col-md-6 form-group mb-3">
+                                                    <div class="col-md-4 form-group mb-3">
                                                         <label class="font-weight-bold text-dark font-13">First name <span class="text-danger">*</span></label>
                                                         <input type="text" wire:model="parents.{{ $index }}.first_name" class="form-control px-3" placeholder="Enter first name" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                                         @error('parents.'.$index.'.first_name') <small class="text-danger font-12">{{ $message }}</small> @enderror
                                                     </div>
 
-                                                    <div class="col-md-6 form-group mb-3">
+                                                    <div class="col-md-4 form-group mb-3">
                                                         <label class="font-weight-bold text-dark font-13">Surname <span class="text-danger">*</span></label>
                                                         <input type="text" wire:model="parents.{{ $index }}.surname" class="form-control px-3" placeholder="Enter surname" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                                         @error('parents.'.$index.'.surname') <small class="text-danger font-12">{{ $message }}</small> @enderror
+                                                    </div>
+
+                                                    <div class="col-md-4 form-group mb-3">
+                                                        <label class="font-weight-bold text-dark font-13">Relationship to applicant <span class="text-danger">*</span></label>
+                                                        <select wire:model="parents.{{ $index }}.relationship" class="form-control px-3" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                                                            <option value="">Select relationship</option>
+                                                            <option value="father">Father</option>
+                                                            <option value="mother">Mother</option>
+                                                            <option value="guardian">Guardian</option>
+                                                        </select>
+                                                        @error('parents.'.$index.'.relationship') <small class="text-danger font-12">{{ $message }}</small> @enderror
                                                     </div>
 
                                                     <div class="col-md-6 form-group mb-3">
@@ -372,17 +383,8 @@
                                                         @error('schools_attended.'.$index.'.street') <small class="text-danger font-12">{{ $message }}</small> @enderror
                                                     </div>
 
-                                                    <div class="col-md-6 form-group mb-3">
-                                                        <label class="font-weight-bold text-dark font-13">Relationship to applicant <span class="text-danger">*</span></label>
-                                                        <select wire:model="parents.{{ $index }}.relationship" class="form-control px-3" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
-                                                            <option value="">Select relationship</option>
-                                                            <option value="father">Father</option>
-                                                            <option value="mother">Mother</option>
-                                                            <option value="guardian">Guardian</option>
-                                                        </select>
-                                                        @error('parents.'.$index.'.relationship') <small class="text-danger font-12">{{ $message }}</small> @enderror
-                                                    </div>
 
+<div class="mt-4 pt-3 border-top">
                                                     <div class="col-md-6 form-group mb-3">
                                                         <label class="font-weight-bold text-dark font-13">Speciality <span class="text-muted font-weight-normal">(Optional)</span></label>
                                                         <input type="text" wire:model="schools_attended.{{ $index }}.street" class="form-control px-3" placeholder="e.g. Software Development" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
@@ -393,7 +395,7 @@
                                                         <label class="font-weight-bold text-dark font-13">Employer Name <span class="text-muted font-weight-normal">(Optional)</span></label>
                                                         <input type="text" wire:model="schools_attended.{{ $index }}.street" class="form-control px-3" placeholder="e.g. Ministry of Education" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                                         @error('schools_attended.'.$index.'.street') <small class="text-danger font-12">{{ $message }}</small> @enderror
-                                                    </div>
+                                                    </div> </div>
                                                 </div>
                                             </div>
                                         @endforeach
