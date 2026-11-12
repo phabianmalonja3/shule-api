@@ -322,6 +322,51 @@
 
                                                 <div class="row">
                                                     <div class="col-md-6 form-group mb-3">
+                                                        <label class="font-weight-bold text-dark font-13">First name <span class="text-danger">*</span></label>
+                                                        <input type="text" wire:model="parents.{{ $index }}.first_name" class="form-control px-3" placeholder="Enter first name" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                                                        @error('parents.'.$index.'.first_name') <small class="text-danger font-12">{{ $message }}</small> @enderror
+                                                    </div>
+
+                                                    <div class="col-md-6 form-group mb-3">
+                                                        <label class="font-weight-bold text-dark font-13">Surname <span class="text-danger">*</span></label>
+                                                        <input type="text" wire:model="parents.{{ $index }}.surname" class="form-control px-3" placeholder="Enter surname" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                                                        @error('parents.'.$index.'.surname') <small class="text-danger font-12">{{ $message }}</small> @enderror
+                                                    </div>
+
+                                                    <div class="col-md-6 form-group mb-3">
+                                                        <label class="font-weight-bold text-dark font-13">Phone number <span class="text-danger">*</span></label>
+                                                        <input type="text" wire:model="parents.{{ $index }}.phone" class="form-control px-3" placeholder="+255 7XX XXX XXX" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                                                        @error('parents.'.$index.'.phone') <small class="text-danger font-12">{{ $message }}</small> @enderror
+                                                    </div>
+
+                                                    <div class="col-md-6 form-group mb-3">
+                                                        <label class="font-weight-bold text-dark font-13">Region <span class="text-danger">*</span></label>
+                                                        <input type="text" wire:model="schools_attended.{{ $sIndex }}.region" class="form-control px-3" placeholder="e.g. Dar es Salaam" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                                                        @error('schools_attended.'.$sIndex.'.region') <small class="text-danger font-12">{{ $message }}</small> @enderror
+                                                    </div>
+
+                                                    <!-- District -->
+                                                    <div class="col-md-6 form-group mb-3">
+                                                        <label class="font-weight-bold text-dark font-13">District <span class="text-danger">*</span></label>
+                                                        <input type="text" wire:model="schools_attended.{{ $sIndex }}.district" class="form-control px-3" placeholder="e.g. Kinondoni" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                                                        @error('schools_attended.'.$sIndex.'.district') <small class="text-danger font-12">{{ $message }}</small> @enderror
+                                                    </div>
+
+                                                    <!-- Ward -->
+                                                    <div class="col-md-6 form-group mb-3">
+                                                        <label class="font-weight-bold text-dark font-13">Ward <span class="text-danger">*</span></label>
+                                                        <input type="text" wire:model="schools_attended.{{ $sIndex }}.ward" class="form-control px-3" placeholder="e.g. Morocco" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                                                        @error('schools_attended.'.$sIndex.'.ward') <small class="text-danger font-12">{{ $message }}</small> @enderror
+                                                    </div>
+
+                                                    <!-- Street (Optional) -->
+                                                    <div class="col-md-6 form-group mb-3">
+                                                        <label class="font-weight-bold text-dark font-13">Street / Village <span class="text-muted font-weight-normal">(Optional)</span></label>
+                                                        <input type="text" wire:model="schools_attended.{{ $sIndex }}.street" class="form-control px-3" placeholder="e.g. Mwinyi Juma Road" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                                                        @error('schools_attended.'.$sIndex.'.street') <small class="text-danger font-12">{{ $message }}</small> @enderror
+                                                    </div>
+
+                                                    <div class="col-md-6 form-group mb-3">
                                                         <label class="font-weight-bold text-dark font-13">Relationship to applicant <span class="text-danger">*</span></label>
                                                         <select wire:model="parents.{{ $index }}.relationship" class="form-control px-3" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                                                             <option value="">Select relationship</option>
@@ -333,21 +378,15 @@
                                                     </div>
 
                                                     <div class="col-md-6 form-group mb-3">
-                                                        <label class="font-weight-bold text-dark font-13">Phone number <span class="text-danger">*</span></label>
-                                                        <input type="text" wire:model="parents.{{ $index }}.phone" class="form-control px-3" placeholder="+255 7XX XXX XXX" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
-                                                        @error('parents.'.$index.'.phone') <small class="text-danger font-12">{{ $message }}</small> @enderror
+                                                        <label class="font-weight-bold text-dark font-13">Speciality <span class="text-muted font-weight-normal">(Optional)</span></label>
+                                                        <input type="text" wire:model="schools_attended.{{ $sIndex }}.street" class="form-control px-3" placeholder="e.g. Software Development" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                                                        @error('schools_attended.'.$sIndex.'.street') <small class="text-danger font-12">{{ $message }}</small> @enderror
                                                     </div>
 
                                                     <div class="col-md-6 form-group mb-3">
-                                                        <label class="font-weight-bold text-dark font-13">First name <span class="text-danger">*</span></label>
-                                                        <input type="text" wire:model="parents.{{ $index }}.first_name" class="form-control px-3" placeholder="Enter first name" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
-                                                        @error('parents.'.$index.'.first_name') <small class="text-danger font-12">{{ $message }}</small> @enderror
-                                                    </div>
-
-                                                    <div class="col-md-6 form-group mb-3">
-                                                        <label class="font-weight-bold text-dark font-13">Surname <span class="text-danger">*</span></label>
-                                                        <input type="text" wire:model="parents.{{ $index }}.surname" class="form-control px-3" placeholder="Enter surname" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
-                                                        @error('parents.'.$index.'.surname') <small class="text-danger font-12">{{ $message }}</small> @enderror
+                                                        <label class="font-weight-bold text-dark font-13">Employer Name <span class="text-muted font-weight-normal">(Optional)</span></label>
+                                                        <input type="text" wire:model="schools_attended.{{ $sIndex }}.street" class="form-control px-3" placeholder="e.g. Ministry of Education" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                                                        @error('schools_attended.'.$sIndex.'.street') <small class="text-danger font-12">{{ $message }}</small> @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -396,7 +435,7 @@
                     <!-- School Name -->
                     <div class="col-md-6 form-group mb-3">
                         <label class="font-weight-bold text-dark font-13">School Name <span class="text-danger">*</span></label>
-                        <input type="text" wire:model="schools_attended.{{ $sIndex }}.name" class="form-control px-3" placeholder="Enter school name" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                        <input type="text" wire:model="schools_attended.{{ $sIndex }}.name" class="form-control px-3" placeholder="e.g Clementina Primary School" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                         @error('schools_attended.'.$sIndex.'.name') <small class="text-danger font-12">{{ $message }}</small> @enderror
                     </div>
 
@@ -430,24 +469,26 @@
 
                     <!-- Completion Year -->
                     <div class="col-md-6 form-group mb-3">
-                        <label class="font-weight-bold text-dark font-13">Completion / Graduation Year <span class="text-danger">*</span></label>
+                        <label class="font-weight-bold text-dark font-13">Completion Year <span class="text-danger">*</span></label>
                         <input type="number" wire:model="schools_attended.{{ $sIndex }}.year_completed" class="form-control px-3" placeholder="e.g. 2025" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
                         @error('schools_attended.'.$sIndex.'.year_completed') <small class="text-danger font-12">{{ $message }}</small> @enderror
                     </div>
+                    
+                    @if($sIndex === count($schools_attended) - 1)
+                        <!-- Headteacher Name -->
+                        <div class="col-md-6 form-group mb-3">
+                            <label class="font-weight-bold text-dark font-13">Headteacher's Name <span class="text-danger">*</span></label>
+                            <input type="text" wire:model="schools_attended.{{ $sIndex }}.headteacher_name" class="form-control px-3" placeholder="Enter headteacher's full name" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                            @error('schools_attended.'.$sIndex.'.headteacher_name') <small class="text-danger font-12">{{ $message }}</small> @enderror
+                        </div>
 
-                    <!-- Headteacher Name -->
-                    <div class="col-md-6 form-group mb-3">
-                        <label class="font-weight-bold text-dark font-13">Headteacher's Name <span class="text-danger">*</span></label>
-                        <input type="text" wire:model="schools_attended.{{ $sIndex }}.headteacher_name" class="form-control px-3" placeholder="Enter headteacher's full name" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
-                        @error('schools_attended.'.$sIndex.'.headteacher_name') <small class="text-danger font-12">{{ $message }}</small> @enderror
-                    </div>
-
-                    <!-- Headteacher Phone -->
-                    <div class="col-md-6 form-group mb-3">
-                        <label class="font-weight-bold text-dark font-13">Headteacher's Phone Number <span class="text-danger">*</span></label>
-                        <input type="text" wire:model="schools_attended.{{ $sIndex }}.headteacher_phone" class="form-control px-3" placeholder="+255 7XX XXX XXX" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
-                        @error('schools_attended.'.$sIndex.'.headteacher_phone') <small class="text-danger font-12">{{ $message }}</small> @enderror
-                    </div>
+                        <!-- Headteacher Phone -->
+                        <div class="col-md-6 form-group mb-3">
+                            <label class="font-weight-bold text-dark font-13">Headteacher's Phone Number <span class="text-danger">*</span></label>
+                            <input type="text" wire:model="schools_attended.{{ $sIndex }}.headteacher_phone" class="form-control px-3" placeholder="+255 7XX XXX XXX" style="height: 46px; border-radius: 8px; border-color: #cbd5e1;">
+                            @error('schools_attended.'.$sIndex.'.headteacher_phone') <small class="text-danger font-12">{{ $message }}</small> @enderror
+                        </div>
+                    @endif
                 </div>
 
                 <!-- Recent Examination Maximum Scores Sub-section (Only for the latest/most recent school) -->
