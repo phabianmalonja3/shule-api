@@ -485,7 +485,7 @@
 
         <!-- Add School Button -->
         <button type="button" class="btn btn-outline-primary border-dashed font-weight-bold px-4 py-2" wire:click="addSchool" style="border-radius: 8px; border-style: dashed; border-color: #0f766e; color: #0f766e; font-size: 13px;">
-            <i class="fas fa-plus mr-1"></i> Add School
+            <i class="fas fa-plus mr-1"></i> Add Another School
         </button>
 
     </div>
