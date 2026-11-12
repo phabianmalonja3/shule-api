@@ -454,7 +454,7 @@
                             <h6 class="font-weight-bold text-dark mb-3">
                                 <i class="fas fa-chart-bar mr-2 text-teal" style="color: #0f766e;"></i> Most Recent Exam — Subject Scores
                             </h6>
-                            <div class="row col-md-4 form-group mb-3">
+                            <div class="row">
                                 <!-- Mathematics Max Score -->
                                  <div class="col-md-4 form-group mb-3">
 
