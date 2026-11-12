@@ -450,7 +450,7 @@
                     </div>
                     <!-- Recent Examination Maximum Scores Sub-section -->
                      @if($sIndex === count($schools_attended) - 1)
-                        <div class="form-group mb-3">
+                        <div class="form-group">
                             <h6 class="font-weight-bold text-dark mb-3">
                                 <i class="fas fa-chart-bar mr-2 text-teal" style="color: #0f766e;"></i> Most Recent Exam — Subject Scores
                             </h6>
